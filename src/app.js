@@ -40,7 +40,6 @@ export default React.createClass({
     }
     const newThought = this.createThought('', false);
     this.setEditable(newThought);
-    this.refs.newestThought.focus();
   },
   scrollToBottom() {
     const thoughtsContainerEl = findDOMNode(this.refs.thoughts);
@@ -73,7 +72,11 @@ export default React.createClass({
     saveThoughts(updatedThoughts);
   },
   setEditable(thought) {
-    this.setState({ editableThought: thought });
+    this.setState({ editableThought: thought }, () => {
+
+      this.refs['thought-' + thought.id].focus();
+    });
+
   },
   stopEditing(thought) {
     this.setState({ editableThought: null });
@@ -164,7 +167,7 @@ export default React.createClass({
                   onSubmit={() => this.stopEditing(thought)}
                   onHashtagClicked={this.addFilter}
                   editable={this.state.editableThought === thought}
-                  ref={i === thoughts.length - 1 ? 'newestThought' : `thought${i}`}
+                  ref={`thought-${thought.id}`}
                   thought={thought} />
 
               )

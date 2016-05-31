@@ -1,6 +1,7 @@
 export function createThought(text) {
   return {
     text,
+    id: Date.now(),
     todos: parseTodos(text),
     hashtags: parseHashtags(text),
     createdAt: new Date()

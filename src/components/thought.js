@@ -10,7 +10,15 @@ import TextInput from './text-input';
 
 export default React.createClass({
   focus() {
-    findDOMNode(this.refs.input).focus();
+    const $el = findDOMNode(this.refs.input);
+    const length = this.props.thought.text.length;
+
+    // Focus textarea
+    $el.focus();
+
+    // Set cursor to the end of text
+    $el.setSelectionRange(length, length);
+
   },
   render() {
     const customRenderers = {
