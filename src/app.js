@@ -8,7 +8,6 @@ import {
 } from './utils/storage';
 
 import Thought from './components/thought';
-import NewThought from './components/new-thought';
 
 function createThought(text) {
   return {

@@ -13,16 +13,31 @@ body {
   font-size: 16px;
 }
 
+.text-input {
+  border: 0;
+  font: inherit;
+  resize: none;
+  background: transparent;
+  outline: 0;
+}
+
+
 .thoughts-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   box-sizing: border-box;
 }
 
 .thoughts {
-  box-sizing: border-box;
   overflow: auto;
   padding: 3em 0;
-  height: 100%;
+  max-height: 100%;
 }
+
+/*
+ * Thought
+ */
 
 .thought-container {
   text-align: center;
@@ -35,20 +50,39 @@ body {
   padding: 1em;
   max-width: 300px;
   border-radius: 3px;
+  transition: all 0.2s;
 }
+
+.thought--editable {
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.90),
+    rgba(255, 255, 255, 0.90) 10px,
+    rgba(255, 255, 255, 1) 10px,
+    rgba(255, 255, 255, 1) 20px
+  );
+}
+
+/*
+ * Thought content
+ */
+
 .thought p {
   margin: 0;
 }
+
 .thought ul {
   list-style: none;
   padding: 0;
   margin: 0.5em 0;
   text-align: left;
 }
+
 .thought li {
   padding-left: 1em;
   position: relative;
 }
+
 .thought li:before {
   content: '-';
   position: absolute;
@@ -59,10 +93,3 @@ body {
   max-width: 100%;
 }
 
-.text-input {
-  border: 0;
-  font: inherit;
-  resize: none;
-  background: transparent;
-  outline: 0;
-}
