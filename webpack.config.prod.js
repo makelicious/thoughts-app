@@ -1,6 +1,8 @@
 var path = require('path');
 var webpack = require('webpack');
 
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 module.exports = {
   devtool: 'source-map',
   entry: [
@@ -18,6 +20,7 @@ module.exports = {
         'NODE_ENV': JSON.stringify('production')
       }
     }),
+    new ExtractTextPlugin('style.css'),
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
         warnings: false
@@ -36,10 +39,9 @@ module.exports = {
     },
     {
       test: /\.css$/,
-      loaders: [
-        'style-loader',
-        'css-loader'
-      ]
+      loader: ExtractTextPlugin.extract('style-loader', 'css-loader', {
+        publicPath: './'
+      })
     }]
   }
 };

@@ -2,7 +2,7 @@
   "name": "thoughts-app",
   "version": "1.0.0",
   "scripts": {
-    "build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js && cp index.html dist/npm",
+    "build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js && cp index.html dist/",
     "build": "npm run build:webpack",
     "start": "node devServer.js",
     "lint": "eslint src"
@@ -21,6 +21,7 @@
     "eslint-plugin-react": "^3.11.3",
     "eventsource-polyfill": "^0.9.6",
     "express": "^4.13.3",
+    "extract-text-webpack-plugin": "^1.0.1",
     "json-loader": "^0.5.4",
     "rimraf": "^2.4.3",
     "style-loader": "^0.13.1",
