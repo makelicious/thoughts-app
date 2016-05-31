@@ -58,11 +58,28 @@ export default React.createClass({
     this.scrollToBottom();
     return newThought;
   },
+  deleteThought(thought) {
+    const updatedThoughts = this.state.thoughts.filter((thoug) =>
+      thought !== thoug
+    );
+
+    this.setState({
+      thoughts: updatedThoughts
+    });
+
+    saveThoughts(updatedThoughts);
+  },
   setEditable(thought) {
     this.setState({ editableThought: thought });
   },
-  stopEditing() {
+  stopEditing(thought) {
     this.setState({ editableThought: null });
+
+    if(thought.text === '') {
+      this.deleteThought(thought);
+      return;
+    }
+
     saveThoughts(this.state.thoughts);
   },
   updateThought(thought, newValue) {
@@ -94,7 +111,7 @@ export default React.createClass({
                   key={i}
                   onClick={() => this.setEditable(thought)}
                   onChange={(newValue) => this.updateThought(thought, newValue)}
-                  onSubmit={this.stopEditing}
+                  onSubmit={() => this.stopEditing(thought)}
                   editable={this.state.editableThought === thought}
                   ref={i === visibleThoughts.length - 1 ? 'newestThought' : `thought${i}`}
                   thought={thought} />
