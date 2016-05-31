@@ -37,6 +37,10 @@ module.exports = {
         'style-loader',
         'css-loader'
       ]
+    },
+    {
+      test: /\.(ttf|jpg|png|svg|otf|eot|woff|woff2)/,
+      loader: 'url?limit=100000'
     }]
   }
 };

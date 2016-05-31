@@ -30,9 +30,11 @@ function isHashtagNode(node) {
 }
 
 function createHashtagNode(hashtag) {
-  const hashtagNode = new Node('Link');
-  hashtagNode.destination = `hashtags/${hashtag}`;
-  hashtagNode.title = `hashtags/${hashtag}`;
+  const hashtagNode = new Node('Hashtag');
+
+  hashtagNode.literal = {
+    hashtag: hashtag
+  };
 
   const textNode = new Node('Text');
   textNode.literal = hashtag;

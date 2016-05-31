@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown';
 import walker from '../utils/walker';
 import TextInput from './text-input';
 
+
 export default React.createClass({
   focus() {
     findDOMNode(this.refs.input).focus();
@@ -14,7 +15,25 @@ export default React.createClass({
   render() {
     const customRenderers = {
       Checkbox: (props) =>
-        <input readOnly type="checkbox" checked={props.literal.trim().toLowerCase() === 'x'} />
+        <input readOnly type="checkbox" checked={props.literal.trim().toLowerCase() === 'x'} />,
+
+      Hashtag: (props) => {
+
+        const hashtag = props.literal.hashtag;
+
+        const addHashtagFilter = (event, hashtag) => {
+          event.stopPropagation();
+          event.preventDefault();
+
+          this.props.onHashtagClicked(hashtag);
+        }
+
+        return (
+          <a onClick={(event) => addHashtagFilter(event, hashtag)} title={hashtag} href="#">
+            {hashtag}
+          </a>
+        )
+      }
     };
 
     const className = classNames('thought', this.props.className, {
@@ -35,7 +54,7 @@ export default React.createClass({
               <ReactMarkdown
                 softBreak="br"
                 source={this.props.thought.text}
-                allowedTypes={ReactMarkdown.types.concat('Checkbox')}
+                allowedTypes={ReactMarkdown.types.concat(['Checkbox', 'Hashtag'])}
                 renderers={customRenderers}
                 walker={walker} />
             )

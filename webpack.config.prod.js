@@ -42,6 +42,10 @@ module.exports = {
       loader: ExtractTextPlugin.extract('style-loader', 'css-loader', {
         publicPath: './'
       })
+    },
+    {
+      test: /\.(ttf|jpg|png|svg|otf|eot|woff|woff2)/,
+      loader: 'url?limit=100000'
     }]
   }
 };

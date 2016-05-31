@@ -7,21 +7,24 @@ import {
   saveThoughts
 } from './utils/storage';
 
-import Thought from './components/thought';
+import {
+  parseTodos,
+  parseHashtags,
+  createThought,
+  getUnfinishedTodos
+} from './utils/thought';
 
-function createThought(text) {
-  return {
-    text,
-    createdAt: new Date()
-  }
-}
+import Thought from './components/thought';
+import Hashtag from './components/hashtag';
+import Notification from './components/notification';
 
 export default React.createClass({
   getInitialState() {
     return {
       thoughts: getThoughts(),
       editableThought: null,
-      currentText: ''
+      currentText: '',
+      hashtagFilters: []
     }
   },
   componentDidMount() {
@@ -82,12 +85,32 @@ export default React.createClass({
 
     saveThoughts(this.state.thoughts);
   },
-  updateThought(thought, newValue) {
+  addFilter(hashtag) {
+    const filterExists = this.state.hashtagFilters.indexOf(hashtag) > -1;
+
+    if(filterExists) {
+      return;
+    }
+
+    this.setState({
+      hashtagFilters: this.state.hashtagFilters.concat(hashtag)
+    });
+  },
+  resetFilters() {
+    this.setState({
+      hashtagFilters: []
+    });
+  },
+  updateThought(thought, text) {
     const updatedThoughts = this.state.thoughts.map((thoug) => {
       if(thoug !== thought) {
         return thoug;
       }
-      thoug.text = newValue;
+
+      thoug.text = text;
+      thoug.todos = parseTodos(text);
+      thoug.hashtags = parseHashtags(text);
+
       return thoug;
     });
 
@@ -98,22 +121,50 @@ export default React.createClass({
   },
   render() {
     const thoughts = this.state.thoughts;
-    const visibleThoughts = thoughts;
+    const hashtagFilters = this.state.hashtagFilters;
+
+    const unfinishedTodos = getUnfinishedTodos(thoughts);
+
+    const filteredThoughts = hashtagFilters.length === 0 ?
+      thoughts :
+      thoughts.filter((thought) => {
+        return hashtagFilters.some((hashtag) =>
+          thought.hashtags.indexOf(hashtag) > -1
+        );
+      });
 
     return (
       <div className="thoughts-container">
+
+        { /* Filters bar */
+          hashtagFilters.length > 0 && (
+            <div className="filters">
+              <span onClick={this.resetFilters} className="filters__close"></span>
+              {
+                hashtagFilters.map((hashtag, i) => (
+                  <Hashtag key={i}>{hashtag}</Hashtag>
+                ))
+              }
+            </div>
+          )
+        }
+        {
+          unfinishedTodos.length > 0 && (
+            <Notification onClick={() => this.addFilter('unfinished-todo')} />
+          )
+        }
         <div ref="thoughts" className="thoughts">
           {
-            visibleThoughts.map((thought, i) => {
-
+            filteredThoughts.map((thought, i) => {
               return (
                 <Thought
                   key={i}
                   onClick={() => this.setEditable(thought)}
                   onChange={(newValue) => this.updateThought(thought, newValue)}
                   onSubmit={() => this.stopEditing(thought)}
+                  onHashtagClicked={this.addFilter}
                   editable={this.state.editableThought === thought}
-                  ref={i === visibleThoughts.length - 1 ? 'newestThought' : `thought${i}`}
+                  ref={i === thoughts.length - 1 ? 'newestThought' : `thought${i}`}
                   thought={thought} />
 
               )
