@@ -12,11 +12,17 @@ function isTextNode(node) {
 }
 
 function isCheckboxNode(node) {
+  // Accepts [], [ ] and [x]
+
   return isTextNode(node) &&
     isTextNode(node.next) &&
-    isTextNode(node.next.next) &&
-    node.literal === '[' &&
-    node.next.next.literal === ']';
+    node.literal === '[' && // Has to start with [
+    ( // Has to be followed with wither
+      // node that is ]
+      node.next.literal === ']' ||
+      // or a random node and a node following that with ]
+      (isTextNode(node.next.next) && node.next.next.literal === ']')
+    );
 }
 
 function isHashtagNode(node) {
@@ -90,7 +96,10 @@ function createCheckboxes({entering, node}) {
   node.parent.appendChild(checkboxNode);
   node.insertBefore(checkboxNode);
 
-  node.next.next.unlink();
+  if(node.next.next && node.next.next.literal === ']') {
+    node.next.next.unlink();
+  }
+
   node.next.literal = ''; // TODO no idea why I cant just unlink this
   // node.next.unlink();
   node.unlink();
