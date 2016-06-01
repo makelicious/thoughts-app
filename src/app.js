@@ -141,7 +141,7 @@ export default React.createClass({
     const filteredThoughts = hashtagFilters.length === 0 ?
       thoughts :
       thoughts.filter((thought) => {
-        return hashtagFilters.some((hashtag) =>
+        return hashtagFilters.every((hashtag) =>
           thought.hashtags.indexOf(hashtag) > -1
         );
       });
