@@ -77,7 +77,14 @@ export default React.createClass({
     saveThoughts(updatedThoughts);
   },
   setEditable(thought) {
-    this.setState({ editableThought: thought }, () => {
+    // Something is already being edited
+    if(this.state.editableThought) {
+      this.stopEditing(this.state.editableThought);
+    }
+
+    this.setState({
+      editableThought: thought
+    }, () => {
       this.refs['thought-' + thought.id].focus();
     });
   },
