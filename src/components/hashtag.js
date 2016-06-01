@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Hashtag(props) {
   return (
-    <span className="hashtag">
+    <span onClick={props.onClick} className="hashtag">
       {props.children}
     </span>
   );

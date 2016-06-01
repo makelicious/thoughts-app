@@ -112,6 +112,11 @@ export default React.createClass({
       hashtagFilters: this.state.hashtagFilters.concat(hashtag)
     });
   },
+  removeFromFilter(hashtag) {
+    this.setState({
+      hashtagFilters: this.state.hashtagFilters.filter((hash) => hash !== hashtag)
+    });
+  },
   resetFilters() {
     this.setState({
       hashtagFilters: []
@@ -154,7 +159,7 @@ export default React.createClass({
               <span onClick={this.resetFilters} className="filters__close"></span>
               {
                 hashtagFilters.map((hashtag, i) => (
-                  <Hashtag key={i}>{hashtag}</Hashtag>
+                  <Hashtag onClick={() => this.removeFromFilter(hashtag)} key={i}>{hashtag}</Hashtag>
                 ))
               }
             </div>

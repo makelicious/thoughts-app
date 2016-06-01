@@ -135,6 +135,7 @@ body {
   border-radius: 3px;
   color: #fff;
   margin-right: 3px;
+  cursor: pointer;
 }
 
 .hashtag:last-child {
