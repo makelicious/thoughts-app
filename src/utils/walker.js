@@ -11,6 +11,21 @@ function isTextNode(node) {
   return node && node.type === 'Text';
 }
 
+function searchFromAst(node, fn) {
+
+  const walker = node.walker();
+  const result = [];
+
+  let event;
+
+  while ((event = walker.next())) {
+    if(fn(event.node)) {
+      result.push(event.node);
+    }
+  }
+  return result;
+}
+
 function isCheckboxNode(node) {
   // Accepts [], [ ] and [x]
 
@@ -95,15 +110,20 @@ function createCheckboxes({entering, node}) {
 
   // Calculate the index of this checkbox inside of one thought
   // it's used for selecting right todo to mark as done / undone on click
-  let prevNode = node.prev;
-  let hashtagIndex = 0;
-
-  while(prevNode) {
-    if(prevNode.type === 'Checkbox') {
-      hashtagIndex++;
+  let rootNode = node.parent;
+  while(rootNode) {
+    if(rootNode.parent) {
+      rootNode = rootNode.parent;
     }
-    prevNode = prevNode.prev;
+    break;
   }
+
+  // No idea why this returns just the previous checkboxes, but that'll work for now
+  const allCheckboxNodes = searchFromAst(rootNode, (node) =>
+    node.type === 'Checkbox'
+  );
+
+  const hashtagIndex = allCheckboxNodes.length;
 
   const checkboxNode = new Node('Checkbox');
   checkboxNode.literal = {
