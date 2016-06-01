@@ -1,3 +1,5 @@
+export const HASHTAG_REGEXP = /#[a-z0-9]+/g;
+
 export function createThought(text) {
   return {
     text,
@@ -23,7 +25,7 @@ export function parseTodos(text) {
 }
 
 export function parseHashtags(text) {
-  const normalHashtags = text.match(/\#[a-z0-9]+/ig) || [];
+  const normalHashtags = text.match(HASHTAG_REGEXP) || [];
 
   const unfinishedTodos = parseTodos(text).filter((todo) => !todo.finished);
 

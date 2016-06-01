@@ -5,7 +5,7 @@
 
 import { Node } from 'commonmark';
 
-const HASHTAG = /#[a-z]+/g;
+import { HASHTAG_REGEXP } from './thought';
 
 function isTextNode(node) {
   return node && node.type === 'Text';
@@ -26,7 +26,7 @@ function isCheckboxNode(node) {
 }
 
 function isHashtagNode(node) {
-  return isTextNode(node) && node.literal.match(HASHTAG);
+  return isTextNode(node) && node.literal.match(HASHTAG_REGEXP);
 }
 
 function createHashtagNode(hashtag) {
@@ -49,10 +49,10 @@ function createHashtags({entering, node}) {
     return;
   }
 
-  const hashtags = node.literal.match(HASHTAG);
-  const other = node.literal.split(HASHTAG);
+  const hashtags = node.literal.match(HASHTAG_REGEXP);
+  const other = node.literal.split(HASHTAG_REGEXP);
 
-  node.literal = node.literal.replace(HASHTAG, '');
+  node.literal = node.literal.replace(HASHTAG_REGEXP, '');
 
   let prevNode = null;
 
