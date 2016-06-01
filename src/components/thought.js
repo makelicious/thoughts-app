@@ -7,6 +7,10 @@ import ReactMarkdown from 'react-markdown';
 import walker from '../utils/walker';
 import TextInput from './text-input';
 
+import {
+  isBackspace
+} from '../utils/keys';
+
 
 export default React.createClass({
   focus() {
@@ -18,7 +22,12 @@ export default React.createClass({
 
     // Set cursor to the end of text
     $el.setSelectionRange(length, length);
-
+  },
+  checkSpecialKeys(event) {
+    if(isBackspace(event.keyCode) && this.props.thought.text === '') {
+      event.preventDefault();
+      this.props.onDelete();
+    }
   },
   render() {
     const customRenderers = {
@@ -56,6 +65,7 @@ export default React.createClass({
               <TextInput
                 ref={'input'}
                 onChange={this.props.onChange}
+                onKeyDown={this.checkSpecialKeys}
                 value={this.props.thought.text}
                 onSubmit={this.props.onSubmit} />
             ) : (

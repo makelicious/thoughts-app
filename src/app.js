@@ -14,6 +14,11 @@ import {
   getUnfinishedTodos
 } from './utils/thought';
 
+import {
+  isUp,
+  isThoughtCreatingKeypress
+} from './utils/keys';
+
 import Thought from './components/thought';
 import Hashtag from './components/hashtag';
 import Notification from './components/notification';
@@ -28,29 +33,34 @@ export default React.createClass({
     }
   },
   componentDidMount() {
-    document.addEventListener('keydown', this.createAutomatically);
+    document.addEventListener('keydown', this.checkForSpecialKey);
   },
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.createAutomatically);
+    document.removeEventListener('keydown', this.checkForSpecialKey);
   },
-  createAutomatically(event) {
-    if(this.state.editableThought || event.metaKey) {
+  checkForSpecialKey(event) {
+    const thoughts = this.state.thoughts;
+
+    // Edit the most recent thought
+    if(!this.state.editableThought && isUp(event.keyCode) && thoughts.length > 0) {
+      this.setEditable(thoughts[thoughts.length - 1]);
       return;
     }
-    const newThought = this.createThought('', false);
-    this.setEditable(newThought);
+
+    // Create thought
+    if(!this.state.editableThought && isThoughtCreatingKeypress(event)) {
+      const newThought = this.createThought('');
+      this.setEditable(newThought);
+      return;
+    }
   },
-  createThought(text, save = true) {
+  createThought(text) {
     const newThought = createThought(text);
     const updatedThoughts = this.state.thoughts.concat(newThought);
 
     this.setState({
       thoughts: updatedThoughts
     });
-
-    if(save) {
-      saveThoughts(updatedThoughts);
-    }
 
     return newThought;
   },
@@ -60,7 +70,8 @@ export default React.createClass({
     );
 
     this.setState({
-      thoughts: updatedThoughts
+      thoughts: updatedThoughts,
+      editableThought: null
     });
 
     saveThoughts(updatedThoughts);
@@ -157,6 +168,7 @@ export default React.createClass({
                   onClick={() => this.setEditable(thought)}
                   onChange={(newValue) => this.updateThought(thought, newValue)}
                   onSubmit={() => this.stopEditing(thought)}
+                  onDelete={() => this.deleteThought(thought)}
                   onHashtagClicked={this.addFilter}
                   editable={this.state.editableThought === thought}
                   ref={`thought-${thought.id}`}

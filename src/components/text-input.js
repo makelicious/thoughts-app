@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import Textarea from 'react-textarea-autosize';
 
+import {
+  isEnter
+} from '../utils/keys';
+
 export default React.createClass({
   checkForSubmit(event) {
-    if(event.keyCode === 13 && !event.shiftKey) {
+    this.props.onKeyDown(event);
+    if(isEnter(event.keyCode) && !event.shiftKey) {
       event.preventDefault();
       this.props.onSubmit();
     }
