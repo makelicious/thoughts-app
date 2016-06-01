@@ -43,12 +43,15 @@ export default React.createClass({
 
     // Edit the most recent thought
     if(!this.state.editableThought && isUp(event.keyCode) && thoughts.length > 0) {
+      this.resetFilters();
       this.setEditable(thoughts[thoughts.length - 1]);
       return;
     }
 
     // Create thought
     if(!this.state.editableThought && isThoughtCreatingKeypress(event)) {
+      this.resetFilters();
+
       const newThought = this.createThought('');
       this.setEditable(newThought);
       return;
