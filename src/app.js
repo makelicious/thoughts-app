@@ -175,6 +175,7 @@ export default React.createClass({
                   onClick={() => this.setEditable(thought)}
                   onChange={(newValue) => this.updateThought(thought, newValue)}
                   onSubmit={() => this.stopEditing(thought)}
+                  onStopEditing={() => this.stopEditing(thought)}
                   onDelete={() => this.deleteThought(thought)}
                   onHashtagClicked={this.addFilter}
                   editable={this.state.editableThought === thought}

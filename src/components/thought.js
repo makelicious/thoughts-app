@@ -8,9 +8,9 @@ import walker from '../utils/walker';
 import TextInput from './text-input';
 
 import {
-  isBackspace
+  isBackspace,
+  isEsc
 } from '../utils/keys';
-
 
 export default React.createClass({
   focus() {
@@ -27,6 +27,10 @@ export default React.createClass({
     if(isBackspace(event.keyCode) && this.props.thought.text === '') {
       event.preventDefault();
       this.props.onDelete();
+    }
+
+    if(isEsc(event.keyCode)) {
+      this.props.onStopEditing();
     }
   },
   render() {
