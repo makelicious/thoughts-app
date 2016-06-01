@@ -92,8 +92,24 @@ function createCheckboxes({entering, node}) {
   if(!isCheckboxNode(node)) {
     return;
   }
+
+  // Calculate the index of this checkbox inside of one thought
+  // it's used for selecting right todo to mark as done / undone on click
+  let prevNode = node.prev;
+  let hashtagIndex = 0;
+
+  while(prevNode) {
+    if(prevNode.type === 'Checkbox') {
+      hashtagIndex++;
+    }
+    prevNode = prevNode.prev;
+  }
+
   const checkboxNode = new Node('Checkbox');
-  checkboxNode.literal = node.next.literal;
+  checkboxNode.literal = {
+    checked: node.next.literal.trim().toLowerCase() === 'x',
+    index: hashtagIndex
+  };
 
   node.parent.appendChild(checkboxNode);
   node.insertBefore(checkboxNode);

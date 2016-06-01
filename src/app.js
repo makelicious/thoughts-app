@@ -83,7 +83,7 @@ export default React.createClass({
     }
 
     this.setState({
-      editableThought: thought
+      editableThought: thought.id
     }, () => {
       this.refs['thought-' + thought.id].focus();
     });
@@ -114,23 +114,19 @@ export default React.createClass({
       hashtagFilters: []
     });
   },
-  updateThought(thought, text) {
+  updateThought(thought, newThought) {
     const updatedThoughts = this.state.thoughts.map((thoug) => {
       if(thoug !== thought) {
         return thoug;
       }
-
-      thoug.text = text;
-      thoug.todos = parseTodos(text);
-      thoug.hashtags = parseHashtags(text);
-
-      return thoug;
+      return newThought;
     });
 
     this.setState({
       thoughts: updatedThoughts
     });
 
+    saveThoughts(updatedThoughts);
   },
   render() {
     const thoughts = this.state.thoughts;
@@ -147,7 +143,7 @@ export default React.createClass({
       });
 
     return (
-      <div className="thoughts-container">
+      <div className="thoughts-container" onClick={this.stopEditing}>
 
         { /* Filters bar */
           hashtagFilters.length > 0 && (
@@ -172,13 +168,16 @@ export default React.createClass({
               return (
                 <Thought
                   key={i}
-                  onClick={() => this.setEditable(thought)}
-                  onChange={(newValue) => this.updateThought(thought, newValue)}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    this.setEditable(thought);
+                  }}
+                  onChange={(newThought) => this.updateThought(thought, newThought)}
                   onSubmit={() => this.stopEditing(thought)}
                   onStopEditing={() => this.stopEditing(thought)}
                   onDelete={() => this.deleteThought(thought)}
                   onHashtagClicked={this.addFilter}
-                  editable={this.state.editableThought === thought}
+                  editable={this.state.editableThought === thought.id}
                   ref={`thought-${thought.id}`}
                   thought={thought} />
 

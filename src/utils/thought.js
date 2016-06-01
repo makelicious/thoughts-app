@@ -1,4 +1,5 @@
 export const HASHTAG_REGEXP = /#[a-z0-9]+/g;
+export const CHECKBOX_REGEXP = /\[[x\s]?\]/ig;
 
 export function createThought(text) {
   return {
@@ -11,7 +12,7 @@ export function createThought(text) {
 }
 
 export function parseTodos(text) {
-  const matches = text.match(/\[[x\s]?\]/ig);
+  const matches = text.match(CHECKBOX_REGEXP);
 
   if(matches === null) {
     return [];
