@@ -29,7 +29,6 @@ export default React.createClass({
   },
   componentDidMount() {
     document.addEventListener('keydown', this.createAutomatically);
-    this.scrollToBottom();
   },
   componentWillUnmount() {
     document.removeEventListener('keydown', this.createAutomatically);
@@ -40,10 +39,6 @@ export default React.createClass({
     }
     const newThought = this.createThought('', false);
     this.setEditable(newThought);
-  },
-  scrollToBottom() {
-    const thoughtsContainerEl = findDOMNode(this.refs.thoughts);
-    thoughtsContainerEl.scrollTop = thoughtsContainerEl.scrollHeight;
   },
   createThought(text, save = true) {
     const newThought = createThought(text);
@@ -57,7 +52,6 @@ export default React.createClass({
       saveThoughts(updatedThoughts);
     }
 
-    this.scrollToBottom();
     return newThought;
   },
   deleteThought(thought) {
@@ -73,10 +67,8 @@ export default React.createClass({
   },
   setEditable(thought) {
     this.setState({ editableThought: thought }, () => {
-
       this.refs['thought-' + thought.id].focus();
     });
-
   },
   stopEditing(thought) {
     this.setState({ editableThought: null });
