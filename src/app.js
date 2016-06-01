@@ -5,23 +5,23 @@ import classNames from 'classnames';
 import {
   getThoughts,
   saveThoughts
-} from './utils/storage';
+} from 'utils/storage';
 
 import {
   parseTodos,
   parseHashtags,
   createThought,
   getUnfinishedTodos
-} from './utils/thought';
+} from 'utils/thought';
 
 import {
   isUp,
   isThoughtCreatingKeypress
-} from './utils/keys';
+} from 'utils/keys';
 
-import Thought from './components/thought';
-import Hashtag from './components/hashtag';
-import Notification from './components/notification';
+import Thought from 'components/thought';
+import Hashtag from 'components/hashtag';
+import Notification from 'components/notification';
 
 export default React.createClass({
   getInitialState() {

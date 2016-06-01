@@ -27,6 +27,9 @@ module.exports = {
       }
     })
   ],
+  resolve: {
+    modulesDirectories: ['./src', './node_modules']
+  },
   module: {
     loaders: [{
       test: /\.js$/,

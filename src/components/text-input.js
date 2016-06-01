@@ -3,7 +3,7 @@ import Textarea from 'react-textarea-autosize';
 
 import {
   isEnter
-} from '../utils/keys';
+} from 'utils/keys';
 
 export default React.createClass({
   checkForSubmit(event) {

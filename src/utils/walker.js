@@ -5,7 +5,7 @@
 
 import { Node } from 'commonmark';
 
-import { HASHTAG_REGEXP } from './thought';
+import { HASHTAG_REGEXP } from 'utils/thought';
 
 function isTextNode(node) {
   return node && node.type === 'Text';

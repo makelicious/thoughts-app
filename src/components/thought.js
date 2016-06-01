@@ -1,22 +1,21 @@
 import React from 'react';
-
 import { findDOMNode } from 'react-dom';
 import classNames from 'classnames';
-
 import ReactMarkdown from 'react-markdown';
-import walker from '../utils/walker';
-import TextInput from './text-input';
+
+import walker from 'utils/walker';
+import TextInput from 'components/text-input';
 
 import {
   isBackspace,
   isEsc
-} from '../utils/keys';
+} from 'utils/keys';
 
 import {
   CHECKBOX_REGEXP,
   parseHashtags,
   parseTodos
-} from '../utils/thought';
+} from 'utils/thought';
 
 function replaceNth(text, index, pattern, replacer) {
   let i = 0;
