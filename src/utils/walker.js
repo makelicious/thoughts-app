@@ -114,6 +114,7 @@ function createCheckboxes({entering, node}) {
   while(rootNode) {
     if(rootNode.parent) {
       rootNode = rootNode.parent;
+      continue;
     }
     break;
   }
