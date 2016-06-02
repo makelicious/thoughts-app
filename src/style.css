@@ -109,14 +109,20 @@ body {
  * Filters
  */
 
-.filters {
+.filter-bar {
   position: fixed;
   top: 0;
   left: 0;
   padding: 0.5em;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 
-.filters__close {
+.filter-bar--visible {
+  opacity: 1;
+}
+
+.filter-bar__close {
   width: 1em;
   height: 1em;
   background: rgba(255, 255, 255, 0.8);
@@ -128,7 +134,7 @@ body {
   cursor: pointer;
   border: 0;
 }
-.filters__close:after {
+.filter-bar__close:after {
   content: '✖';
   color: #2041A0;
   text-align: center;
@@ -139,6 +145,14 @@ body {
   margin-top: -0.7em;
   width: 100%;
 }
+
+.filter-bar__hashtag {
+  vertical-align: middle;
+}
+
+/*
+ * Hashtag
+ */
 
 .hashtag {
   background: rgba(255, 255, 255, 0.4);
@@ -168,6 +182,7 @@ body {
 .notification img {
   width: 64px;
 }
+
 .notification:after {
   width: 1em;
   height: 1em;

@@ -1,5 +1,4 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
 import classNames from 'classnames';
 import ReactMarkdown from 'react-markdown';
 
@@ -7,50 +6,16 @@ import walker from 'utils/walker';
 import TextInput from 'components/text-input';
 
 import {
-  isBackspace,
-  isEsc
-} from 'utils/keys';
-
-import {
   CHECKBOX_REGEXP,
   parseHashtags,
   parseTodos
 } from 'utils/thought';
 
-function replaceNth(text, index, pattern, replacer) {
-  let i = 0;
-
-  return text.replace(pattern, (match) => {
-    if(i === index) {
-      i++;
-      return replacer;
-    }
-
-    i++;
-    return match;
-  });
-}
+import { replaceNth } from 'utils/text';
 
 export default React.createClass({
   focus() {
-    const $el = findDOMNode(this.refs.input);
-    const length = this.props.thought.text.length;
-
-    // Focus textarea
-    $el.focus();
-
-    // Set cursor to the end of text
-    $el.setSelectionRange(length, length);
-  },
-  checkSpecialKeys(event) {
-    if(isBackspace(event.keyCode) && this.props.thought.text === '') {
-      event.preventDefault();
-      this.props.onDelete();
-    }
-
-    if(isEsc(event.keyCode)) {
-      this.props.onStopEditing();
-    }
+    this.refs.input.focus();
   },
   updateText(newText) {
     this.props.onChange({
@@ -71,6 +36,11 @@ export default React.createClass({
     this.updateText(newText);
   },
   render() {
+
+    /*
+     * Renderers for our custom markdown components
+     */
+
     const customRenderers = {
       Checkbox: (props) => {
 
@@ -121,7 +91,8 @@ export default React.createClass({
               <TextInput
                 ref={'input'}
                 onChange={this.updateText}
-                onKeyDown={this.checkSpecialKeys}
+                onCancel={this.props.onCancel}
+                onDelete={this.props.onDelete}
                 value={this.props.thought.text}
                 onSubmit={this.props.onSubmit} />
             ) : (

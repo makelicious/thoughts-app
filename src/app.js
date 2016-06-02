@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { findDOMNode } from 'react-dom';
 import classNames from 'classnames';
+import { find } from 'lodash';
 
 import {
   getThoughts,
@@ -22,12 +23,13 @@ import {
 import Thought from 'components/thought';
 import Hashtag from 'components/hashtag';
 import Notification from 'components/notification';
+import FilterBar from 'components/filter-bar';
 
 export default React.createClass({
   getInitialState() {
     return {
       thoughts: getThoughts(),
-      editableThought: null,
+      editableThoughtId: null,
       currentText: '',
       hashtagFilters: []
     }
@@ -42,14 +44,14 @@ export default React.createClass({
     const thoughts = this.state.thoughts;
 
     // Edit the most recent thought
-    if(!this.state.editableThought && isUp(event.keyCode) && thoughts.length > 0) {
+    if(!this.state.editableThoughtId && isUp(event.keyCode) && thoughts.length > 0) {
       this.resetFilters();
       this.setEditable(thoughts[thoughts.length - 1]);
       return;
     }
 
     // Create thought
-    if(!this.state.editableThought && isThoughtCreatingKeypress(event)) {
+    if(!this.state.editableThoughtId && isThoughtCreatingKeypress(event)) {
       this.resetFilters();
 
       const newThought = this.createThought('');
@@ -74,25 +76,28 @@ export default React.createClass({
 
     this.setState({
       thoughts: updatedThoughts,
-      editableThought: null
+      editableThoughtId: null
     });
 
     saveThoughts(updatedThoughts);
   },
   setEditable(thought) {
     // Something is already being edited
-    if(this.state.editableThought) {
-      this.stopEditing(this.state.editableThought);
+    if(this.state.editableThoughtId) {
+      const editableThoughtId =
+        find(this.state.thoughts, {id: this.state.editableThoughtId});
+
+      this.stopEditing(editableThoughtId);
     }
 
     this.setState({
-      editableThought: thought.id
+      editableThoughtId: thought.id
     }, () => {
       this.refs['thought-' + thought.id].focus();
     });
   },
   stopEditing(thought) {
-    this.setState({ editableThought: null });
+    this.setState({ editableThoughtId: null });
 
     if(thought.text === '') {
       this.deleteThought(thought);
@@ -153,18 +158,11 @@ export default React.createClass({
     return (
       <div className="thoughts-container" onClick={this.stopEditing}>
 
-        { /* Filters bar */
-          hashtagFilters.length > 0 && (
-            <div className="filters">
-              <span onClick={this.resetFilters} className="filters__close"></span>
-              {
-                hashtagFilters.map((hashtag, i) => (
-                  <Hashtag onClick={() => this.removeFromFilter(hashtag)} key={i}>{hashtag}</Hashtag>
-                ))
-              }
-            </div>
-          )
-        }
+        <FilterBar
+          hashtags={hashtagFilters}
+          onRemoveTag={this.removeFromFilter}
+          onReset={this.resetFilters} />
+
         {
           unfinishedTodos.length > 0 && (
             <Notification onClick={() => this.addFilter('unfinished-todo')} />
@@ -176,17 +174,18 @@ export default React.createClass({
               return (
                 <Thought
                   key={i}
+                  ref={`thought-${thought.id}`}
                   onClick={(event) => {
                     event.stopPropagation();
                     this.setEditable(thought);
                   }}
-                  onChange={(newThought) => this.updateThought(thought, newThought)}
+                  onChange={(newThought) =>
+                    this.updateThought(thought, newThought)}
                   onSubmit={() => this.stopEditing(thought)}
-                  onStopEditing={() => this.stopEditing(thought)}
+                  onCancel={() => this.stopEditing(thought)}
                   onDelete={() => this.deleteThought(thought)}
                   onHashtagClicked={this.addFilter}
-                  editable={this.state.editableThought === thought.id}
-                  ref={`thought-${thought.id}`}
+                  editable={this.state.editableThoughtId === thought.id}
                   thought={thought} />
 
               )
