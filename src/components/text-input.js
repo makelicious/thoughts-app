@@ -5,7 +5,7 @@ import { findDOMNode } from 'react-dom';
 import {
   isEnter,
   isBackspace,
-  isEsc
+  isEsc,
 } from 'utils/keys';
 
 export default React.createClass({

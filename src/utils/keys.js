@@ -2,10 +2,15 @@ const ENTER = 13;
 const BACKSPACE = 8;
 const UP = 38;
 const ESC = 27;
+const CTRL = 17;
+const CMD = 91;
+const V = 86;
 
 export function isThoughtCreatingKeypress(event) {
   const disallowedKeys = [ENTER, BACKSPACE, ESC];
-  return !event.metaKey && disallowedKeys.indexOf(event.keyCode) === -1;
+  const isPaste = (event.control || event.metaKey) && (event.keyCode === 86);
+
+  return isPaste || (!event.metaKey && !event.control) && disallowedKeys.indexOf(event.keyCode) === -1;
 }
 
 export function isBackspace(keyCode) {
@@ -21,4 +26,16 @@ export function isUp(keyCode) {
 
 export function isEsc(keyCode) {
   return keyCode === ESC;
+}
+
+export function isV(keyCode) {
+  return keyCode === V;
+}
+
+export function isCTRL(keyCode) {
+  return keyCode === CTRL;
+}
+
+export function isCMD(keyCode) {
+  return keyCode === CMD;
 }
