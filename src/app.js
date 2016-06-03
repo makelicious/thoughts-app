@@ -84,10 +84,9 @@ export default React.createClass({
   setEditable(thought) {
     // Something is already being edited
     if(this.state.editableThoughtId) {
-      const editableThoughtId =
+      const editableThought =
         find(this.state.thoughts, {id: this.state.editableThoughtId});
-
-      this.stopEditing(editableThoughtId);
+      this.stopEditing(editableThought);
     }
 
     this.setState({
