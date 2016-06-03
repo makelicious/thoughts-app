@@ -64,10 +64,25 @@ function createHashtags({entering, node}) {
     return;
   }
 
-  const hashtags = node.literal.match(HASHTAG_REGEXP);
-  const other = node.literal.split(HASHTAG_REGEXP);
+  let literal = node.literal;
 
-  node.literal = node.literal.replace(HASHTAG_REGEXP, '');
+  if(node.next && node.next.literal === '_') {
+
+    literal += '_';
+
+    if(node.next.next && node.next.next.type === 'Text') {
+      literal += node.next.next.literal;
+      node.next.next.unlink();
+    }
+
+    node.next.unlink();
+  }
+
+  node.literal = literal.replace(HASHTAG_REGEXP, '');
+
+  const hashtags = literal.match(HASHTAG_REGEXP);
+  const other = literal.split(HASHTAG_REGEXP);
+
 
   let prevNode = null;
 
