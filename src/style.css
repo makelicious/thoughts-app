@@ -50,7 +50,7 @@ body {
   max-width: 300px;
   border-radius: 3px;
   transition: all 0.2s;
-
+  word-break: break-word;
   font-family: "freight-text-pro", Georgia;
   color: rgba(0, 0, 0, 0.8);
   font-weight: 500;
