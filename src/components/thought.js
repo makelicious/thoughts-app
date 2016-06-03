@@ -11,7 +11,7 @@ import {
   parseTodos
 } from 'utils/thought';
 
-import { replaceNth } from 'utils/text';
+import { replaceNth, breakText } from 'utils/text';
 
 export default React.createClass({
   focus() {
@@ -35,6 +35,27 @@ export default React.createClass({
 
     this.updateText(newText);
   },
+
+  expandThought() {
+    this.setState({
+      expanded: true
+    });
+  },
+  minimizeThought() {
+    console.log('foo');
+    this.setState({
+      expanded: false
+    });
+  },
+
+  getInitialState() {
+    return {
+      expanded: false
+    };
+  },
+
+
+
   render() {
 
     /*
@@ -82,10 +103,10 @@ export default React.createClass({
     const className = classNames('thought', this.props.className, {
       'thought--editable': this.props.editable
     });
-
+    console.log(this.state);
     return (
       <div className="thought-container">
-        <div onClick={this.props.onClick} className={className}>
+        <div onClick={this.props.onClick} className={className} onMouseEnter={this.expandThought} onMouseLeave={this.minimizeThought}>
           {
             this.props.editable ? (
               <TextInput
@@ -98,7 +119,7 @@ export default React.createClass({
             ) : (
               <ReactMarkdown
                 softBreak="br"
-                source={this.props.thought.text}
+                source={this.state.expanded ? this.props.thought.text : breakText(this.props.thought.text)}
                 allowedTypes={ReactMarkdown.types.concat(['Checkbox', 'Hashtag'])}
                 renderers={customRenderers}
                 walker={walker} />

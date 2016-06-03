@@ -1,3 +1,5 @@
+import { truncate } from 'lodash';
+
 /*
  * Replaces the nth occurence of `pattern` with `replacer`
  *
@@ -16,5 +18,14 @@ export function replaceNth(text, index, pattern, replacer) {
 
     i++;
     return match;
+  });
+}
+
+export function breakText(text) {
+  return truncate(text, {
+    length: 200,
+    omission: '...',
+    separator: ' '
+
   });
 }
