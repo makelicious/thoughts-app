@@ -99,7 +99,7 @@ export default React.createClass({
   stopEditing(thought) {
     this.setState({ editableThoughtId: null });
 
-    if(thought.text === '') {
+    if(thought.text.trim() === '') {
       this.deleteThought(thought);
       return;
     }
