@@ -97,7 +97,7 @@ export default React.createClass({
     });
   },
   stopEditing(thought) {
-    this.setState({ editableThoughtId: null });
+    this.resetEditable();
 
     if(thought.text.trim() === '') {
       this.deleteThought(thought);
@@ -105,6 +105,9 @@ export default React.createClass({
     }
 
     saveThoughts(this.state.thoughts);
+  },
+  resetEditable() {
+    this.setState({ editableThoughtId: null });
   },
   addFilter(hashtag) {
     const filterExists = this.state.hashtagFilters.indexOf(hashtag) > -1;
@@ -156,7 +159,7 @@ export default React.createClass({
       });
 
     return (
-      <div className="thoughts-container" onClick={this.stopEditing}>
+      <div className="thoughts-container" onClick={this.resetEditable}>
 
         <FilterBar
           hashtags={hashtagFilters}
