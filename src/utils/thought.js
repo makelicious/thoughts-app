@@ -1,4 +1,4 @@
-export const HASHTAG_REGEXP = /#[a-z0-9]+/g;
+export const HASHTAG_REGEXP = /\#\w+/g;
 export const CHECKBOX_REGEXP = /\[[x\s]?\]/ig;
 
 export function createThought(text) {
