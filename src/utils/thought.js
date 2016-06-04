@@ -1,3 +1,5 @@
+import { uniq } from 'lodash';
+
 export const HASHTAG_REGEXP = /\#\w+/g;
 export const CHECKBOX_REGEXP = /\[[x\s]?\]/ig;
 
@@ -41,4 +43,21 @@ export function getUnfinishedTodos(thoughts) {
   return thoughts.reduce((unfinished, thought) => {
     return unfinished.concat(thought.todos.filter((todo) => !todo.finished));
   }, [])
+}
+
+export function getAssociatedHashtags(hashtags, thoughts) {
+  const isOtherHashtag = (hash) => hashtags.indexOf(hash) === -1;
+
+  const allAssociated = thoughts.reduce((associated, thought) => {
+    const includesHashtag = hashtags.every((hash) => thought.hashtags.indexOf(hash) > -1);
+
+    if(includesHashtag) {
+      const otherHashtags = thought.hashtags.filter(isOtherHashtag);
+      return associated.concat(otherHashtags);
+    }
+
+    return associated;
+  }, []);
+
+  return uniq(allAssociated);
 }
