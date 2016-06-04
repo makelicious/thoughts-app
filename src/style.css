@@ -26,6 +26,7 @@ body {
   flex-direction: column;
   justify-content: center;
   box-sizing: border-box;
+  background-size: cover;
 }
 
 .thoughts-container {
@@ -69,6 +70,7 @@ body {
   letter-spacing: -.003em;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.1);
 }
 
 .thought--editable {
