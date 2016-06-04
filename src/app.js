@@ -24,6 +24,7 @@ import Thought from 'components/thought';
 import Hashtag from 'components/hashtag';
 import Notification from 'components/notification';
 import FilterBar from 'components/filter-bar';
+import Scaler from 'components/scaler';
 
 export default React.createClass({
   getInitialState() {
@@ -91,8 +92,6 @@ export default React.createClass({
 
     this.setState({
       editableThoughtId: thought.id
-    }, () => {
-      this.refs['thought-' + thought.id].focus();
     });
   },
   stopEditing(thought) {
@@ -170,13 +169,12 @@ export default React.createClass({
             <Notification onClick={() => this.addFilter('unfinished-todo')} />
           )
         }
-        <div ref="thoughts" className="thoughts">
+        <Scaler ref="thoughts" className="thoughts">
           {
-            filteredThoughts.map((thought, i) => {
+            filteredThoughts.map((thought) => {
               return (
                 <Thought
-                  key={i}
-                  ref={`thought-${thought.id}`}
+                  key={thought.id}
                   onClick={(event) => {
                     event.stopPropagation();
                     this.setEditable(thought);
@@ -193,7 +191,7 @@ export default React.createClass({
               )
             })
           }
-        </div>
+        </Scaler>
       </div>
     );
   }
