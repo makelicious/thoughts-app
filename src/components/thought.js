@@ -42,7 +42,6 @@ export default React.createClass({
     });
   },
   minimizeThought() {
-    console.log('foo');
     this.setState({
       expanded: false
     });
@@ -103,7 +102,6 @@ export default React.createClass({
     const className = classNames('thought', this.props.className, {
       'thought--editable': this.props.editable
     });
-    console.log(this.state);
     return (
       <div className="thought-container">
         <div onClick={this.props.onClick} className={className} onMouseEnter={this.expandThought} onMouseLeave={this.minimizeThought}>
