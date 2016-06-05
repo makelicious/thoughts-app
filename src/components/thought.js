@@ -17,6 +17,11 @@ export default React.createClass({
   focus() {
     this.refs.input.focus();
   },
+  componentDidUpdate(prevProps) {
+    if(!prevProps.editable && this.props.editable) {
+      this.focus();
+    }
+  },
   updateText(newText) {
     this.props.onChange({
       ...this.props.thought,
@@ -100,11 +105,13 @@ export default React.createClass({
     };
 
     const className = classNames('thought', this.props.className, {
-      'thought--editable': this.props.editable
+      'thought--editable': this.props.editable,
+      'thought--expanded': this.state.expanded
     });
+
     return (
-      <div className="thought-container">
-        <div onClick={this.props.onClick} className={className} onMouseEnter={this.expandThought} onMouseLeave={this.minimizeThought}>
+      <div ref="container" className="thought-container">
+        <div style={this.props.style} onClick={this.props.onClick} className={className} onMouseEnter={this.expandThought} onMouseLeave={this.minimizeThought}>
           {
             this.props.editable ? (
               <TextInput
