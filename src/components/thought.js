@@ -24,6 +24,13 @@ const ThoughtContent = React.createClass({
      */
 
     const customRenderers = {
+      Link: (markdownProps) => {
+        return (
+          <a href={markdownProps.href} target="_blank">
+            {markdownProps.children}
+          </a>
+        )
+      },
       Checkbox: (markdownProps) => {
 
         const onChange = (event) => {
