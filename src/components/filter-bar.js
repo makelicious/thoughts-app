@@ -9,7 +9,7 @@ export default function FilterBar(props) {
 
   const thoughts = props.thoughts;
 
-  const associatedHashtags =
+  const associatedHashtags = props.hashtags.length === 0 ? [] :
     getAssociatedHashtags(props.hashtags, thoughts)
     // Associated is not one of the selected hashtag filters
     .filter((hashtag) =>

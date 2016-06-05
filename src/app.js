@@ -18,6 +18,7 @@ import {
 
 import {
   isUp,
+  isEsc,
   isThoughtCreatingKeypress
 } from 'utils/keys';
 
@@ -53,10 +54,10 @@ export default React.createClass({
     }
   },
   componentDidMount() {
-    document.addEventListener('keydown', this.checkForSpecialKey);
+    document.addEventListener('keydown', this.checkForSpecialKey, true);
   },
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.checkForSpecialKey);
+    document.removeEventListener('keydown', this.checkForSpecialKey, true);
   },
   checkForSpecialKey(event) {
     const thoughts = this.state.thoughts;
@@ -64,6 +65,12 @@ export default React.createClass({
     // Edit the most recent thought
     if(!this.state.editableThoughtId && isUp(event.keyCode) && thoughts.length > 0) {
       this.setEditable(thoughts[thoughts.length - 1]);
+      return;
+    }
+
+    // Reset filters with ESC
+    if(!this.state.editableThoughtId && isEsc(event.keyCode)) {
+      this.resetFilters();
       return;
     }
 

@@ -118,9 +118,6 @@ export default React.createClass({
       expanded: false
     };
   },
-
-
-
   render() {
 
     const className = classNames('thought', this.props.className, {
