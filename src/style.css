@@ -38,7 +38,7 @@ body {
 .thoughts {
   overflow: auto;
   padding: 3em 0;
-  padding-bottom: 40%;
+  padding-bottom: 40vh;
   position: relative;
   bottom: 0;
 }
