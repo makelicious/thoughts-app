@@ -12,7 +12,8 @@ import {
   parseTodos,
   parseHashtags,
   createThought,
-  getUnfinishedTodos
+  getUnfinishedTodos,
+  UNFINISHED_TODO_TAG
 } from 'utils/thought';
 
 import {
@@ -183,7 +184,7 @@ export default React.createClass({
 
         {
           unfinishedTodos.length > 0 && (
-            <Notification onClick={() => this.addFilter('unfinished-todo')} />
+            <Notification onClick={() => this.addFilter(UNFINISHED_TODO_TAG)} />
           )
         }
         <div className="thoughts-container">

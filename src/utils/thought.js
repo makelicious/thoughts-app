@@ -1,5 +1,6 @@
 export const HASHTAG_REGEXP = /\#\w+/g;
 export const CHECKBOX_REGEXP = /\[[x\s]?\]/ig;
+export const UNFINISHED_TODO_TAG = '#unfinished-todo';
 
 export function createThought(text) {
   return {
@@ -34,7 +35,7 @@ export function parseHashtags(text) {
     return normalHashtags;
   }
 
-  return normalHashtags.concat('unfinished-todo');
+  return normalHashtags.concat(UNFINISHED_TODO_TAG);
 }
 
 export function getUnfinishedTodos(thoughts) {
