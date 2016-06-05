@@ -179,6 +179,8 @@ export default React.createClass({
 
         <FilterBar
           hashtags={hashtagFilters}
+          thoughts={thoughts}
+          onAddTag={this.addFilter}
           onRemoveTag={this.removeFromFilter}
           onReset={this.resetFilters} />
 

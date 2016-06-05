@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:600,400,300);
 
 html, body, #root, .app {
   width: 100%;
@@ -169,6 +169,29 @@ body {
   vertical-align: middle;
 }
 
+.filter-bar__associated-hashtags {
+  width: 200px;
+  font-size: 13px;
+}
+
+.filter-bar__associated-hashtags__title {
+  color: #DE77BD;
+  font-size: 13px;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+}
+
+.filter-bar__associated-hashtags__hashtag {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 0.5em;
+}
+
+.filter-bar__associated-hashtags__hashtag:first-child {
+  margin-left: 0;
+}
+
 /*
  * Hashtag
  */
@@ -179,8 +202,9 @@ body {
   padding: 1px 3px;
   border-radius: 3px;
   color: #fff;
-  margin-right: 3px;
+  margin: 3px 0;
   cursor: pointer;
+  display: inline-block;
 }
 
 .hashtag:last-child {
