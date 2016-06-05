@@ -24,13 +24,13 @@ const ThoughtContent = React.createClass({
      */
 
     const customRenderers = {
-      Checkbox: (props) => {
+      Checkbox: (markdownProps) => {
 
         const onChange = (event) => {
           event.stopPropagation();
-          props.onCheckboxClick(
-            props.literal.index,
-            props.literal.checked
+          this.props.onCheckboxClick(
+            this.props.literal.index,
+            this.props.literal.checked
           )
         }
 
@@ -39,18 +39,18 @@ const ThoughtContent = React.createClass({
             onClick={onChange}
             readOnly
             type="checkbox"
-            checked={props.literal.checked} />
+            checked={markdownProps.literal.checked} />
         );
       },
 
-      Hashtag: (props) => {
-        const hashtag = props.literal.hashtag;
+      Hashtag: (markdownProps) => {
+        const hashtag = markdownProps.literal.hashtag;
 
         const addHashtagFilter = (event, hashtag) => {
           event.stopPropagation();
           event.preventDefault();
 
-          props.onHashtagClick(hashtag);
+          this.props.onHashtagClick(hashtag);
         }
 
         return (
