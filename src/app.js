@@ -156,6 +156,10 @@ export default React.createClass({
         );
       });
 
+    const ThoughtsWrapper = hashtagFilters.length === 0 ?
+      Scaler :
+      'div';
+
     return (
       <div className="app" onClick={this.resetEditable}>
 
@@ -170,7 +174,7 @@ export default React.createClass({
           )
         }
         <div className="thoughts-container">
-          <Scaler ref="thoughts" className="thoughts">
+          <ThoughtsWrapper ref="thoughts" className="thoughts">
             {
               filteredThoughts.map((thought) => {
                 return (
@@ -192,7 +196,7 @@ export default React.createClass({
                 )
               })
             }
-          </Scaler>
+          </ThoughtsWrapper>
         </div>
       </div>
     );

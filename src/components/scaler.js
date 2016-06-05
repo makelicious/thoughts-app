@@ -19,12 +19,9 @@ export default React.createClass({
 
     // Also initializes the initial calculation
     this.scrollToBottom();
-
-    window.onunload = () =>
-      this.refs['scroll-area'].scrollTop = 0;
   },
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.debouncedScale);
+    window.removeEventListener('scroll', this.debouncedScale, true);
   },
   componentDidUpdate(prevProps) {
     if(prevProps.children.length < this.props.children.length) {
@@ -45,6 +42,7 @@ export default React.createClass({
   },
   calculateTargetPosition() {
     const scrollArea = this.refs['scroll-area'];
+
     const style = window.getComputedStyle(scrollArea);
     const topPadding = parseInt(style.getPropertyValue('padding-top'), 10);
     const bottomPadding = parseInt(style.getPropertyValue('padding-bottom'), 10);
@@ -77,9 +75,6 @@ export default React.createClass({
     }
 
     return 1 - shortestDistance / window.innerHeight;
-  },
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.debouncedScale);
   },
   render() {
 
