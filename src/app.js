@@ -157,7 +157,7 @@ export default React.createClass({
       });
 
     return (
-      <div className="thoughts-container" onClick={this.resetEditable}>
+      <div className="app" onClick={this.resetEditable}>
 
         <FilterBar
           hashtags={hashtagFilters}
@@ -169,29 +169,31 @@ export default React.createClass({
             <Notification onClick={() => this.addFilter('unfinished-todo')} />
           )
         }
-        <Scaler ref="thoughts" className="thoughts">
-          {
-            filteredThoughts.map((thought) => {
-              return (
-                <Thought
-                  key={thought.id}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    this.setEditable(thought);
-                  }}
-                  onChange={(newThought) =>
-                    this.updateThought(thought, newThought)}
-                  onSubmit={() => this.stopEditing(thought)}
-                  onCancel={() => this.stopEditing(thought)}
-                  onDelete={() => this.deleteThought(thought)}
-                  onHashtagClicked={this.addFilter}
-                  editable={this.state.editableThoughtId === thought.id}
-                  thought={thought} />
+        <div className="thoughts-container">
+          <Scaler ref="thoughts" className="thoughts">
+            {
+              filteredThoughts.map((thought) => {
+                return (
+                  <Thought
+                    key={thought.id}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      this.setEditable(thought);
+                    }}
+                    onChange={(newThought) =>
+                      this.updateThought(thought, newThought)}
+                    onSubmit={() => this.stopEditing(thought)}
+                    onCancel={() => this.stopEditing(thought)}
+                    onDelete={() => this.deleteThought(thought)}
+                    onHashtagClicked={this.addFilter}
+                    editable={this.state.editableThoughtId === thought.id}
+                    thought={thought} />
 
-              )
-            })
-          }
-        </Scaler>
+                )
+              })
+            }
+          </Scaler>
+        </div>
       </div>
     );
   }

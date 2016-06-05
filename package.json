@@ -32,6 +32,7 @@
     "webpack-hot-middleware": "^2.9.1"
   },
   "dependencies": {
+    "bezier": "^0.1.0",
     "classnames": "^2.2.5",
     "commonmark": "^0.24.0",
     "commonmark-react-renderer": "^4.1.4",

@@ -1,6 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);
 
-html, body, #root, .thoughts-container {
+html, body, #root, .app {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -21,18 +21,28 @@ body {
 }
 
 
-.thoughts-container {
+.app {
   display: flex;
   flex-direction: column;
   justify-content: center;
   box-sizing: border-box;
 }
 
+.thoughts-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+}
+
 .thoughts {
   overflow: auto;
   padding: 3em 0;
-  max-height: 100%;
+  padding-bottom: 40%;
+  position: relative;
+  bottom: 0;
 }
+
 
 /*
  * Thought
@@ -71,7 +81,7 @@ body {
   );
 }
 
-.thought--expanded {
+.thought--expanded, .thought--editable {
   transform: scale(1, 1) !important;
   opacity: 1 !important;
   transition: none;

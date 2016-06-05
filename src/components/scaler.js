@@ -1,13 +1,17 @@
-import React from 'react';
-import { findDOMNode } from 'react-dom';
-import { debounce } from 'lodash';
 /*
  * This is the component that handles thought scaling by window position
  */
+import React from 'react';
+import { findDOMNode } from 'react-dom';
+import { debounce } from 'lodash';
+import bezier from 'bezier';
 
 export default React.createClass({
   getInitialState() {
-    return {};
+    return {
+      scales: {},
+      target: window.innerHeight / 2
+    };
   },
   componentDidMount() {
     this.debouncedScale = debounce(this.calculateScales, 100, {maxWait: 400});
@@ -31,70 +35,67 @@ export default React.createClass({
     this.refs['scroll-area'].scrollTop = this.refs['scroll-area'].scrollHeight;
   },
   calculateScales() {
+    const target = this.calculateTargetPosition();
     const scales = this.props.children.reduce((scales, child) => {
       scales[child.key] = this.getScale(findDOMNode(this[`elements-${child.key}`]));
       return scales;
     }, {});
 
-    this.setState(scales);
+    this.setState({scales, target});
+  },
+  calculateTargetPosition() {
+    const scrollArea = this.refs['scroll-area'];
+    const style = window.getComputedStyle(scrollArea);
+    const topPadding = parseInt(style.getPropertyValue('padding-top'), 10);
+    const bottomPadding = parseInt(style.getPropertyValue('padding-bottom'), 10);
+
+    const points = [0, 0.495, 0.50, 0.505, 1];
+
+    if(scrollArea.scrollHeight === scrollArea.clientHeight) {
+      return window.innerHeight / 2;
+    }
+
+    const scrollPercentage = scrollArea.scrollTop / (scrollArea.scrollHeight - scrollArea.clientHeight);
+    const curvedPercentage = bezier(points, scrollPercentage);
+
+    return Math.min(
+      window.innerHeight - bottomPadding,
+      Math.max(topPadding, curvedPercentage * window.innerHeight)
+    );
   },
   getScale(node) {
     const bounds = node.getBoundingClientRect();
-    const windowMiddlepoint = window.innerHeight / 2;
-    const scrollArea = this.refs['scroll-area'];
-    const scrollAreaBounds = scrollArea.getBoundingClientRect();
+
+    const shortestDistance = Math.min(
+      Math.abs(bounds.bottom - this.state.target),
+      Math.abs(bounds.top - this.state.target)
+    );
 
     // Completely outside viewport
     if(bounds.bottom < 0 || bounds.top > window.innerHeight) {
       return 0;
     }
 
-    const shouldScale = scrollArea.scrollHeight > window.innerHeight * 2;
-
-    const height = bounds.bottom - bounds.top;
-    const middlePoint = bounds.top + height / 2;
-
-    const scrollTop = scrollArea.scrollTop;
-    const scrollBottom = scrollArea.scrollTop + window.innerHeight;
-
-
-    const currentBottomScrollPercentage = scrollBottom / scrollArea.scrollHeight;
-    const currentTopScrollPercentage = 1 - scrollTop / scrollArea.scrollHeight;
-
-    const bottomThreshold = 0.9;
-    const topThreshold = 0.9;
-
-    // Position in the viewport where thought is most visible
-    let targetPosition = shouldScale ? windowMiddlepoint : scrollAreaBounds.bottom;
-
-    // Distance from target as percentage on a scale from 1 (directly at target) - 0 (far away)
-    let percentageFromTarget = Math.max(0, 1 - Math.abs(middlePoint / targetPosition - 1));
-
-    // Somewhere near window bottom
-    if(shouldScale && currentBottomScrollPercentage > bottomThreshold) {
-      const untilBottomPercentage = ((currentBottomScrollPercentage - bottomThreshold) / (1 - bottomThreshold));
-      targetPosition = windowMiddlepoint + untilBottomPercentage * windowMiddlepoint;
-      percentageFromTarget = Math.max(0, 1 - Math.abs(middlePoint / targetPosition - 1));
-    }
-
-    // Somewhere near window top
-    if(shouldScale && currentTopScrollPercentage > topThreshold) {
-      const untilTopPercentage = ((currentTopScrollPercentage - topThreshold) / (1 - topThreshold));
-      targetPosition = Math.max(1, windowMiddlepoint - untilTopPercentage * windowMiddlepoint);
-      percentageFromTarget = Math.max(0, 1 - Math.abs((targetPosition - middlePoint) / (window.innerHeight)));
-    }
-
-    const middlePointThreshold = 0.8;
-    const roundedPercentage = percentageFromTarget > middlePointThreshold ? 1 : percentageFromTarget;
-
-    return roundedPercentage;
+    return 1 - shortestDistance / window.innerHeight;
   },
   componentWillUnmount() {
     window.removeEventListener('scroll', this.debouncedScale);
   },
   render() {
+
+    // Can be rendered for debugging
+    const targetLine =
+      <div style={{
+          position: 'fixed',
+          width: '100%',
+          height: '1px',
+          background: 'red',
+          zIndex: 2,
+          top: `${this.state.target}px`
+        }} />
+
     const children = this.props.children.map((child) => {
-      const scale = this.state[child.key];
+      const scale = this.state.scales[child.key];
 
       const style = scale === undefined ? {} : {
         transform: `scale(${(0.3 + 0.7 * scale)}, ${(0.3 + 0.7 * scale)})`,
