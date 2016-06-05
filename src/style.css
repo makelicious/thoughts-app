@@ -39,6 +39,9 @@ body {
 .thoughts {
   overflow: auto;
   padding: 3em 0;
+  min-height: 100vh;
+  padding-bottom: 40vh;
+  box-sizing: border-box;
   padding-bottom: 40vh;
   position: relative;
   bottom: 0;
@@ -60,7 +63,7 @@ body {
   padding: 1em;
   max-width: 300px;
   border-radius: 3px;
-  transition: all 0.6s;
+  transition: opacity 0.6s, width 0.6s;
   word-break: break-word;
   font-family: "freight-text-pro", Georgia;
   color: rgba(0, 0, 0, 0.8);
@@ -84,7 +87,7 @@ body {
 }
 
 .thought--expanded, .thought--editable {
-  transform: scale(1, 1) !important;
+  // transform: scale(1, 1) !important;
   opacity: 1 !important;
   transition: none;
 }
