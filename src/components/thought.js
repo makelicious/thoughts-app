@@ -13,6 +13,67 @@ import {
 
 import { replaceNth, breakText } from 'utils/text';
 
+const ThoughtContent = React.createClass({
+  shouldComponentUpdate(newProps) {
+    return newProps.expanded !== this.props.expanded ||
+      newProps.thought !== this.props.thought;
+  },
+  render() {
+    /*
+     * Renderers for our custom markdown components
+     */
+
+    const customRenderers = {
+      Checkbox: (props) => {
+
+        const onChange = (event) => {
+          event.stopPropagation();
+          props.onCheckboxClick(
+            props.literal.index,
+            props.literal.checked
+          )
+        }
+
+        return (
+          <input
+            onClick={onChange}
+            readOnly
+            type="checkbox"
+            checked={props.literal.checked} />
+        );
+      },
+
+      Hashtag: (props) => {
+        const hashtag = props.literal.hashtag;
+
+        const addHashtagFilter = (event, hashtag) => {
+          event.stopPropagation();
+          event.preventDefault();
+
+          props.onHashtagClick(hashtag);
+        }
+
+        return (
+          <a onClick={(event) => addHashtagFilter(event, hashtag)} title={hashtag} href="#">
+            {hashtag}
+          </a>
+        )
+      }
+    };
+
+    return (
+      <ReactMarkdown
+        softBreak="br"
+        source={this.props.expanded ? this.props.thought.text : breakText(this.props.thought.text)}
+        allowedTypes={ReactMarkdown.types.concat(['Checkbox', 'Hashtag'])}
+        renderers={customRenderers}
+        walker={walker} />
+    )
+
+  }
+})
+
+
 export default React.createClass({
   focus() {
     this.refs.input.focus();
@@ -62,48 +123,6 @@ export default React.createClass({
 
   render() {
 
-    /*
-     * Renderers for our custom markdown components
-     */
-
-    const customRenderers = {
-      Checkbox: (props) => {
-
-        const onChange = (event) => {
-          event.stopPropagation();
-          this.updateCheckbox(
-            props.literal.index,
-            props.literal.checked
-          )
-        }
-
-        return (
-          <input
-            onClick={onChange}
-            readOnly
-            type="checkbox"
-            checked={props.literal.checked} />
-        );
-      },
-
-      Hashtag: (props) => {
-        const hashtag = props.literal.hashtag;
-
-        const addHashtagFilter = (event, hashtag) => {
-          event.stopPropagation();
-          event.preventDefault();
-
-          this.props.onHashtagClicked(hashtag);
-        }
-
-        return (
-          <a onClick={(event) => addHashtagFilter(event, hashtag)} title={hashtag} href="#">
-            {hashtag}
-          </a>
-        )
-      }
-    };
-
     const className = classNames('thought', this.props.className, {
       'thought--editable': this.props.editable,
       'thought--expanded': this.state.expanded
@@ -122,12 +141,11 @@ export default React.createClass({
                 value={this.props.thought.text}
                 onSubmit={this.props.onSubmit} />
             ) : (
-              <ReactMarkdown
-                softBreak="br"
-                source={this.state.expanded ? this.props.thought.text : breakText(this.props.thought.text)}
-                allowedTypes={ReactMarkdown.types.concat(['Checkbox', 'Hashtag'])}
-                renderers={customRenderers}
-                walker={walker} />
+              <ThoughtContent
+                onHashtagClick={this.props.onHashtagClick}
+                onCheckboxClick={this.updateCheckbox}
+                expanded={this.state.expanded}
+                thought={this.props.thought} />
             )
           }
         </div>
