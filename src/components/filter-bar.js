@@ -26,34 +26,38 @@ export default function FilterBar(props) {
         <span onClick={props.onReset} className="filter-bar__close"></span>
         {
           props.hashtags.map((hashtag, i) => (
-            <span>
-            <Hashtag className="filter-bar__hashtag" onClick={() => props.onRemoveTag(hashtag)} key={i}>
-              {hashtag}
-            </Hashtag>&nbsp;
+            <span key={i}>
+              <Hashtag className="filter-bar__hashtag" onClick={() => props.onRemoveTag(hashtag)}>
+                {hashtag}
+              </Hashtag>&nbsp;
             </span>
           ))
         }
       </div>
-      <div className="filter-bar__associated-hashtags">
-        <div className="filter-bar__associated-hashtags__title">
-          Related categories
-        </div>
-        <div>
-          {
-            associatedHashtags.map((hashtag, i) => {
-              return (
-                <span key={i}>
-                  <Hashtag
-                    className="filter-bar__associated-hashtags__hashtag"
-                    onClick={() => props.onAddTag(hashtag)}>
-                    {hashtag}
-                  </Hashtag>&nbsp;
-                </span>
-              )
-            })
-          }
-        </div>
-      </div>
+      {
+        associatedHashtags.length > 0 && (
+          <div className="filter-bar__associated-hashtags">
+            <div className="filter-bar__associated-hashtags__title">
+              Related categories
+            </div>
+            <div>
+              {
+                associatedHashtags.map((hashtag, i) => {
+                  return (
+                    <span key={i}>
+                      <Hashtag
+                        className="filter-bar__associated-hashtags__hashtag"
+                        onClick={() => props.onAddTag(hashtag)}>
+                        {hashtag}
+                      </Hashtag>&nbsp;
+                    </span>
+                  )
+                })
+              }
+            </div>
+          </div>
+        )
+      }
     </div>
   )
 }
