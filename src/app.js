@@ -46,7 +46,10 @@ export default React.createClass({
       thoughts: getThoughts(),
       editableThoughtId: null,
       currentText: '',
-      hashtagFilters: []
+      hashtagFilters: [],
+      // Thoughts created or modified while filter view
+      // It would probably be weird if they would just disappeared when you delete a tag
+      editedWhileFilterOn: []
     }
   },
   componentDidMount() {
@@ -60,16 +63,14 @@ export default React.createClass({
 
     // Edit the most recent thought
     if(!this.state.editableThoughtId && isUp(event.keyCode) && thoughts.length > 0) {
-      this.resetFilters();
       this.setEditable(thoughts[thoughts.length - 1]);
       return;
     }
 
     // Create thought
     if(!this.state.editableThoughtId && isThoughtCreatingKeypress(event)) {
-      this.resetFilters();
-
-      const newThought = this.createThought('');
+      const initialText = `${this.state.hashtagFilters.join(' ')} `;
+      const newThought = this.createThought(initialText);
       this.setEditable(newThought);
       return;
     }
@@ -96,16 +97,26 @@ export default React.createClass({
 
     saveThoughts(updatedThoughts);
   },
+  hasFilter() {
+    return this.state.hashtagFilters.length > 0;
+  },
+  findThoughtById(id) {
+    return find(this.state.thoughts, { id });
+  },
   setEditable(thought) {
     // Something is already being edited
     if(this.state.editableThoughtId) {
       const editableThought =
-        find(this.state.thoughts, {id: this.state.editableThoughtId});
+        this.findThoughtById(this.state.editableThoughtId);
+
       this.stopEditing(editableThought);
     }
 
     this.setState({
-      editableThoughtId: thought.id
+      editableThoughtId: thought.id,
+      editedWhileFilterOn: this.hasFilter() ?
+        this.state.editedWhileFilterOn.concat(thought.id) :
+        this.state.editedWhileFilterOn
     });
   },
   stopEditing(thought) {
@@ -129,17 +140,24 @@ export default React.createClass({
     }
 
     this.setState({
-      hashtagFilters: this.state.hashtagFilters.concat(hashtag)
+      hashtagFilters: this.state.hashtagFilters.concat(hashtag),
+      editedWhileFilterOn: []
     });
   },
   removeFromFilter(hashtag) {
+    if(this.state.hashtagFilters.length === 1) {
+      this.resetFilters();
+      return;
+    }
+
     this.setState({
       hashtagFilters: this.state.hashtagFilters.filter((hash) => hash !== hashtag)
     });
   },
   resetFilters() {
     this.setState({
-      hashtagFilters: []
+      hashtagFilters: [],
+      editedWhileFilterOn: []
     });
   },
   updateThought(thought, newThought) {
@@ -165,9 +183,13 @@ export default React.createClass({
     const filteredThoughts = hashtagFilters.length === 0 ?
       thoughts :
       thoughts.filter((thought) => {
-        return hashtagFilters.every((hashtag) =>
+        const edited = this.state.editedWhileFilterOn.indexOf(thought.id) > -1;
+
+        const hasMatchingTag = hashtagFilters.every((hashtag) =>
           thought.hashtags.indexOf(hashtag) > -1
         );
+
+        return edited || hasMatchingTag;
       });
 
     const ThoughtsWrapper = hashtagFilters.length === 0 ?
