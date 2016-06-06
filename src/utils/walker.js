@@ -7,8 +7,39 @@ import { Node } from 'commonmark';
 
 import { HASHTAG_REGEXP } from 'utils/thought';
 
-function isTextNode(node) {
-  return node && node.type === 'Text';
+const LINK_REGEXP = /(?:\w+:)?\/\/(?:[^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*/g;
+
+/*
+ * Markdown handles _ as a start of italic text i.e. _some italic_
+ * but we want to disable this behaviour inside hashtags
+ * ["#hash", "_", "tag"] => ["#hashtag"]
+ */
+
+function fixHashtagsWithUnderscore(node, walker) {
+  if(!node.literal.match(HASHTAG_REGEXP)) {
+    return;
+  }
+
+  let resumeAt;
+
+  if(node.next && node.next.literal === '_') {
+
+    resumeAt = node.next.next;
+
+    node.literal += '_';
+
+    if(node.next.next && node.next.next.type === 'Text') {
+      node.literal += node.next.next.literal;
+
+      resumeAt = node.next.next.next;
+      node.next.next.unlink();
+    }
+
+    node.next.unlink();
+  }
+
+  // Skip walking on the unlinked nodes
+  walker.resumeAt(resumeAt || node.parent.next, true);
 }
 
 function searchFromAst(node, fn) {
@@ -26,6 +57,23 @@ function searchFromAst(node, fn) {
   return result;
 }
 
+function replaceInsideTextNode(node, replacerFn) {
+
+  const literal = node.literal.trim();
+
+  literal.split(' ').forEach((str, i) => {
+    const newNode = replacerFn(str);
+    node.parent.appendChild(newNode);
+    node.insertBefore(newNode);
+
+    const spaceNode = createTextNode(' ');
+    node.parent.appendChild(spaceNode);
+    node.insertBefore(spaceNode);
+  });
+
+  node.unlink();
+}
+
 function isCheckboxNode(node) {
   // Accepts [], [ ] and [x]
 
@@ -40,8 +88,8 @@ function isCheckboxNode(node) {
     );
 }
 
-function isHashtagNode(node) {
-  return isTextNode(node) && node.literal.match(HASHTAG_REGEXP);
+function isTextNode(node) {
+  return node && node.type === 'Text';
 }
 
 function createHashtagNode(hashtag) {
@@ -58,84 +106,32 @@ function createHashtagNode(hashtag) {
   return hashtagNode;
 }
 
-function createHashtags({entering, node}) {
-
-  if(!isHashtagNode(node)) {
-    return;
-  }
-
-  let literal = node.literal;
-
-  if(node.next && node.next.literal === '_') {
-
-    literal += '_';
-
-    if(node.next.next && node.next.next.type === 'Text') {
-      literal += node.next.next.literal;
-      node.next.next.unlink();
-    }
-
-    node.next.unlink();
-  }
-
-  node.literal = literal.replace(HASHTAG_REGEXP, '');
-
-  const hashtags = literal.match(HASHTAG_REGEXP);
-  const other = literal.split(HASHTAG_REGEXP);
-
-
-  let prevNode = null;
-
-  other.forEach((text, i) => {
-    const textNode = new Node('Text');
-    textNode.literal = text;
-
-    node.parent.appendChild(textNode);
-
-    if(prevNode) {
-      prevNode.insertAfter(textNode);
-    } else {
-      node.insertBefore(textNode);
-    }
-
-    const last = i === other.length - 1;
-
-    prevNode = textNode;
-
-    if(last) {
-      return;
-    }
-
-    const nextHashtag = hashtags[i];
-    const hashtagNode = createHashtagNode(nextHashtag);
-
-    node.parent.appendChild(hashtagNode);
-    prevNode.insertAfter(hashtagNode);
-
-    prevNode = hashtagNode;
-  });
-
-  node.unlink();
+function createTextNode(text) {
+  const textNode = new Node('Text');
+  textNode.literal = text;
+  return textNode;
 }
 
-function createCheckboxes({entering, node}) {
-  if(!isCheckboxNode(node)) {
-    return;
-  }
+function createLinkNode(url) {
+  const linkNode = new Node('Link');
+  linkNode.destination = url;
+
+  // Create text node that goes inside link node
+  const textNode = new Node('Text');
+  textNode.literal = url;
+  linkNode.appendChild(textNode);
+  return linkNode;
+}
+
+
+function createCheckboxes(node, walker) {
+
+  let resumeAt;
 
   // Calculate the index of this checkbox inside of one thought
   // it's used for selecting right todo to mark as done / undone on click
-  let rootNode = node.parent;
-  while(rootNode) {
-    if(rootNode.parent) {
-      rootNode = rootNode.parent;
-      continue;
-    }
-    break;
-  }
 
-  // No idea why this returns just the previous checkboxes, but that'll work for now
-  const allCheckboxNodes = searchFromAst(rootNode, (node) =>
+  const allCheckboxNodes = searchFromAst(walker.root, (node) =>
     node.type === 'Checkbox'
   );
 
@@ -151,15 +147,39 @@ function createCheckboxes({entering, node}) {
   node.insertBefore(checkboxNode);
 
   if(node.next.next && node.next.next.literal === ']') {
+    resumeAt = node.next.next.next;
     node.next.next.unlink();
   }
 
-  node.next.literal = ''; // TODO no idea why I cant just unlink this
-  // node.next.unlink();
+  resumeAt = resumeAt || node.next.next || node.parent.next;
+
+  node.next.unlink();
   node.unlink();
+
+  // Skip walking on the unlinked nodes
+  walker.resumeAt(resumeAt, true);
 }
 
-export default function walker(position) {
-  createHashtags(position);
-  createCheckboxes(position);
+function transformText(node) {
+  replaceInsideTextNode(node, (str) => {
+    if(str.match(HASHTAG_REGEXP)) {
+      return createHashtagNode(str);
+    }
+    if(str.match(LINK_REGEXP)) {
+      return createLinkNode(str);
+    }
+    return createTextNode(str);
+  });
+}
+
+export default function walker({node}, walker) {
+  if(isCheckboxNode(node)) {
+    createCheckboxes(node, walker)
+    return;
+  }
+
+  if(isTextNode(node)) {
+    fixHashtagsWithUnderscore(node, walker)
+    transformText(node);
+  }
 }
