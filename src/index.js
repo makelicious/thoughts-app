@@ -4,8 +4,9 @@ import { render } from 'react-dom';
 import { run as runMigrations } from 'migrations';
 
 import 'style.css';
-
 import App from 'app';
+
+import 'utils/error-tracking';
 
 const $root = document.getElementById('root');
 
