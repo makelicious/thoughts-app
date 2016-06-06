@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import ReactMarkdown from 'react-markdown';
-import Draggable from 'react-draggable';
 
 import walker from 'utils/walker';
 import TextInput from 'components/text-input';
+
 import {
   CHECKBOX_REGEXP,
   parseHashtags,
@@ -115,16 +115,8 @@ export default React.createClass({
 
   getInitialState() {
     return {
-      expanded: false,
-      editingDisabled: false
+      expanded: false
     };
-  },
-
-  onClick(event) {
-    if(this.state.editingDisabled) {
-      return;
-    }
-    this.props.onClick(event);
   },
   render() {
 
@@ -134,29 +126,27 @@ export default React.createClass({
     });
 
     return (
-      <div onDoubleClick={this.onClick} className="thought-container">
-        <Draggable onStart={this.disableEditing} onStop={this.enableEditing}>
-          <div onMouseEnter={this.expandThought} onMouseLeave={this.minimizeThought} style={this.props.style} className={className}>
-            {
-              this.props.editable ? (
-                <TextInput
-                  ref={'input'}
-                  onChange={this.updateText}
-                  onCancel={this.props.onCancel}
-                  onDelete={this.props.onDelete}
-                  value={this.props.thought.text}
-                  onSubmit={this.props.onSubmit} />
-              ) : (
-                <ThoughtContent
-                  onHashtagClick={this.props.onHashtagClick}
-                  onCheckboxClick={this.updateCheckbox}
-                  expanded={this.state.expanded}
-                  thought={this.props.thought} />
-              )
-            }
-          </div>
-        </Draggable>
+      <div ref="container" className="thought-container">
+        <div style={this.props.style} onClick={this.props.onClick} className={className} onMouseEnter={this.expandThought} onMouseLeave={this.minimizeThought}>
+          {
+            this.props.editable ? (
+              <TextInput
+                ref={'input'}
+                onChange={this.updateText}
+                onCancel={this.props.onCancel}
+                onDelete={this.props.onDelete}
+                value={this.props.thought.text}
+                onSubmit={this.props.onSubmit} />
+            ) : (
+              <ThoughtContent
+                onHashtagClick={this.props.onHashtagClick}
+                onCheckboxClick={this.updateCheckbox}
+                expanded={this.state.expanded}
+                thought={this.props.thought} />
+            )
+          }
+        </div>
       </div>
-    );
+    )
   }
 });

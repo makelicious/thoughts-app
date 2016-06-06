@@ -93,7 +93,7 @@ export default React.createClass({
       const scale = this.state.scales[child.key];
 
       const style = scale === undefined ? {} : {
-        // transform: `scale(${(0.3 + 0.7 * scale)}, ${(0.3 + 0.7 * scale)})`,
+        transform: `scale(${(0.3 + 0.7 * scale)}, ${(0.3 + 0.7 * scale)})`,
         opacity: (0.1 + 0.9 * scale)
       };
 
