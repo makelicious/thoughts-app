@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 
 import walker from 'utils/walker';
 import TextInput from 'components/text-input';
+import Checkbox from './components/checkbox';
 
 import {
   CHECKBOX_REGEXP,
@@ -13,7 +14,7 @@ import {
 
 import { replaceNth, breakText } from 'utils/text';
 
-const ThoughtContent = React.createClass({
+export const ThoughtContent = React.createClass({
   shouldComponentUpdate(newProps) {
     return newProps.expanded !== this.props.expanded ||
       newProps.thought !== this.props.thought;
@@ -32,20 +33,10 @@ const ThoughtContent = React.createClass({
         )
       },
       Checkbox: (markdownProps) => {
-
-        const onChange = (event) => {
-          event.stopPropagation();
-          this.props.onCheckboxClick(
-            markdownProps.literal.index,
-            markdownProps.literal.checked
-          )
-        }
-
         return (
-          <input
-            onClick={onChange}
-            readOnly
-            type="checkbox"
+          <Checkbox
+            onClick={this.props.onCheckboxClick}
+            index={markdownProps.literal.index}
             checked={markdownProps.literal.checked} />
         );
       },
@@ -67,7 +58,6 @@ const ThoughtContent = React.createClass({
         )
       }
     };
-
     return (
       <ReactMarkdown
         softBreak="br"
@@ -126,6 +116,7 @@ export default React.createClass({
     };
   },
   render() {
+
 
     const className = classNames('thought', this.props.className, {
       'thought--editable': this.props.editable,
