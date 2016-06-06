@@ -40,7 +40,7 @@
     "raf": "^3.2.0",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
-    "react-markdown": "^2.2.0",
+    "react-markdown": "github:rikukissa/react-markdown",
     "react-textarea-autosize": "^4.0.2"
   }
 }
