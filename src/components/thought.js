@@ -29,8 +29,8 @@ const ThoughtContent = React.createClass({
         const onChange = (event) => {
           event.stopPropagation();
           this.props.onCheckboxClick(
-            this.props.literal.index,
-            this.props.literal.checked
+            markdownProps.literal.index,
+            markdownProps.literal.checked
           )
         }
 
