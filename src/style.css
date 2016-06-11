@@ -54,6 +54,15 @@ body {
   margin: 5px 0;
 }
 
+.thought-createdAt {
+  display: none;
+  font-size: 12px;
+}
+
+.thought:hover .thought-createdAt {
+  display: block;
+}
+
 .thought {
   display: inline-block;
   background: #fff;

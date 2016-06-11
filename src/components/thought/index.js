@@ -2,6 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import ReactMarkdown from 'react-markdown';
 
+import moment from 'moment';
+
 import walker from 'utils/walker';
 import TextInput from 'components/text-input';
 import Checkbox from './components/checkbox';
@@ -118,6 +120,8 @@ export default React.createClass({
   render() {
 
 
+    const createdAt = moment(this.props.thought.createdAt).format('MMMM Do YYYY, h:mm:ss a');
+
     const className = classNames('thought', this.props.className, {
       'thought--editable': this.props.editable,
       'thought--expanded': this.state.expanded
@@ -143,6 +147,7 @@ export default React.createClass({
                 thought={this.props.thought} />
             )
           }
+          <div className="thought-createdAt">{createdAt}</div>
         </div>
       </div>
     )
