@@ -63,6 +63,10 @@ body {
   display: block;
 }
 
+.thought--editable:hover .thought-createdAt {
+  display: none;
+}
+
 .thought {
   display: inline-block;
   background: #fff;
