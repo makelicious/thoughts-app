@@ -12,7 +12,7 @@ const LINK_REGEXP = /(?:\w+:)?\/\/(?:[^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*/g;
 /*
  * Markdown handles _ as a start of italic text i.e. _some italic_
  * but we want to disable this behaviour inside hashtags
- * ["#hash", "_", "tag"] => ["#hashtag"]
+ * ["#hash", "_", "tag"] => ["#hash_tag"]
  */
 
 function fixHashtagsWithUnderscore(node, walker) {
@@ -21,21 +21,16 @@ function fixHashtagsWithUnderscore(node, walker) {
   }
 
   let resumeAt;
+  let nextNode = node.next;
 
-  if(node.next && node.next.literal === '_') {
+  while(nextNode && nextNode.type === 'Text') {
 
-    resumeAt = node.next.next;
-
-    node.literal += '_';
-
-    if(node.next.next && node.next.next.type === 'Text') {
-      node.literal += node.next.next.literal;
-
-      resumeAt = node.next.next.next;
-      node.next.next.unlink();
-    }
+    node.literal += nextNode.literal;
 
     node.next.unlink();
+    resumeAt = nextNode.next;
+
+    nextNode = node.next;
   }
 
   // Skip walking on the unlinked nodes

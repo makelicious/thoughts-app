@@ -38,13 +38,25 @@ describe('<Thought />', () => {
       expect(thought.find('a')).to.have.length(2);
     });
 
-    it('renders hashtags that have underscore in them', () => {
-      const thought = render(
-        <Thought thought={createThought('#foo_bar #baz')} />
-      );
-      expect(thought.find('a')).to.have.length(2);
-      expect(thought.find('a:first-child').text()).to.equal('#foo_bar');
-      expect(thought.find('a:last-child').text()).to.equal('#baz');
+    it.only('renders hashtags that have underscore in them', () => {
+
+      function matchTags(text, tags) {
+
+        const thought = render(
+          <Thought thought={createThought(text)} />
+        );
+        expect(thought.find('a')).to.have.length(tags.length);
+
+        Array.from(thought.find('a')).forEach((link, i) => {
+          expect(link.children[0].data).to.equal(tags[i]);
+        });
+      }
+
+      matchTags('#foo_bar #baz', ['#foo_bar', '#baz'])
+      matchTags('#foo_bar_baz', ['#foo_bar_baz'])
+      matchTags('[] #foo_bar_baz keke', ['#foo_bar_baz'])
+      matchTags('[] #foo_bar_baz \nkeke', ['#foo_bar_baz'])
+      matchTags('[] #foo_bar_baz__keke', ['#foo_bar_baz__keke'])
     });
   });
 
