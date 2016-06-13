@@ -10,6 +10,18 @@ function createThought(text) {
   }
 }
 
+function shouldGenerateLinks(text, links) {
+
+  const thought = render(
+    <Thought thought={createThought(text)} />
+  );
+  expect(thought.find('a')).to.have.length(links.length);
+
+  Array.from(thought.find('a')).forEach((link, i) => {
+    expect(link.children[0].data).to.equal(links[i]);
+  });
+}
+
 describe('<Thought />', () => {
 
   describe('checkbox rendering', () => {
@@ -39,35 +51,24 @@ describe('<Thought />', () => {
     });
 
     it('renders hashtags that have underscore in them', () => {
-
-      function matchTags(text, tags) {
-
-        const thought = render(
-          <Thought thought={createThought(text)} />
-        );
-        expect(thought.find('a')).to.have.length(tags.length);
-
-        Array.from(thought.find('a')).forEach((link, i) => {
-          expect(link.children[0].data).to.equal(tags[i]);
-        });
-      }
-
-      matchTags('#foo_bar #baz', ['#foo_bar', '#baz'])
-      matchTags('#foo_bar_baz', ['#foo_bar_baz'])
-      matchTags('[] #foo_bar_baz keke', ['#foo_bar_baz'])
-      matchTags('[] #foo_bar_baz \nkeke', ['#foo_bar_baz'])
-      matchTags('[] #foo_bar_baz__keke', ['#foo_bar_baz__keke'])
+      shouldGenerateLinks('#foo_bar #baz', ['#foo_bar', '#baz'])
+      shouldGenerateLinks('#foo_bar_baz', ['#foo_bar_baz'])
+      shouldGenerateLinks('[] #foo_bar_baz keke', ['#foo_bar_baz'])
+      shouldGenerateLinks('[] #foo_bar_baz \nkeke', ['#foo_bar_baz'])
+      shouldGenerateLinks('[] #foo_bar_baz__keke', ['#foo_bar_baz__keke'])
     });
   });
 
   describe('url rendering', () => {
 
     it('renders urls as links', () => {
-      const thought = render(
-        <Thought thought={createThought('http://google.com')} />
-      );
-      expect(thought.find('a')).to.have.length(1);
-      expect(thought.find('a').text()).to.equal('http://google.com');
+      const LINK_WITH_HASH =
+        'http://www.korus.fi/#!Siru-sormus/zoom/e08rh/dataItem-ijwswu97';
+
+      shouldGenerateLinks('http://google.com', ['http://google.com']);
+      shouldGenerateLinks(LINK_WITH_HASH, [LINK_WITH_HASH]);
+      shouldGenerateLinks(`${LINK_WITH_HASH} foobar`, [LINK_WITH_HASH]);
+      shouldGenerateLinks(`bar ${LINK_WITH_HASH} foobar`, [LINK_WITH_HASH]);
     });
   });
 });
