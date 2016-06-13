@@ -38,7 +38,7 @@ describe('<Thought />', () => {
       expect(thought.find('a')).to.have.length(2);
     });
 
-    it.only('renders hashtags that have underscore in them', () => {
+    it('renders hashtags that have underscore in them', () => {
 
       function matchTags(text, tags) {
 
