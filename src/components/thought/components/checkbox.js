@@ -4,7 +4,7 @@ export default function Checkbox(props) {
 
   const onChange = (event) => {
     event.stopPropagation();
-    props.onCheckboxClick(
+    props.onClick(
       props.index,
       props.checked
     )
