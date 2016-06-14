@@ -9,6 +9,10 @@ import { HASHTAG_REGEXP } from 'utils/thought';
 
 const LINK_REGEXP = /(?:\w+:)?\/\/(?:[^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*/g;
 
+function endsWithSpace(str) {
+  return Boolean(str.match(/\s$/));
+}
+
 /*
  * Markdown handles _ as a start of italic text i.e. _some italic_
  * but we want to disable this behaviour inside hashtags
@@ -25,12 +29,22 @@ function combineFollowingTexts(node, walker) {
   let nextNode = node.next;
   let resumeAt = node.next
 
+  if(endsWithSpace(node.literal)) {
+    return;
+  }
+
   while(nextNode && nextNode.type === 'Text') {
+
     node.literal += nextNode.literal;
 
     node.next.unlink();
 
-    resumeAt = nextNode.next;
+    resumeAt = node.next;
+
+    if(endsWithSpace(nextNode.literal)) {
+      break;
+    }
+
     nextNode = node.next;
   }
 

@@ -22,15 +22,22 @@ function shouldGenerateLinks(text, links) {
   });
 }
 
+function checkboxesForText(text) {
+  const thought = render(
+    <Thought thought={createThought(text)} />
+  );
+  return thought.find('[type="checkbox"]');
+}
+
 describe('<Thought />', () => {
 
   describe('checkbox rendering', () => {
 
     it('renders checkboxes from custom markdown', () => {
-      const thought = render(
-        <Thought thought={createThought('[] []')} />
-      );
-      expect(thought.find('[type="checkbox"]')).to.have.length(2);
+      expect(checkboxesForText('[] []')).to.have.length(2);
+      expect(checkboxesForText('#ruok []')).to.have.length(1);
+      expect(checkboxesForText('#ruok_bar_baz []')).to.have.length(1);
+      expect(checkboxesForText('[] #ruok_bar_baz [] [] [x]')).to.have.length(4);
     });
 
     it('renders checked checkboxes from markdown', () => {
