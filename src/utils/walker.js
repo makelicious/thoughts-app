@@ -93,7 +93,7 @@ function createHashtagNode(hashtag) {
   const hashtagNode = new Node('Hashtag');
 
   hashtagNode.literal = {
-    hashtag: hashtag
+    hashtag
   };
 
   const textNode = new Node('Text');
