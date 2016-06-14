@@ -69,6 +69,12 @@ describe('<Thought />', () => {
       shouldGenerateLinks(LINK_WITH_HASH, [LINK_WITH_HASH]);
       shouldGenerateLinks(`${LINK_WITH_HASH} foobar`, [LINK_WITH_HASH]);
       shouldGenerateLinks(`bar ${LINK_WITH_HASH} foobar`, [LINK_WITH_HASH]);
+      shouldGenerateLinks(
+        `#investing #esports nvidia osakkeet, ea? Activision
+          http://google.com
+          modern times group B`,
+        ['#investing', '#esports', 'http://google.com']
+      );
     });
   });
 });

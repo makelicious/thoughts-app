@@ -22,16 +22,15 @@ function combineFollowingTexts(node, walker) {
     return;
   }
 
-  let resumeAt;
   let nextNode = node.next;
+  let resumeAt = node.next
 
   while(nextNode && nextNode.type === 'Text') {
-
     node.literal += nextNode.literal;
 
     node.next.unlink();
-    resumeAt = nextNode.next;
 
+    resumeAt = nextNode.next;
     nextNode = node.next;
   }
 
