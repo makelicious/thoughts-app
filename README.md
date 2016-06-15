@@ -10,6 +10,13 @@ npm start
 open http://localhost:3000
 ```
 
+## Mites testaaminen
+
+Testit asuu samassa hakemistossa kun itse testattava juttu `tests` hakemiston alla.
+
+`npm test` kun haluat ajaa testit läpi. `npm test -- --watch` kun haluat, että ne jää pyörimään ja ajautuu aina kun teet muutoksia koodiin.
+
+
 ## Mitäs kaikki nämä tiedostot on
 
 ```
