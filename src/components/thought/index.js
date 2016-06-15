@@ -147,7 +147,7 @@ export default React.createClass({
                 thought={this.props.thought} />
             )
           }
-          <div className="thought-createdAt">{createdAt}</div>
+            <div className="thought-createdAt">{createdAt}</div>
         </div>
       </div>
     )

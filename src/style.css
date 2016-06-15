@@ -55,12 +55,12 @@ body {
 }
 
 .thought-createdAt {
-  display: none;
-  font-size: 12px;
+  font-size: 0;
+  transition: font, 0.4s, ease;
 }
 
 .thought:hover .thought-createdAt {
-  display: block;
+  font-size: 12px;
 }
 
 .thought--editable:hover .thought-createdAt {
