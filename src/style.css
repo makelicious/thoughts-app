@@ -56,7 +56,7 @@ body {
 
 .thought-createdAt {
   font-size: 0;
-  transition: font, 0.4s, ease;
+  transition: font, 0.2s, ease;
 }
 
 .thought:hover .thought-createdAt {
