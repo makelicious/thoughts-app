@@ -23,17 +23,31 @@ body {
 
 .app {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   box-sizing: border-box;
   background-size: cover;
 }
 
+.relations-container {
+  width: 50%;
+  height: 100%;
+  max-width: 700px;
+  background: #fdfdfd;
+  overflow: auto;
+}
+
+.relations div {
+  padding-left: 1em;
+}
+
 .thoughts-container {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   justify-content: flex-end;
   height: 100%;
+  position: relative;
 }
 
 .thoughts {
@@ -132,8 +146,11 @@ body {
   left: 0;
 }
 
-.thought img {
-  max-width: 100%;
+.thought__image {
+  width: 200px;
+  height: 200px;
+  display: inline-block;
+  background-size: cover;
 }
 
 /*
@@ -229,9 +246,9 @@ body {
  */
 
 .notification {
-  position: fixed;
+  position: absolute;
   bottom: 1em;
-  right: 1em;
+  right: 2em;
   cursor: pointer;
   z-index: 1;
 }

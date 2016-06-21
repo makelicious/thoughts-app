@@ -9,15 +9,45 @@ import {
 } from 'utils/keys';
 
 export default React.createClass({
+  getInitialState() {
+    return { value: this.props.value };
+  },
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.value !== this.props.value || nextState.value !== this.state.value;
+  },
   focus() {
     const $el = findDOMNode(this.refs.editor);
-    const length = this.props.value.length;
+    const length = this.state.value.length;
 
     // Focus textarea
     $el.focus();
 
-    // Set cursor to the end of text
-    $el.setSelectionRange(length, length);
+    setTimeout(() => {
+      // Set cursor to the end of text
+      $el.setSelectionRange(length, length);
+    });
+  },
+  componentWillReceiveProps(newProps) {
+
+    // const currentText = newProps.value;
+    // const prevText = this.props.value;
+    //
+    // if(newProps.suggestion && currentText.length > prevText.length) {
+    //
+    //   this.setState({
+    //     value: newProps.suggestion
+    //   }, () => {
+    //     const $el = findDOMNode(this.refs.editor);
+    //     $el.setSelectionRange(currentText.length, newProps.suggestion.length);
+    //   });
+    //
+    //   return;
+    // }
+    //
+    // if(newProps.value !== this.state.value) {
+    //   this.setState({ value: newProps.value });
+    // }
+
   },
   checkSpecialKeys(event) {
     if(isEnter(event.keyCode) && !event.shiftKey) {
@@ -37,13 +67,18 @@ export default React.createClass({
       return;
     }
   },
+  updateValue(event) {
+    const value = event.target.value;
+    this.setState({ value });
+    this.props.onChange(value);
+  },
   render() {
     return (
       <Textarea
         className="text-input"
         ref="editor"
-        onChange={(event) => this.props.onChange(event.target.value)}
-        value={this.props.value}
+        onChange={this.updateValue}
+        value={this.state.value}
         placeholder="What are you thinking?"
         onKeyDown={this.checkSpecialKeys}></Textarea>
     );

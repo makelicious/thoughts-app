@@ -1,12 +1,16 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import classNames from 'classnames';
-import { find } from 'lodash';
+import { find, without } from 'lodash';
 
 import {
   getThoughts,
   saveThoughts
 } from 'utils/storage';
+
+import {
+  sortByRelativity
+} from 'utils/relater';
 
 import {
   parseTodos,
@@ -36,6 +40,7 @@ export default React.createClass({
       editableThoughtId: null,
       currentText: '',
       hashtagFilters: [],
+      suggestion: null,
       // Thoughts created or modified while filter view
       // It would probably be weird if they would just disappeared when you delete a tag
       editedWhileFilterOn: []
@@ -163,11 +168,17 @@ export default React.createClass({
       return newThought;
     });
 
+    const suggestions = newThought.text.length < 0 ?
+      [] :
+      this.state.thoughts.filter((thoug) =>
+        thoug.id !== newThought.id && thoug.text.indexOf(newThought.text) === 0
+      );
+
     this.setState({
-      thoughts: updatedThoughts
+      thoughts: updatedThoughts,
+      suggestion: suggestions.length === 0 ? null : suggestions[0].text
     });
 
-    saveThoughts(updatedThoughts);
   },
   render() {
     const thoughts = this.state.thoughts;
@@ -201,18 +212,20 @@ export default React.createClass({
           onRemoveTag={this.removeFromFilter}
           onReset={this.resetFilters} />
 
-        {
-          unfinishedTodos.length > 0 && (
-            <Notification onClick={() => this.addFilter(UNFINISHED_TODO_TAG)} />
-          )
-        }
+
         <div className="thoughts-container">
+          {
+            unfinishedTodos.length > 0 && (
+              <Notification onClick={() => this.addFilter(UNFINISHED_TODO_TAG)} />
+            )
+          }
           <ThoughtsWrapper ref="thoughts" className="thoughts">
             {
               filteredThoughts.map((thought) => {
                 return (
                   <Thought
                     key={thought.id}
+                    suggestion={this.state.suggestion}
                     onClick={(event) => {
                       event.stopPropagation();
                       this.setEditable(thought);

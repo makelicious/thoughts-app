@@ -27,6 +27,18 @@ export const ThoughtContent = React.createClass({
      */
 
     const customRenderers = {
+      Image: (markdownProps) => {
+        const style = {
+          backgroundImage: `url(${markdownProps.src})`
+        };
+        return (
+          <a
+            target="_blank"
+            href={markdownProps.src}
+            style={style}
+            className="thought__image"></a>
+        )
+      },
       Link: (markdownProps) => {
         return (
           <a href={markdownProps.href} target="_blank">
@@ -134,6 +146,7 @@ export default React.createClass({
             this.props.editable ? (
               <TextInput
                 ref={'input'}
+                suggestion={this.props.suggestion}
                 onChange={this.updateText}
                 onCancel={this.props.onCancel}
                 onDelete={this.props.onDelete}
