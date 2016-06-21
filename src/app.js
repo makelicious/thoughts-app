@@ -32,7 +32,7 @@ import Background from 'components/background';
 export default React.createClass({
   getInitialState() {
     return {
-      thoughts: getThoughts(),
+      thoughts: [],
       editableThoughtId: null,
       currentText: '',
       hashtagFilters: [],
@@ -43,6 +43,17 @@ export default React.createClass({
   },
   componentDidMount() {
     document.addEventListener('keydown', this.checkForSpecialKey, true);
+    const board = location.pathname.replace('/', '');
+
+    fetch(`https://evening-oasis-93330.herokuapp.com/${board}/thoughts`)
+    .then((res) => {
+      return res.json();
+    })
+    .then((thoughts) => {
+      this.setState({
+        thoughts
+      });
+    });
   },
   componentWillUnmount() {
     document.removeEventListener('keydown', this.checkForSpecialKey, true);
@@ -84,6 +95,17 @@ export default React.createClass({
     const updatedThoughts = this.state.thoughts.filter((thoug) =>
       thought !== thoug
     );
+    const board = location.pathname.replace('/', '');
+
+    fetch(`https://evening-oasis-93330.herokuapp.com/${board}/thoughts/${thought.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then((thought) => {
+      this.deleteThought(thought.id);
+    });
 
     this.setState({
       thoughts: updatedThoughts,
@@ -122,7 +144,33 @@ export default React.createClass({
       return;
     }
 
-    saveThoughts(this.state.thoughts);
+    const board = location.pathname.replace('/', '');
+
+    if(thought._id) {
+      fetch(`https://evening-oasis-93330.herokuapp.com/${board}/thoughts/${thought.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(thought)
+      })
+      .then((res) => res.json())
+      .then((updatedThought) => {
+        this.updateThought(thought, updatedThought);
+      });
+    } else {
+      fetch(`https://evening-oasis-93330.herokuapp.com/${board}/thoughts/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(thought)
+      })
+      .then((res) => res.json())
+      .then((savedThought) => {
+        this.updateThought(thought, savedThought);
+      });
+    }
   },
   resetEditable() {
     this.setState({ editableThoughtId: null });
@@ -167,7 +215,7 @@ export default React.createClass({
       thoughts: updatedThoughts
     });
 
-    saveThoughts(updatedThoughts);
+
   },
   render() {
     const thoughts = this.state.thoughts;
