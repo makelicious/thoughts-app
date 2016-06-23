@@ -13,14 +13,31 @@ function getBoardFromHash() {
   return location.hash.replace(/#\//, '');
 }
 
-function waitUntilStylesLoaded() {
+function afterStylesLoaded(callback) {
   const height = getComputedStyle($root).getPropertyValue('height');
   if(height === 'auto' || height === '0px') {
-    requestAnimationFrame(waitUntilStylesLoaded);
+    requestAnimationFrame(() => afterStylesLoaded(callback));
     return;
   }
 
-  render(<App board={getBoardFromHash()} />, $root);
+  callback();
 }
 
-waitUntilStylesLoaded();
+function redirectToDefaultBoard() {
+  location.hash = '#/hello';
+}
+
+// Use default board if no board is selecteds
+if(getBoardFromHash() === '') {
+  redirectToDefaultBoard();
+}
+
+// Render after styles are loaded
+afterStylesLoaded(() =>
+  render(<App board={getBoardFromHash()} />, $root)
+);
+
+// Render every time the hash of the users url changes
+window.addEventListener('hashchange', () =>
+  render(<App board={getBoardFromHash()} />, $root)
+, false);

@@ -43,17 +43,28 @@ export default React.createClass({
       editedWhileFilterOn: []
     }
   },
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.board === this.props.board) {
+      return;
+    }
+
+    // When board param changes, basically reset everything
+    this.setState(this.getInitialState());
+    this.loadThoughts(nextProps.board);
+  },
   componentDidMount() {
     document.addEventListener('keydown', this.checkForSpecialKey, true);
-
-    getThoughts(this.props.board).then((thoughts) => {
+    this.loadThoughts(this.props.board);
+  },
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.checkForSpecialKey, true);
+  },
+  loadThoughts(board) {
+    getThoughts(board).then((thoughts) => {
       this.setState({
         thoughts
       });
     });
-  },
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.checkForSpecialKey, true);
   },
   checkForSpecialKey(event) {
     const thoughts = this.state.thoughts;
