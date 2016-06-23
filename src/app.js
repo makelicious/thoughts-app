@@ -4,8 +4,10 @@ import classNames from 'classnames';
 import { find } from 'lodash';
 
 import {
+  saveThought,
   getThoughts,
-  saveThoughts
+  deleteThought,
+  updateThought
 } from 'utils/storage';
 
 import {
@@ -43,13 +45,8 @@ export default React.createClass({
   },
   componentDidMount() {
     document.addEventListener('keydown', this.checkForSpecialKey, true);
-    const board = location.pathname.replace('/', '');
 
-    fetch(`https://evening-oasis-93330.herokuapp.com/${board}/thoughts`)
-    .then((res) => {
-      return res.json();
-    })
-    .then((thoughts) => {
+    getThoughts(this.props.board).then((thoughts) => {
       this.setState({
         thoughts
       });
@@ -92,27 +89,19 @@ export default React.createClass({
     return newThought;
   },
   deleteThought(thought) {
+    // Delete thought from state optimistically
+    // Do nothing with the return value of the delete api request
+
     const updatedThoughts = this.state.thoughts.filter((thoug) =>
       thought !== thoug
     );
-    const board = location.pathname.replace('/', '');
-
-    fetch(`https://evening-oasis-93330.herokuapp.com/${board}/thoughts/${thought.id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then((thought) => {
-      this.deleteThought(thought.id);
-    });
 
     this.setState({
       thoughts: updatedThoughts,
       editableThoughtId: null
     });
 
-    saveThoughts(updatedThoughts);
+    deleteThought(this.props.board, thought);
   },
   hasFilter() {
     return this.state.hashtagFilters.length > 0;
@@ -144,30 +133,13 @@ export default React.createClass({
       return;
     }
 
-    const board = location.pathname.replace('/', '');
-
     if(thought._id) {
-      fetch(`https://evening-oasis-93330.herokuapp.com/${board}/thoughts/${thought.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(thought)
-      })
-      .then((res) => res.json())
+      updateThought(this.props.board, thought)
       .then((updatedThought) => {
         this.updateThought(thought, updatedThought);
       });
     } else {
-      fetch(`https://evening-oasis-93330.herokuapp.com/${board}/thoughts/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(thought)
-      })
-      .then((res) => res.json())
-      .then((savedThought) => {
+      saveThought(this.props.board, thought).then((savedThought) => {
         this.updateThought(thought, savedThought);
       });
     }

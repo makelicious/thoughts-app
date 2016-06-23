@@ -9,6 +9,10 @@ import 'utils/error-tracking';
 
 const $root = document.getElementById('root');
 
+function getBoardFromHash() {
+  return location.hash.replace(/#\//, '');
+}
+
 function waitUntilStylesLoaded() {
   const height = getComputedStyle($root).getPropertyValue('height');
   if(height === 'auto' || height === '0px') {
@@ -16,7 +20,7 @@ function waitUntilStylesLoaded() {
     return;
   }
 
-  render(<App />, $root);
+  render(<App board={getBoardFromHash()} />, $root);
 }
 
 waitUntilStylesLoaded();

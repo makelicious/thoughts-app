@@ -1,21 +1,39 @@
-const STORAGE_KEY = 'thoughts_app';
+const DOMAIN = 'https://evening-oasis-93330.herokuapp.com';
 
-function getData(argument) {
-  return JSON.parse(window.localStorage.getItem(STORAGE_KEY)) || {
-    thoughts: []
-  };
+export function saveThought(board, thought) {
+  return fetch(`${DOMAIN}/${board}/thoughts`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(thought)
+  })
+  .then((res) => res.json())
 }
 
-function saveData(data) {
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+export function getThoughts(board) {
+  return fetch(`${DOMAIN}/${board}/thoughts`)
+  .then((res) => {
+    return res.json();
+  })
 }
 
-export function saveThoughts(thoughts) {
-  const data = getData();
-  data.thoughts = thoughts;
-  saveData(data);
+export function deleteThought(board, thought) {
+  return fetch(`${DOMAIN}/${board}/thoughts/${thought.id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
 }
 
-export function getThoughts() {
-  return getData().thoughts;
+export function updateThought(board, thought) {
+  return fetch(`https://evening-oasis-93330.herokuapp.com/${board}/thoughts/${thought.id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(thought)
+  })
+  .then((res) => res.json())
 }
