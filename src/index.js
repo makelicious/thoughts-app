@@ -1,7 +1,6 @@
 import React from 'react';
 import requestAnimationFrame from 'raf';
 import { render } from 'react-dom';
-import { run as runMigrations } from 'migrations';
 
 import 'style.css';
 import App from 'app';
@@ -20,6 +19,4 @@ function waitUntilStylesLoaded() {
   render(<App />, $root);
 }
 
-
-runMigrations();
 waitUntilStylesLoaded();

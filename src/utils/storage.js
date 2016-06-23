@@ -2,8 +2,7 @@ const STORAGE_KEY = 'thoughts_app';
 
 function getData(argument) {
   return JSON.parse(window.localStorage.getItem(STORAGE_KEY)) || {
-    thoughts: [],
-    migration: 0
+    thoughts: []
   };
 }
 
@@ -19,14 +18,4 @@ export function saveThoughts(thoughts) {
 
 export function getThoughts() {
   return getData().thoughts;
-}
-
-export function setCurrentMigration(id) {
-  const data = getData();
-  data.migration = id;
-  saveData(data);
-}
-
-export function getCurrentMigration() {
-  return getData().migration;
 }
