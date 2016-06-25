@@ -129,7 +129,7 @@ export default React.createClass({
 
     return (
       <div ref="container" className="thought-container">
-        <div style={this.props.style} onClick={this.props.onClick} className={className} onMouseEnter={this.expandThought} onMouseLeave={this.minimizeThought}>
+        <div style={this.props.style} onDoubleClick={this.props.onDoubleClick} className={className} onMouseEnter={this.expandThought} onMouseLeave={this.minimizeThought}>
           {
             this.props.editable ? (
               <TextInput

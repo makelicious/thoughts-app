@@ -244,7 +244,7 @@ export default React.createClass({
                 return (
                   <Thought
                     key={thought.id}
-                    onClick={(event) => {
+                    onDoubleClick={(event) => {
                       event.stopPropagation();
                       this.setEditable(thought);
                     }}
