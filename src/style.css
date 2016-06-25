@@ -259,7 +259,7 @@ body {
 .search-container {
     position: fixed;
     top: 0;
-    right: 0;
+    right: 1em;
     padding: 0.5em;
 }
 
