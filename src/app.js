@@ -226,7 +226,7 @@ export default React.createClass({
       <Background className="app" onClick={this.resetEditable}>
       <div className="search-container">
         <span className="search-button">{'\uD83D\uDD0D'}</span>
-        <input className="search" />
+        <input className="search" placeholder="Search" />
       </div>
 
         <FilterBar
