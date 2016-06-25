@@ -224,6 +224,10 @@ export default React.createClass({
 
     return (
       <Background className="app" onClick={this.resetEditable}>
+      <div className="search-container">
+        <span className="search-button">{'\uD83D\uDD0D'}</span>
+        <input className="search" />
+      </div>
 
         <FilterBar
           hashtags={hashtagFilters}

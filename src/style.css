@@ -251,3 +251,27 @@ body {
   right: 14px;
   position: absolute;
 }
+
+ /*
+  * Search
+  */
+
+.search-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 0.5em;
+}
+
+.search-button {
+    float: right;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding-right: 0.5em;
+}
+
+.search {
+    float: right;
+    height: 1.85em;
+    outline-width: 1px;
+    outline-color: rgba(255, 255, 255, 0.8);
+}
