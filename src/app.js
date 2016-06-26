@@ -223,23 +223,25 @@ export default React.createClass({
 
     return (
       <Background className="app" onClick={this.resetEditable}>
-      <div className="search-container">
-        <span className="search-button">{'\uD83D\uDD0D'}</span>
-        <input className="search" placeholder="Search" />
-      </div>
+        <div className="overlays">
+          <div className="search-container">
+            <span className="search-button">{'\uD83D\uDD0D'}</span>
+            <input className="search" placeholder="Search" />
+          </div>
 
-        <FilterBar
-          hashtags={hashtagFilters}
-          thoughts={thoughts}
-          onAddTag={this.addFilter}
-          onRemoveTag={this.removeFromFilter}
-          onReset={this.resetFilters} />
+          <FilterBar
+            hashtags={hashtagFilters}
+            thoughts={thoughts}
+            onAddTag={this.addFilter}
+            onRemoveTag={this.removeFromFilter}
+            onReset={this.resetFilters} />
 
-        {
-          unfinishedTodos.length > 0 && (
-            <Notification onClick={() => this.addFilter(UNFINISHED_TODO_TAG)} />
-          )
-        }
+          {
+            unfinishedTodos.length > 0 && (
+              <Notification onClick={() => this.addFilter(UNFINISHED_TODO_TAG)} />
+            )
+          }
+        </div>
         <ThoughtsWrapper ref="thoughts" className="thoughts">
           {
             filteredThoughts.map((thought) => {

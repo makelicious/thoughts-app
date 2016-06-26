@@ -131,6 +131,15 @@ body {
 }
 
 /*
+ * Overlays
+ * filter-bar, search, bell icon etc
+ */
+
+.overlays {
+  z-index: 1;
+}
+
+/*
  * Filters
  */
 
@@ -140,7 +149,6 @@ body {
   left: 0;
   padding: 0.5em;
   opacity: 0;
-  z-index: 2;
   transition: opacity 0.2s;
 }
 
@@ -227,7 +235,6 @@ body {
   bottom: 1em;
   right: 1em;
   cursor: pointer;
-  z-index: 1;
 }
 
 .notification img {
