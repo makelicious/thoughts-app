@@ -73,6 +73,15 @@ export const ThoughtContent = React.createClass({
 })
 
 
+function updateText(thought, newText) {
+  return {
+    ...thought,
+    text: newText,
+    hashtags: parseHashtags(newText),
+    todos: parseTodos(newText)
+  };
+}
+
 export default React.createClass({
   focus() {
     this.refs.input.focus();
@@ -82,13 +91,8 @@ export default React.createClass({
       this.focus();
     }
   },
-  updateText(newText) {
-    this.props.onChange({
-      ...this.props.thought,
-      text: newText,
-      hashtags: parseHashtags(newText),
-      todos: parseTodos(newText)
-    })
+  emitUpdatedText(newText) {
+    this.props.onChange(updateText(this.props.thought, newText));
   },
   updateCheckbox(index, currentlyChecked) {
     const newText = replaceNth(
@@ -98,7 +102,10 @@ export default React.createClass({
       currentlyChecked ? '[]' : '[x]'
     );
 
-    this.updateText(newText);
+    const updatedThought = updateText(this.props.thought, newText);
+
+    this.props.onChange(updatedThought);
+    this.props.onSubmit(updatedThought);
   },
 
   expandThought() {
@@ -134,11 +141,11 @@ export default React.createClass({
             this.props.editable ? (
               <TextInput
                 ref={'input'}
-                onChange={this.updateText}
+                onChange={this.emitUpdatedText}
                 onCancel={this.props.onCancel}
                 onDelete={this.props.onDelete}
                 value={this.props.thought.text}
-                onSubmit={this.props.onSubmit} />
+                onSubmit={() => this.props.onSubmit(this.props.thought)} />
             ) : (
               <ThoughtContent
                 onHashtagClick={this.props.onHashtagClick}
