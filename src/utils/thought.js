@@ -14,6 +14,10 @@ export function createThought(text) {
   }
 }
 
+export function sortByCreatedAt(thought, thought2) {
+  return new Date(thought2.createdAt) - new Date(thought.createdAt);
+}
+
 export function parseTodos(text) {
   const matches = text.match(CHECKBOX_REGEXP);
 

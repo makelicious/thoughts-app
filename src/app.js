@@ -15,6 +15,7 @@ import {
   parseHashtags,
   createThought,
   getUnfinishedTodos,
+  sortByCreatedAt,
   UNFINISHED_TODO_TAG
 } from 'utils/thought';
 
@@ -62,7 +63,7 @@ export default React.createClass({
   loadThoughts(board) {
     getThoughts(board).then((thoughts) => {
       this.setState({
-        thoughts
+        thoughts: thoughts.sort(sortByCreatedAt)
       });
     });
   },
@@ -71,7 +72,7 @@ export default React.createClass({
 
     // Edit the most recent thought
     if(!this.state.editableThoughtId && isUp(event.keyCode) && thoughts.length > 0) {
-      this.setEditable(thoughts[thoughts.length - 1]);
+      this.setEditable(thoughts[0]);
       return;
     }
 
@@ -91,7 +92,7 @@ export default React.createClass({
   },
   createThought(text) {
     const newThought = createThought(text);
-    const updatedThoughts = this.state.thoughts.concat(newThought);
+    const updatedThoughts = [newThought].concat(this.state.thoughts);
 
     this.setState({
       thoughts: updatedThoughts
@@ -241,31 +242,29 @@ export default React.createClass({
             <Notification onClick={() => this.addFilter(UNFINISHED_TODO_TAG)} />
           )
         }
-        <div className="thoughts-container">
-          <ThoughtsWrapper ref="thoughts" className="thoughts">
-            {
-              filteredThoughts.map((thought) => {
-                return (
-                  <Thought
-                    key={thought.id}
-                    onDoubleClick={(event) => {
-                      event.stopPropagation();
-                      this.setEditable(thought);
-                    }}
-                    onChange={(newThought) =>
-                      this.updateThought(thought, newThought)}
-                    onSubmit={() => this.stopEditing(thought)}
-                    onCancel={() => this.stopEditing(thought)}
-                    onDelete={() => this.deleteThought(thought)}
-                    onHashtagClick={this.addFilter}
-                    editable={this.state.editableThoughtId === thought.id}
-                    thought={thought} />
+        <ThoughtsWrapper ref="thoughts" className="thoughts">
+          {
+            filteredThoughts.map((thought) => {
+              return (
+                <Thought
+                  key={thought.id}
+                  onDoubleClick={(event) => {
+                    event.stopPropagation();
+                    this.setEditable(thought);
+                  }}
+                  onChange={(newThought) =>
+                    this.updateThought(thought, newThought)}
+                  onSubmit={() => this.stopEditing(thought)}
+                  onCancel={() => this.stopEditing(thought)}
+                  onDelete={() => this.deleteThought(thought)}
+                  onHashtagClick={this.addFilter}
+                  editable={this.state.editableThoughtId === thought.id}
+                  thought={thought} />
 
-                )
-              })
-            }
-          </ThoughtsWrapper>
-        </div>
+              )
+            })
+          }
+        </ThoughtsWrapper>
       </Background>
     );
   }

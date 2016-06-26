@@ -29,17 +29,11 @@ body {
   background-size: cover;
 }
 
-.thoughts-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  height: 100%;
-}
-
 .thoughts {
+  height: 100%;
   overflow: auto;
   padding: 3em 0;
-  padding-bottom: 40vh;
+  padding-top: 45vh;
   position: relative;
   bottom: 0;
 }
@@ -51,7 +45,7 @@ body {
 
 .thought-container {
   text-align: center;
-  margin: 5px 0;
+  margin: 1em 0;
 }
 
 .thought-createdAt {

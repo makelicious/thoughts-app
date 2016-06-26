@@ -16,20 +16,9 @@ export default React.createClass({
   componentDidMount() {
     this.debouncedScale = debounce(this.calculateScales, 100, {maxWait: 400});
     window.addEventListener('scroll', this.debouncedScale, true);
-
-    // Also initializes the initial calculation
-    this.scrollToBottom();
   },
   componentWillUnmount() {
     window.removeEventListener('scroll', this.debouncedScale, true);
-  },
-  componentDidUpdate(prevProps) {
-    if(prevProps.children.length < this.props.children.length) {
-      this.scrollToBottom();
-    }
-  },
-  scrollToBottom() {
-    this.refs['scroll-area'].scrollTop = this.refs['scroll-area'].scrollHeight;
   },
   calculateScales() {
     const target = this.calculateTargetPosition();
