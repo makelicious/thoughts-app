@@ -14,7 +14,7 @@ export default React.createClass({
     };
   },
   componentDidMount() {
-    this.debouncedScale = debounce(this.calculateScales, 100, {maxWait: 400});
+    this.debouncedScale = debounce(this.calculateScales, 10, {maxWait: 50});
     window.addEventListener('scroll', this.debouncedScale, true);
   },
   componentWillUnmount() {
@@ -53,10 +53,14 @@ export default React.createClass({
   getScale(node) {
     const bounds = node.getBoundingClientRect();
 
-    const shortestDistance = Math.min(
+    let shortestDistance = Math.min(
       Math.abs(bounds.bottom - this.state.target),
       Math.abs(bounds.top - this.state.target)
     );
+
+    if(this.state.target < bounds.bottom && this.state.target > bounds.top) {
+      shortestDistance = 0;
+    }
 
     // Completely outside viewport
     if(bounds.bottom < 0 || bounds.top > window.innerHeight) {
