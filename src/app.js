@@ -198,8 +198,6 @@ export default React.createClass({
     this.setState({
       thoughts: updatedThoughts
     });
-
-
   },
   render() {
     const thoughts = this.state.thoughts;
@@ -252,9 +250,10 @@ export default React.createClass({
                     event.stopPropagation();
                     this.setEditable(thought);
                   }}
-                  onChange={(newThought) =>
-                    this.updateThought(thought, newThought)}
-                  onSubmit={() => this.stopEditing(thought)}
+                  onChange={(updatedThought) =>
+                    this.updateThought(thought, updatedThought)}
+                  onSubmit={(updatedThought) =>
+                    this.stopEditing(updatedThought)}
                   onCancel={() => this.stopEditing(thought)}
                   onDelete={() => this.deleteThought(thought)}
                   onHashtagClick={this.addFilter}
