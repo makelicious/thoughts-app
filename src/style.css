@@ -271,6 +271,7 @@ body {
 }
 
 .search__input {
+    border: 0;
     float: right;
     height: 1.85em;
     outline-width: 1px;
