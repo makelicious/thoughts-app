@@ -2,6 +2,7 @@ import React from 'react';
 import { findDOMNode } from 'react-dom';
 import classNames from 'classnames';
 import { find } from 'lodash';
+import { connect } from 'react-redux';
 
 import {
   saveThought,
@@ -32,7 +33,7 @@ import FilterBar from 'components/filter-bar';
 import Scaler from 'components/scaler';
 import Background from 'components/background';
 
-export default React.createClass({
+const App = React.createClass({
   getInitialState() {
     return {
       thoughts: [],
@@ -277,3 +278,9 @@ export default React.createClass({
     );
   }
 });
+
+export default connect((store) => {
+  return {
+    thoughts: store.thoughts
+  };
+})(App);
