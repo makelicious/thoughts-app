@@ -7,14 +7,15 @@ export default function Checkbox(props) {
     props.onClick(
       props.index,
       props.checked
-    )
-  }
+    );
+  };
 
   return (
     <input
       onClick={onChange}
       readOnly
       type="checkbox"
-      checked={props.checked} />
+      checked={props.checked}
+  />
   );
 }

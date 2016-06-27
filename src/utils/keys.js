@@ -1,16 +1,20 @@
 const ENTER = 13;
 const BACKSPACE = 8;
+// eslint-disable-next-line id-length
 const UP = 38;
 const ESC = 27;
 const CTRL = 17;
 const CMD = 91;
+// eslint-disable-next-line id-length
 const V = 86;
 
 export function isThoughtCreatingKeypress(event) {
   const disallowedKeys = [ENTER, BACKSPACE, ESC];
   const isPaste = (event.control || event.metaKey) && (event.keyCode === 86);
 
-  return isPaste || (!event.metaKey && !event.control) && disallowedKeys.indexOf(event.keyCode) === -1;
+  return isPaste ||
+    (!event.metaKey && !event.control) &&
+    disallowedKeys.indexOf(event.keyCode) === -1;
 }
 
 export function isBackspace(keyCode) {

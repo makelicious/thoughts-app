@@ -21,6 +21,7 @@
       "before": true,
       "after": true
     }],
+    "no-underscore-dangle": 0,
     "react/prefer-es6-class": 0,
     "react/prop-types": 0,
     "react/no-multi-comp": 0,
@@ -28,16 +29,18 @@
     "space-before-function-paren": [2, "never"],
     "no-use-before-define": 0,
     "no-console": 0,
+    "react/sort-comp": 0,
     "import/no-unresolved": 0,
     "no-else-return": 0,
     "prefer-const": 0,
+    "react/jsx-closing-bracket-location": 0,
     "new-cap": 0,
     "padded-blocks": 0,
     "id-length": [2, {
       "min": 3,
       "max": 30,
       "properties": "never",
-      "exceptions": ["id", "i", "e", "fn", "_", "db", "or", "a", "b", "j", "k"]
+      "exceptions": ["id", "i", "e", "fn", "_", "db", "or", "a", "b", "j", "k", "el"]
     }]
   }
 }

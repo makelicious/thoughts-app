@@ -1,6 +1,4 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
-import classNames from 'classnames';
 import { find } from 'lodash';
 import { connect } from 'react-redux';
 
@@ -12,8 +10,6 @@ import {
 } from 'utils/storage';
 
 import {
-  parseTodos,
-  parseHashtags,
   createThought,
   getUnfinishedTodos,
   sortByCreatedAt,
@@ -27,7 +23,6 @@ import {
 } from 'utils/keys';
 
 import Thought from 'components/thought';
-import Hashtag from 'components/hashtag';
 import Notification from 'components/notification';
 import FilterBar from 'components/filter-bar';
 import Scaler from 'components/scaler';
@@ -43,10 +38,10 @@ const App = React.createClass({
       // Thoughts created or modified while filter view
       // It would probably be weird if they would just disappeared when you delete a tag
       editedWhileFilterOn: []
-    }
+    };
   },
   componentWillReceiveProps(nextProps) {
-    if(nextProps.board === this.props.board) {
+    if (nextProps.board === this.props.board) {
       return;
     }
 
@@ -57,7 +52,7 @@ const App = React.createClass({
   componentDidMount() {
     document.addEventListener('keydown', this.checkForSpecialKey, true);
 
-    if(!this.isInIntroMode()) {
+    if (!this.isInIntroMode()) {
       this.loadThoughts(this.props.board);
     }
   },
@@ -78,19 +73,19 @@ const App = React.createClass({
     const thoughts = this.state.thoughts;
 
     // Edit the most recent thought
-    if(!this.state.editableThoughtId && isUp(event.keyCode) && thoughts.length > 0) {
+    if (!this.state.editableThoughtId && isUp(event.keyCode) && thoughts.length > 0) {
       this.setEditable(thoughts[0]);
       return;
     }
 
     // Reset filters with ESC
-    if(!this.state.editableThoughtId && isEsc(event.keyCode)) {
+    if (!this.state.editableThoughtId && isEsc(event.keyCode)) {
       this.resetFilters();
       return;
     }
 
     // Create thought
-    if(!this.state.editableThoughtId && isThoughtCreatingKeypress(event)) {
+    if (!this.state.editableThoughtId && isThoughtCreatingKeypress(event)) {
       const initialText = `${this.state.hashtagFilters.join(' ')} `;
       const newThought = this.createThought(initialText);
       this.setEditable(newThought);
@@ -108,9 +103,9 @@ const App = React.createClass({
     return newThought;
   },
   deleteThought(thought) {
+
     // Delete thought from state optimistically
     // Do nothing with the return value of the delete api request
-
     const updatedThoughts = this.state.thoughts.filter((thoug) =>
       thought !== thoug
     );
@@ -120,7 +115,7 @@ const App = React.createClass({
       editableThoughtId: null
     });
 
-    if(!this.isInIntroMode()) {
+    if (!this.isInIntroMode()) {
       deleteThought(this.props.board, thought);
     }
   },
@@ -132,7 +127,7 @@ const App = React.createClass({
   },
   setEditable(thought) {
     // Something is already being edited
-    if(this.state.editableThoughtId) {
+    if (this.state.editableThoughtId) {
       const editableThought =
         this.findThoughtById(this.state.editableThoughtId);
 
@@ -149,16 +144,16 @@ const App = React.createClass({
   stopEditing(thought) {
     this.resetEditable();
 
-    if(thought.text.trim() === '') {
+    if (thought.text.trim() === '') {
       this.deleteThought(thought);
       return;
     }
 
-    if(this.isInIntroMode()) {
+    if (this.isInIntroMode()) {
       return;
     }
 
-    if(thought._id) {
+    if (thought._id) {
       updateThought(this.props.board, thought)
       .then((updatedThought) => {
         this.updateThought(thought, updatedThought);
@@ -175,7 +170,7 @@ const App = React.createClass({
   addFilter(hashtag) {
     const filterExists = this.state.hashtagFilters.indexOf(hashtag) > -1;
 
-    if(filterExists) {
+    if (filterExists) {
       return;
     }
 
@@ -185,7 +180,7 @@ const App = React.createClass({
     });
   },
   removeFromFilter(hashtag) {
-    if(this.state.hashtagFilters.length === 1) {
+    if (this.state.hashtagFilters.length === 1) {
       this.resetFilters();
       return;
     }
@@ -202,7 +197,7 @@ const App = React.createClass({
   },
   updateThought(thought, newThought) {
     const updatedThoughts = this.state.thoughts.map((thoug) => {
-      if(thoug !== thought) {
+      if (thoug !== thought) {
         return thoug;
       }
       return newThought;
@@ -252,26 +247,23 @@ const App = React.createClass({
         </div>
         <ThoughtsWrapper ref="thoughts" className="thoughts">
           {
-            filteredThoughts.map((thought) => {
-              return (
-                <Thought
-                  key={thought.id}
-                  onDoubleClick={(event) => {
-                    event.stopPropagation();
-                    this.setEditable(thought);
-                  }}
-                  onChange={(updatedThought) =>
-                    this.updateThought(thought, updatedThought)}
-                  onSubmit={(updatedThought) =>
-                    this.stopEditing(updatedThought)}
-                  onCancel={() => this.stopEditing(thought)}
-                  onDelete={() => this.deleteThought(thought)}
-                  onHashtagClick={this.addFilter}
-                  editable={this.state.editableThoughtId === thought.id}
-                  thought={thought} />
-
-              )
-            })
+            filteredThoughts.map((thought) => (
+              <Thought
+                key={thought.id}
+                onDoubleClick={(event) => {
+                  event.stopPropagation();
+                  this.setEditable(thought);
+                }}
+                onChange={(updatedThought) =>
+                  this.updateThought(thought, updatedThought)}
+                onSubmit={(updatedThought) =>
+                  this.stopEditing(updatedThought)}
+                onCancel={() => this.stopEditing(thought)}
+                onDelete={() => this.deleteThought(thought)}
+                onHashtagClick={this.addFilter}
+                editable={this.state.editableThoughtId === thought.id}
+                thought={thought} />
+            ))
           }
         </ThoughtsWrapper>
       </Background>
@@ -279,8 +271,6 @@ const App = React.createClass({
   }
 });
 
-export default connect((store) => {
-  return {
-    thoughts: store.thoughts
-  };
-})(App);
+export default connect((store) => ({
+  thoughts: store.thoughts
+}))(App);

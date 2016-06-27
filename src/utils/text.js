@@ -11,7 +11,7 @@ export function replaceNth(text, index, pattern, replacer) {
   let i = 0;
 
   return text.replace(pattern, (match) => {
-    if(i === index) {
+    if (i === index) {
       i++;
       return replacer;
     }

@@ -14,7 +14,7 @@ export default React.createClass({
     };
   },
   componentDidMount() {
-    this.debouncedScale = debounce(this.calculateScales, 10, {maxWait: 50});
+    this.debouncedScale = debounce(this.calculateScales, 10, { maxWait: 50 });
     window.addEventListener('scroll', this.debouncedScale, true);
   },
   componentWillUnmount() {
@@ -22,12 +22,13 @@ export default React.createClass({
   },
   calculateScales() {
     const target = this.calculateTargetPosition();
-    const scales = this.props.children.reduce((scales, child) => {
-      scales[child.key] = this.getScale(findDOMNode(this[`elements-${child.key}`]));
-      return scales;
+    const scales = this.props.children.reduce((currentScales, child) => {
+      // eslint-disable-next-line no-param-reassign
+      currentScales[child.key] = this.getScale(findDOMNode(this[`elements-${child.key}`]));
+      return currentScales;
     }, {});
 
-    this.setState({scales, target});
+    this.setState({ scales, target });
   },
   calculateTargetPosition() {
     const scrollArea = this.refs['scroll-area'];
@@ -38,11 +39,13 @@ export default React.createClass({
 
     const points = [0, 0.495, 0.50, 0.505, 1];
 
-    if(scrollArea.scrollHeight === scrollArea.clientHeight) {
+    if (scrollArea.scrollHeight === scrollArea.clientHeight) {
       return window.innerHeight / 2;
     }
 
-    const scrollPercentage = scrollArea.scrollTop / (scrollArea.scrollHeight - scrollArea.clientHeight);
+    const scrollPercentage = scrollArea.scrollTop /
+      (scrollArea.scrollHeight - scrollArea.clientHeight);
+
     const curvedPercentage = bezier(points, scrollPercentage);
 
     return Math.min(
@@ -58,12 +61,12 @@ export default React.createClass({
       Math.abs(bounds.top - this.state.target)
     );
 
-    if(this.state.target < bounds.bottom && this.state.target > bounds.top) {
+    if (this.state.target < bounds.bottom && this.state.target > bounds.top) {
       shortestDistance = 0;
     }
 
     // Completely outside viewport
-    if(bounds.bottom < 0 || bounds.top > window.innerHeight) {
+    if (bounds.bottom < 0 || bounds.top > window.innerHeight) {
       return 0;
     }
 
@@ -72,8 +75,10 @@ export default React.createClass({
   render() {
 
     // Can be rendered for debugging
-    const targetLine =
-      <div style={{
+    // eslint-disable-next-line no-unused-vars
+    const targetLine = (
+      <div
+        style={{
           position: 'fixed',
           width: '100%',
           height: '1px',
@@ -81,6 +86,7 @@ export default React.createClass({
           zIndex: 2,
           top: `${this.state.target}px`
         }} />
+    );
 
     const children = this.props.children.map((child) => {
       const scale = this.state.scales[child.key];
@@ -95,8 +101,8 @@ export default React.createClass({
         style,
         ref: (el) => {
           this[`elements-${child.key}`] = el;
-        },
-      })
+        }
+      });
     });
 
     return (
@@ -105,4 +111,4 @@ export default React.createClass({
       </div>
     );
   }
-})
+});

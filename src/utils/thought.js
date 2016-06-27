@@ -1,6 +1,6 @@
 import { uniq } from 'lodash';
 
-export const HASHTAG_REGEXP = /\#\w+/g;
+export const HASHTAG_REGEXP = /#\w+/g;
 export const CHECKBOX_REGEXP = /\[[x\s]?\](?=\s|$)/ig;
 export const UNFINISHED_TODO_TAG = '#unfinished-todo';
 
@@ -11,7 +11,7 @@ export function createThought(text) {
     todos: parseTodos(text),
     hashtags: parseHashtags(text),
     createdAt: new Date()
-  }
+  };
 }
 
 export function sortByCreatedAt(thought, thought2) {
@@ -21,15 +21,13 @@ export function sortByCreatedAt(thought, thought2) {
 export function parseTodos(text) {
   const matches = text.match(CHECKBOX_REGEXP);
 
-  if(matches === null) {
+  if (matches === null) {
     return [];
   }
 
-  return matches.map((match) => {
-    return {
-      finished: match.indexOf('x') > -1
-    };
-  })
+  return matches.map((match) => ({
+    finished: match.indexOf('x') > -1
+  }));
 }
 
 export function parseHashtags(text) {
@@ -37,7 +35,7 @@ export function parseHashtags(text) {
 
   const unfinishedTodos = parseTodos(text).filter((todo) => !todo.finished);
 
-  if(unfinishedTodos.length === 0) {
+  if (unfinishedTodos.length === 0) {
     return normalHashtags;
   }
 
@@ -45,9 +43,9 @@ export function parseHashtags(text) {
 }
 
 export function getUnfinishedTodos(thoughts) {
-  return thoughts.reduce((unfinished, thought) => {
-    return unfinished.concat(thought.todos.filter((todo) => !todo.finished));
-  }, [])
+  return thoughts.reduce((unfinished, thought) =>
+    unfinished.concat(thought.todos.filter((todo) => !todo.finished))
+  , []);
 }
 
 export function getAssociatedHashtags(hashtags, thoughts) {
@@ -56,7 +54,7 @@ export function getAssociatedHashtags(hashtags, thoughts) {
   const allAssociated = thoughts.reduce((associated, thought) => {
     const includesHashtag = hashtags.every((hash) => thought.hashtags.indexOf(hash) > -1);
 
-    if(includesHashtag) {
+    if (includesHashtag) {
       const otherHashtags = thought.hashtags.filter(isOtherHashtag);
       return associated.concat(otherHashtags);
     }

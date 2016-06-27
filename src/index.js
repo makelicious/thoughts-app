@@ -13,7 +13,7 @@ const $root = document.getElementById('root');
 function getBoardFromHash() {
   const board = location.hash.replace(/#\//, '');
 
-  if(board === '') {
+  if (board === '') {
     return null;
   }
 

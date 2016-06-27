@@ -2,12 +2,12 @@ import React from 'react';
 import { expect } from 'chai';
 import { render } from 'enzyme';
 
-import Thought  from '../';
+import Thought from '../';
 
 function createThought(text) {
   return {
     text
-  }
+  };
 }
 
 function shouldGenerateLinks(text, links) {
@@ -58,11 +58,11 @@ describe('<Thought />', () => {
     });
 
     it('renders hashtags that have underscore in them', () => {
-      shouldGenerateLinks('#foo_bar #baz', ['#foo_bar', '#baz'])
-      shouldGenerateLinks('#foo_bar_baz', ['#foo_bar_baz'])
-      shouldGenerateLinks('[] #foo_bar_baz keke', ['#foo_bar_baz'])
-      shouldGenerateLinks('[] #foo_bar_baz \nkeke', ['#foo_bar_baz'])
-      shouldGenerateLinks('[] #foo_bar_baz__keke', ['#foo_bar_baz__keke'])
+      shouldGenerateLinks('#foo_bar #baz', ['#foo_bar', '#baz']);
+      shouldGenerateLinks('#foo_bar_baz', ['#foo_bar_baz']);
+      shouldGenerateLinks('[] #foo_bar_baz keke', ['#foo_bar_baz']);
+      shouldGenerateLinks('[] #foo_bar_baz \nkeke', ['#foo_bar_baz']);
+      shouldGenerateLinks('[] #foo_bar_baz__keke', ['#foo_bar_baz__keke']);
     });
   });
 

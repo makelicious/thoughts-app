@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { sample } from 'lodash';
 
 const backgrounds = [
@@ -16,7 +15,7 @@ const randomBackground = sample(backgrounds);
 export default function Background(props) {
 
   return (
-    <div {...props} style={{backgroundImage: `url(${randomBackground})`}}>
+    <div {...props} style={{ backgroundImage: `url(${randomBackground})` }}>
       {props.children}
     </div>
   );
