@@ -257,20 +257,20 @@ body {
   * Search
   */
 
-.search-container {
+.search {
     position: fixed;
     top: 0;
     right: 1em;
     padding: 0.5em;
 }
 
-.search-button {
+.search__button {
     float: right;
     background-color: rgba(255, 255, 255, 0.8);
     padding-right: 0.5em;
 }
 
-.search {
+.search__input {
     float: right;
     height: 1.85em;
     outline-width: 1px;
