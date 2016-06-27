@@ -55,10 +55,16 @@ export default React.createClass({
   },
   componentDidMount() {
     document.addEventListener('keydown', this.checkForSpecialKey, true);
-    this.loadThoughts(this.props.board);
+
+    if(!this.isInIntroMode()) {
+      this.loadThoughts(this.props.board);
+    }
   },
   componentWillUnmount() {
     document.removeEventListener('keydown', this.checkForSpecialKey, true);
+  },
+  isInIntroMode() {
+    return !this.props.board;
   },
   loadThoughts(board) {
     getThoughts(board).then((thoughts) => {
@@ -113,7 +119,9 @@ export default React.createClass({
       editableThoughtId: null
     });
 
-    deleteThought(this.props.board, thought);
+    if(!this.isInIntroMode()) {
+      deleteThought(this.props.board, thought);
+    }
   },
   hasFilter() {
     return this.state.hashtagFilters.length > 0;
@@ -142,6 +150,10 @@ export default React.createClass({
 
     if(thought.text.trim() === '') {
       this.deleteThought(thought);
+      return;
+    }
+
+    if(this.isInIntroMode()) {
       return;
     }
 

@@ -9,16 +9,13 @@ import 'utils/error-tracking';
 const $root = document.getElementById('root');
 
 function getBoardFromHash() {
-  return location.hash.replace(/#\//, '');
-}
+  const board = location.hash.replace(/#\//, '');
 
-function redirectToDefaultBoard() {
-  location.hash = '#/hello';
-}
+  if(board === '') {
+    return null;
+  }
 
-// Use default board if no board is selecteds
-if(getBoardFromHash() === '') {
-  redirectToDefaultBoard();
+  return board;
 }
 
 render(<App board={getBoardFromHash()} />, $root);
