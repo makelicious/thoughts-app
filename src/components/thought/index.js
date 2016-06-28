@@ -62,10 +62,8 @@ export const ThoughtContent = React.createClass({
         source={this.props.expanded ? this.props.thought.text : breakText(this.props.thought.text)}
         allowedTypes={ReactMarkdown.types.concat(['Checkbox', 'Hashtag'])}
         renderers={customRenderers}
-        walker={walker}
-    />
+        walker={walker} />
     );
-
   }
 });
 
@@ -85,6 +83,11 @@ export default React.createClass({
   },
   componentDidUpdate(prevProps) {
     if (!prevProps.editable && this.props.editable) {
+      this.focus();
+    }
+  },
+  componentDidMount() {
+    if (this.props.editable) {
       this.focus();
     }
   },
