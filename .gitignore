@@ -3,3 +3,5 @@ node_modules
 npm-debug.log
 dist
 deploy_key
+*.pem
+*.crx
