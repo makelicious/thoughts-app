@@ -60,6 +60,15 @@ body {
   color: #6d6d6d;
 }
 
+.thought__wrapper:hover .thought__info {
+  font-size: 12px;
+}
+
+.thought__wrapper:hover .thought__bubble--editable .thought__info {
+  font-size: 0;
+  transition: none;
+}
+
 .thought__tools {
   opacity: 0;
   transition: opacity 0.2s 0.3s ease;
@@ -96,11 +105,6 @@ body {
 
 .thought__tool__icon path {
   fill: #b9b9b9;
-}
-
-.thought__bubble--editable .thought__info,
-.thought__wrapper:hover .thought__info {
-  font-size: 12px;
 }
 
 @keyframes appear {
