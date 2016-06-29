@@ -32,14 +32,6 @@ import {
 } from 'thoughts/actions';
 
 const App = React.createClass({
-  getInitialState() {
-    return {
-      hashtagFilters: [],
-      // Thoughts created or modified while filter view
-      // It would probably be weird if they would just disappeared when you delete a tag
-      editedWhileFilterOn: []
-    };
-  },
   componentDidMount() {
     document.addEventListener('keydown', this.checkForSpecialKey, true);
   },
