@@ -1,6 +1,6 @@
 import { uniq } from 'lodash';
 
-export const HASHTAG_REGEXP = /#\w+/g;
+export const HASHTAG_REGEXP = /#[\w-_]+/g;
 export const CHECKBOX_REGEXP = /\[[x\s]?\](?=\s|$)/ig;
 export const UNFINISHED_TODO_TAG = '#unfinished-todo';
 
