@@ -14,13 +14,14 @@ import {
 } from 'utils/keys';
 
 import Thought from 'components/thought';
+
 import Notification from 'components/notification';
 import FilterBar from 'components/filter-bar';
 import Scaler from 'components/scaler';
 import Background from 'components/background';
 
 import {
-  addThought,
+  createThought,
   deleteThought,
   modifyThought,
   stopEditing,
@@ -91,7 +92,7 @@ const App = React.createClass({
     // Create thought
     if (!this.props.editableThoughtId && isThoughtCreatingKeypress(event)) {
       const initialText = `${this.props.hashtagFilters.join(' ')} `;
-      this.props.dispatch(addThought(initialText));
+      this.props.dispatch(createThought(initialText));
     }
   },
   render() {

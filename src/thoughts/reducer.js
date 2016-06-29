@@ -4,6 +4,7 @@ import { sortByCreatedAt } from 'utils/thought';
 
 import {
   CREATE_THOUGHT,
+  SUBMIT_THOUGHT,
   DELETE_THOUGHT,
   MODIFY_THOUGHT,
   SET_EDITABLE,
@@ -16,12 +17,15 @@ import {
 } from 'thoughts/actions';
 
 export function thoughtsReducer(state = [], action) {
+  if (action.type === SET_BOARD) {
+    return [];
+  }
 
   if (action.type === THOUGHTS_LOADED) {
     return action.payload.sort(sortByCreatedAt);
   }
 
-  if (action.type === CREATE_THOUGHT) {
+  if (action.type === SUBMIT_THOUGHT || action.type === CREATE_THOUGHT) {
     return [action.payload].concat(state);
   }
 

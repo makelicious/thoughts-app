@@ -1,23 +1,37 @@
 import { find } from 'lodash';
-import { createThought } from 'utils/thought';
+import { createThought as createThoughtObject } from 'utils/thought';
 import {
   updateThought,
   saveThought,
   getThoughts
 } from 'utils/storage';
 
+// Thought created automatically (in intro for example)
+export const SUBMIT_THOUGHT = 'SUBMIT_THOUGHT';
+
+// User creates a thought
 export const CREATE_THOUGHT = 'CREATE_THOUGHT';
+
 export const DELETE_THOUGHT = 'DELETE_THOUGHT';
 export const MODIFY_THOUGHT = 'MODIFY_THOUGHT';
 
 export const LOAD_THOUGHTS = 'LOAD_THOUGHTS';
 export const THOUGHTS_LOADED = 'THOUGHTS_LOADED';
 
-export function addThought(text) {
-  const newThought = createThought(text);
+export function createThought(text) {
+  const newThought = createThoughtObject(text);
 
   return {
     type: CREATE_THOUGHT,
+    payload: newThought
+  };
+}
+
+export function submitThought(text, type) {
+  const newThought = createThoughtObject(text, type);
+
+  return {
+    type: SUBMIT_THOUGHT,
     payload: newThought
   };
 }
