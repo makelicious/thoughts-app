@@ -1,8 +1,12 @@
 import React from 'react';
 import { expect } from 'chai';
 import { render } from 'enzyme';
+import proxyquire from 'proxyquire';
 
-import Thought from '../';
+const Thought = proxyquire('../', {
+  './assets/pen.svg': () => <div />,
+  './assets/trash.svg': () => <div />
+}).default;
 
 function createThought(text) {
   return {

@@ -5,7 +5,7 @@
     "build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js && cp index.html dist/$TARGET/",
     "build": "npm run build:webpack",
     "start": "node devServer.js",
-    "test": "NODE_ENV=test NODE_PATH=src mocha --require babel-core/register src/**/tests/*.js src/**/**/tests/*.js",
+    "test": "NODE_ENV=test NODE_PATH=src mocha --require babel-core/register --require test/init src/tests/*.js src/**/tests/*.js src/**/**/tests/*.js",
     "lint": "eslint src"
   },
   "devDependencies": {
@@ -31,6 +31,7 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "json-loader": "^0.5.4",
     "mocha": "^2.5.3",
+    "proxyquire": "^1.7.10",
     "react-addons-test-utils": "^15.1.0",
     "rimraf": "^2.4.3",
     "sinon": "^1.17.4",
