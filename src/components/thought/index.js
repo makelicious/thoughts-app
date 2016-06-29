@@ -8,6 +8,9 @@ import walker from 'utils/walker';
 import TextInput from 'components/text-input';
 import Checkbox from './components/checkbox';
 
+import Pen from './assets/pen.svg';
+import Trash from './assets/trash.svg';
+
 import {
   CHECKBOX_REGEXP,
   parseHashtags,
@@ -127,39 +130,53 @@ export default React.createClass({
   render() {
 
 
-    const createdAt = moment(this.props.thought.createdAt).format('MMMM Do YYYY, h:mm:ss a');
+    const createdAt = moment(this.props.thought.createdAt).format('MMMM Do YYYY, h:mm a');
 
-    const className = classNames('thought', this.props.className, {
-      'thought--editable': this.props.editable,
-      'thought--expanded': this.state.expanded
+    const className = classNames('thought__bubble', this.props.className, {
+      'thought__bubble--editable': this.props.editable,
+      'thought__bubble--expanded': this.state.expanded
     });
 
     return (
-      <div ref="container" className="thought-container">
-        <div
-          style={this.props.style}
-          onDoubleClick={this.props.onDoubleClick}
-          className={className}
-          onMouseEnter={this.expandThought}
-          onMouseLeave={this.minimizeThought}>
-          {
-            this.props.editable ? (
-              <TextInput
-                ref={'input'}
-                onChange={this.emitUpdatedText}
-                onCancel={this.props.onCancel}
-                onDelete={this.props.onDelete}
-                value={this.props.thought.text}
-                onSubmit={() => this.props.onSubmit(this.props.thought)} />
-            ) : (
-              <ThoughtContent
-                onHashtagClick={this.props.onHashtagClick}
-                onCheckboxClick={this.updateCheckbox}
-                expanded={this.state.expanded}
-                thought={this.props.thought} />
-            )
-          }
-          <div className="thought-createdAt">{createdAt}</div>
+      <div ref="container" className="thought">
+        <div className="thought__wrapper">
+          <div className="thought__tools">
+            <div className="thought__tools__wrapper">
+              <div onClick={this.props.onDoubleClick} className="thought__tools__tool">
+                <Pen className="thought__tool__icon" />
+              </div>
+              <div onClick={this.props.onDelete} className="thought__tools__tool">
+                <Trash className="thought__tool__icon" />
+              </div>
+            </div>
+          </div>
+          <div
+            style={this.props.style}
+            onDoubleClick={this.props.onDoubleClick}
+            className={className}
+            onMouseEnter={this.expandThought}
+            onMouseLeave={this.minimizeThought}>
+            {
+              this.props.editable ? (
+                <TextInput
+                  ref={'input'}
+                  onChange={this.emitUpdatedText}
+                  onCancel={this.props.onCancel}
+                  onDelete={this.props.onDelete}
+                  value={this.props.thought.text}
+                  onSubmit={() => this.props.onSubmit(this.props.thought)} />
+              ) : (
+                <ThoughtContent
+                  onHashtagClick={this.props.onHashtagClick}
+                  onCheckboxClick={this.updateCheckbox}
+                  expanded={this.state.expanded}
+                  thought={this.props.thought} />
+              )
+            }
+            <div className="thought__info">
+              <div className="thought__created-at">{createdAt}</div>
+            </div>
+          </div>
         </div>
       </div>
     );

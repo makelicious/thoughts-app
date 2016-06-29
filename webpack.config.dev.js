@@ -42,8 +42,12 @@ module.exports = {
       ]
     },
     {
-      test: /\.(ttf|jpg|png|svg|otf|eot|woff|woff2)/,
+      test: /\.(ttf|jpg|png|otf|eot|woff|woff2)/,
       loader: 'url?limit=100000'
+    },
+    {
+      test: /\.svg$/,
+      loader: 'babel!svg-react'
     }]
   }
 };

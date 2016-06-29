@@ -43,22 +43,64 @@ body {
  * Thought
  */
 
-.thought-container {
+.thought {
   text-align: center;
   margin: 1em 0;
 }
 
-.thought-createdAt {
-  font-size: 0;
-  transition: font, 0.2s, ease;
+.thought__wrapper {
+  display: inline-block;
+  text-align: left;
+  position: relative;
 }
 
-.thought:hover .thought-createdAt {
+.thought__info {
+  font-size: 0px;
+  transition: font 0.2s 0.3s ease;
+  color: #6d6d6d;
+}
+
+.thought__tools {
+  opacity: 0;
+  transition: opacity 0.2s 0.3s ease;
+
+  position: absolute;
+  left: 100%;
+  height: 100%;
+  z-index: 1;
+  padding-left: 5px;
+}
+
+.thought__tools__wrapper {
+  background: #fff;
+  border-radius: 3px;
+}
+
+.thought__bubble--editable .thought__tools,
+.thought__wrapper:hover .thought__tools {
+  opacity: 1;
+}
+.thought__tools__tool {
+  padding: 0 0.5em;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+.thought__tools__tool:hover {
+  background: #f1f1f1;
+}
+.thought__tool__icon {
+  width: 14px;
+  height: 14px;
+  margin-top: 7px;
+}
+
+.thought__tool__icon path {
+  fill: #b9b9b9;
+}
+
+.thought__bubble--editable .thought__info,
+.thought__wrapper:hover .thought__info {
   font-size: 12px;
-}
-
-.thought--editable:hover .thought-createdAt {
-  display: none;
 }
 
 @keyframes appear {
@@ -72,7 +114,7 @@ body {
   }
 }
 
-.thought {
+.thought__bubble {
   display: inline-block;
   background: #fff;
   padding: 1em;
@@ -82,7 +124,6 @@ body {
   box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.1);
   animation: appear 0.3s;
 
-  text-align: left;
   word-break: break-word;
   font-family: "freight-text-pro", Georgia;
   color: rgba(0, 0, 0, 0.8);
@@ -94,7 +135,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-.thought--editable {
+.thought__bubble--editable {
   background: repeating-linear-gradient(
     45deg,
     rgba(255, 255, 255, 0.90),
@@ -103,8 +144,9 @@ body {
     rgba(255, 255, 255, 1) 20px
   );
 }
-
-.thought--expanded, .thought--editable {
+.thought__wrapper:hover .thought__bubble,
+.thought__bubble--expanded,
+.thought__bubble--editable {
   transform: scale(1, 1) !important;
   opacity: 1 !important;
   transition: none;
@@ -251,8 +293,9 @@ body {
   cursor: pointer;
 }
 
-.notification img {
+.notification svg {
   width: 64px;
+  height: 64px;
 }
 
 .notification:after {
