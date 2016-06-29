@@ -83,6 +83,7 @@ body {
 .thought__tools__wrapper {
   background: #fff;
   border-radius: 3px;
+  overflow: hidden;
 }
 
 .thought__bubble--editable .thought__tools,
@@ -93,6 +94,9 @@ body {
   padding: 0 0.5em;
   border-bottom: 1px solid #ccc;
   cursor: pointer;
+}
+.thought__tools__tool:last-child {
+  border-bottom: 0;
 }
 .thought__tools__tool:hover {
   background: #f1f1f1;
