@@ -8,6 +8,9 @@ import {
   isEsc
 } from 'utils/keys';
 
+const stopPropagation = (event) =>
+  event.stopPropagation();
+
 export default React.createClass({
   focus() {
     const $el = findDOMNode(this.refs.editor);
@@ -44,6 +47,7 @@ export default React.createClass({
         ref="editor"
         onChange={(event) => this.props.onChange(event.target.value)}
         value={this.props.value}
+        onClick={stopPropagation}
         placeholder="What are you thinking?"
         onKeyDown={this.checkSpecialKeys} />
     );
