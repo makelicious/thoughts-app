@@ -8,14 +8,12 @@ export function saveThought(board, thought) {
     },
     body: JSON.stringify(thought)
   })
-  .then((res) => res.json())
+  .then((res) => res.json());
 }
 
 export function getThoughts(board) {
   return fetch(`${DOMAIN}/${board}/thoughts`)
-  .then((res) => {
-    return res.json();
-  })
+  .then((res) => res.json());
 }
 
 export function deleteThought(board, thought) {
@@ -35,5 +33,5 @@ export function updateThought(board, thought) {
     },
     body: JSON.stringify(thought)
   })
-  .then((res) => res.json())
+  .then((res) => res.json());
 }

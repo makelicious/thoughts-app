@@ -27,37 +27,33 @@ export const ThoughtContent = React.createClass({
      */
 
     const customRenderers = {
-      Link: (markdownProps) => {
-        return (
-          <a href={markdownProps.href} target="_blank">
-            {markdownProps.children}
-          </a>
-        )
-      },
-      Checkbox: (markdownProps) => {
-        return (
-          <Checkbox
-            onClick={this.props.onCheckboxClick}
-            index={markdownProps.literal.index}
-            checked={markdownProps.literal.checked} />
-        );
-      },
+      Link: (markdownProps) => (
+        <a href={markdownProps.href} target="_blank">
+          {markdownProps.children}
+        </a>
+      ),
+      Checkbox: (markdownProps) => (
+        <Checkbox
+          onClick={this.props.onCheckboxClick}
+          index={markdownProps.literal.index}
+          checked={markdownProps.literal.checked} />
+      ),
 
       Hashtag: (markdownProps) => {
         const hashtag = markdownProps.literal.hashtag;
 
-        const addHashtagFilter = (event, hashtag) => {
+        const addHashtagFilter = (event, hash) => {
           event.stopPropagation();
           event.preventDefault();
 
-          this.props.onHashtagClick(hashtag);
-        }
+          this.props.onHashtagClick(hash);
+        };
 
         return (
           <a onClick={(event) => addHashtagFilter(event, hashtag)} title={hashtag} href="#">
             {hashtag}
           </a>
-        )
+        );
       }
     };
     return (
@@ -67,10 +63,9 @@ export const ThoughtContent = React.createClass({
         allowedTypes={ReactMarkdown.types.concat(['Checkbox', 'Hashtag'])}
         renderers={customRenderers}
         walker={walker} />
-    )
-
+    );
   }
-})
+});
 
 
 function updateText(thought, newText) {
@@ -87,7 +82,12 @@ export default React.createClass({
     this.refs.input.focus();
   },
   componentDidUpdate(prevProps) {
-    if(!prevProps.editable && this.props.editable) {
+    if (!prevProps.editable && this.props.editable) {
+      this.focus();
+    }
+  },
+  componentDidMount() {
+    if (this.props.editable) {
       this.focus();
     }
   },
@@ -136,7 +136,12 @@ export default React.createClass({
 
     return (
       <div ref="container" className="thought-container">
-        <div style={this.props.style} onDoubleClick={this.props.onDoubleClick} className={className} onMouseEnter={this.expandThought} onMouseLeave={this.minimizeThought}>
+        <div
+          style={this.props.style}
+          onDoubleClick={this.props.onDoubleClick}
+          className={className}
+          onMouseEnter={this.expandThought}
+          onMouseLeave={this.minimizeThought}>
           {
             this.props.editable ? (
               <TextInput
@@ -154,9 +159,9 @@ export default React.createClass({
                 thought={this.props.thought} />
             )
           }
-            <div className="thought-createdAt">{createdAt}</div>
+          <div className="thought-createdAt">{createdAt}</div>
         </div>
       </div>
-    )
+    );
   }
 });

@@ -1,21 +1,9 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
-import classNames from 'classnames';
 import { find } from 'lodash';
+import { connect } from 'react-redux';
 
 import {
-  saveThought,
-  getThoughts,
-  deleteThought,
-  updateThought
-} from 'utils/storage';
-
-import {
-  parseTodos,
-  parseHashtags,
-  createThought,
   getUnfinishedTodos,
-  sortByCreatedAt,
   UNFINISHED_TODO_TAG
 } from 'utils/thought';
 
@@ -26,189 +14,91 @@ import {
 } from 'utils/keys';
 
 import Thought from 'components/thought';
-import Hashtag from 'components/hashtag';
+
 import Notification from 'components/notification';
 import FilterBar from 'components/filter-bar';
 import Scaler from 'components/scaler';
 import Background from 'components/background';
 
-export default React.createClass({
-  getInitialState() {
-    return {
-      thoughts: [],
-      editableThoughtId: null,
-      currentText: '',
-      hashtagFilters: [],
-      // Thoughts created or modified while filter view
-      // It would probably be weird if they would just disappeared when you delete a tag
-      editedWhileFilterOn: []
-    }
-  },
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.board === this.props.board) {
-      return;
-    }
+import {
+  createThought,
+  deleteThought,
+  modifyThought,
+  stopEditing,
+  setEditable,
+  resetFilters,
+  removeFilter,
+  addFilter
+} from 'thoughts/actions';
 
-    // When board param changes, basically reset everything
-    this.setState(this.getInitialState());
-    this.loadThoughts(nextProps.board);
-  },
+const App = React.createClass({
   componentDidMount() {
     document.addEventListener('keydown', this.checkForSpecialKey, true);
-    this.loadThoughts(this.props.board);
   },
   componentWillUnmount() {
     document.removeEventListener('keydown', this.checkForSpecialKey, true);
   },
-  loadThoughts(board) {
-    getThoughts(board).then((thoughts) => {
-      this.setState({
-        thoughts: thoughts.sort(sortByCreatedAt)
-      });
-    });
+  updateThought(thought) {
+    this.props.dispatch(modifyThought(thought));
+  },
+  deleteThought(thought) {
+    this.props.dispatch(deleteThought(thought));
+  },
+  setEditable(thought) {
+    this.props.dispatch(setEditable(thought));
+  },
+  stopEditing(thought) {
+    this.props.dispatch(stopEditing(thought));
+  },
+  addFilter(hashtag) {
+    this.props.dispatch(addFilter(hashtag));
+  },
+  removeFromFilter(hashtag) {
+    this.props.dispatch(removeFilter(hashtag));
+  },
+  resetFilters() {
+    this.props.dispatch(resetFilters());
+  },
+  resetEditable() {
+    const id = this.props.editableThoughtId;
+    if (id) {
+      const thought = find(this.props.thoughts, { id });
+      this.props.dispatch(stopEditing(thought));
+    }
   },
   checkForSpecialKey(event) {
-    const thoughts = this.state.thoughts;
+    const thoughts = this.props.thoughts;
 
     // Edit the most recent thought
-    if(!this.state.editableThoughtId && isUp(event.keyCode) && thoughts.length > 0) {
+    if (!this.props.editableThoughtId && isUp(event.keyCode) && thoughts.length > 0) {
       this.setEditable(thoughts[0]);
       return;
     }
 
     // Reset filters with ESC
-    if(!this.state.editableThoughtId && isEsc(event.keyCode)) {
+    if (!this.props.editableThoughtId && isEsc(event.keyCode)) {
       this.resetFilters();
       return;
     }
 
     // Create thought
-    if(!this.state.editableThoughtId && isThoughtCreatingKeypress(event)) {
-      const initialText = `${this.state.hashtagFilters.join(' ')} `;
-      const newThought = this.createThought(initialText);
-      this.setEditable(newThought);
-      return;
+    if (!this.props.editableThoughtId && isThoughtCreatingKeypress(event)) {
+      const initialText = `${this.props.hashtagFilters.join(' ')} `;
+      this.props.dispatch(createThought(initialText));
     }
-  },
-  createThought(text) {
-    const newThought = createThought(text);
-    const updatedThoughts = [newThought].concat(this.state.thoughts);
-
-    this.setState({
-      thoughts: updatedThoughts
-    });
-
-    return newThought;
-  },
-  deleteThought(thought) {
-    // Delete thought from state optimistically
-    // Do nothing with the return value of the delete api request
-
-    const updatedThoughts = this.state.thoughts.filter((thoug) =>
-      thought !== thoug
-    );
-
-    this.setState({
-      thoughts: updatedThoughts,
-      editableThoughtId: null
-    });
-
-    deleteThought(this.props.board, thought);
-  },
-  hasFilter() {
-    return this.state.hashtagFilters.length > 0;
-  },
-  findThoughtById(id) {
-    return find(this.state.thoughts, { id });
-  },
-  setEditable(thought) {
-    // Something is already being edited
-    if(this.state.editableThoughtId) {
-      const editableThought =
-        this.findThoughtById(this.state.editableThoughtId);
-
-      this.stopEditing(editableThought);
-    }
-
-    this.setState({
-      editableThoughtId: thought.id,
-      editedWhileFilterOn: this.hasFilter() ?
-        this.state.editedWhileFilterOn.concat(thought.id) :
-        this.state.editedWhileFilterOn
-    });
-  },
-  stopEditing(thought) {
-    this.resetEditable();
-
-    if(thought.text.trim() === '') {
-      this.deleteThought(thought);
-      return;
-    }
-
-    if(thought._id) {
-      updateThought(this.props.board, thought)
-      .then((updatedThought) => {
-        this.updateThought(thought, updatedThought);
-      });
-    } else {
-      saveThought(this.props.board, thought).then((savedThought) => {
-        this.updateThought(thought, savedThought);
-      });
-    }
-  },
-  resetEditable() {
-    this.setState({ editableThoughtId: null });
-  },
-  addFilter(hashtag) {
-    const filterExists = this.state.hashtagFilters.indexOf(hashtag) > -1;
-
-    if(filterExists) {
-      return;
-    }
-
-    this.setState({
-      hashtagFilters: this.state.hashtagFilters.concat(hashtag),
-      editedWhileFilterOn: []
-    });
-  },
-  removeFromFilter(hashtag) {
-    if(this.state.hashtagFilters.length === 1) {
-      this.resetFilters();
-      return;
-    }
-
-    this.setState({
-      hashtagFilters: this.state.hashtagFilters.filter((hash) => hash !== hashtag)
-    });
-  },
-  resetFilters() {
-    this.setState({
-      hashtagFilters: [],
-      editedWhileFilterOn: []
-    });
-  },
-  updateThought(thought, newThought) {
-    const updatedThoughts = this.state.thoughts.map((thoug) => {
-      if(thoug !== thought) {
-        return thoug;
-      }
-      return newThought;
-    });
-
-    this.setState({
-      thoughts: updatedThoughts
-    });
   },
   render() {
-    const thoughts = this.state.thoughts;
-    const hashtagFilters = this.state.hashtagFilters;
-
+    const thoughts = this.props.thoughts;
+    const hashtagFilters = this.props.hashtagFilters;
     const unfinishedTodos = getUnfinishedTodos(thoughts);
 
     const filteredThoughts = hashtagFilters.length === 0 ?
       thoughts :
       thoughts.filter((thought) => {
-        const edited = this.state.editedWhileFilterOn.indexOf(thought.id) > -1;
+        // Show thoughts that match current filters or that have been
+        // edited while current filter was on
+
+        const edited = this.props.editedWhileFilterOn.indexOf(thought.id) > -1;
 
         const hasMatchingTag = hashtagFilters.every((hashtag) =>
           thought.hashtags.indexOf(hashtag) > -1
@@ -217,6 +107,7 @@ export default React.createClass({
         return edited || hasMatchingTag;
       });
 
+    // Use thought scaler only when filters are not used
     const ThoughtsWrapper = hashtagFilters.length === 0 ?
       Scaler :
       'div';
@@ -224,11 +115,6 @@ export default React.createClass({
     return (
       <Background className="app" onClick={this.resetEditable}>
         <div className="overlays">
-          <div className="search">
-            <span className="search__button">{'\uD83D\uDD0D'}</span>
-            <input className="search__input" placeholder="Search" />
-          </div>
-
           <FilterBar
             hashtags={hashtagFilters}
             thoughts={thoughts}
@@ -244,29 +130,35 @@ export default React.createClass({
         </div>
         <ThoughtsWrapper ref="thoughts" className="thoughts">
           {
-            filteredThoughts.map((thought) => {
-              return (
-                <Thought
-                  key={thought.id}
-                  onDoubleClick={(event) => {
-                    event.stopPropagation();
-                    this.setEditable(thought);
-                  }}
-                  onChange={(updatedThought) =>
-                    this.updateThought(thought, updatedThought)}
-                  onSubmit={(updatedThought) =>
-                    this.stopEditing(updatedThought)}
-                  onCancel={() => this.stopEditing(thought)}
-                  onDelete={() => this.deleteThought(thought)}
-                  onHashtagClick={this.addFilter}
-                  editable={this.state.editableThoughtId === thought.id}
-                  thought={thought} />
-
-              )
-            })
+            filteredThoughts.map((thought) => (
+              <Thought
+                key={thought.id}
+                onDoubleClick={(event) => {
+                  event.stopPropagation();
+                  this.setEditable(thought);
+                }}
+                onChange={this.updateThought}
+                onSubmit={this.stopEditing}
+                onCancel={() => this.stopEditing(thought)}
+                onDelete={() => this.deleteThought(thought)}
+                onHashtagClick={this.addFilter}
+                editable={this.props.editableThoughtId === thought.id}
+                thought={thought} />
+            ))
           }
         </ThoughtsWrapper>
       </Background>
     );
   }
 });
+
+function storeToProps(store) {
+  return {
+    thoughts: store.thoughts,
+    editableThoughtId: store.editor.editableThoughtId,
+    editedWhileFilterOn: store.editor.editedWhileFilterOn,
+    hashtagFilters: store.editor.hashtagFilters
+  };
+}
+
+export default connect(storeToProps)(App);

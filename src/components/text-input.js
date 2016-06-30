@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Textarea from 'react-textarea-autosize';
 import { findDOMNode } from 'react-dom';
 
 import {
   isEnter,
   isBackspace,
-  isEsc,
+  isEsc
 } from 'utils/keys';
 
 export default React.createClass({
@@ -20,19 +20,19 @@ export default React.createClass({
     $el.setSelectionRange(length, length);
   },
   checkSpecialKeys(event) {
-    if(isEnter(event.keyCode) && !event.shiftKey) {
+    if (isEnter(event.keyCode) && !event.shiftKey) {
       event.preventDefault();
       this.props.onSubmit();
       return;
     }
 
-    if(isBackspace(event.keyCode) && this.props.value === '') {
+    if (isBackspace(event.keyCode) && this.props.value === '') {
       event.preventDefault();
       this.props.onDelete();
       return;
     }
 
-    if(isEsc(event.keyCode)) {
+    if (isEsc(event.keyCode)) {
       this.props.onCancel();
       return;
     }
@@ -45,7 +45,7 @@ export default React.createClass({
         onChange={(event) => this.props.onChange(event.target.value)}
         value={this.props.value}
         placeholder="What are you thinking?"
-        onKeyDown={this.checkSpecialKeys}></Textarea>
+        onKeyDown={this.checkSpecialKeys} />
     );
   }
-})
+});

@@ -1,29 +1,61 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import 'style.css';
-import App from 'app';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 
+import {
+  thoughtsReducer,
+  editorReducer
+} from 'thoughts/reducer';
+
+import { setBoard } from 'thoughts/actions';
+
+import 'style.css';
 import 'utils/error-tracking';
 
+import App from 'app';
 const $root = document.getElementById('root');
 
 function getBoardFromHash() {
-  return location.hash.replace(/#\//, '');
+  const board = location.hash.replace(/#\//, '');
+
+  if (board === '') {
+    return null;
+  }
+
+  return board;
 }
 
-function redirectToDefaultBoard() {
-  location.hash = '#/hello';
-}
+/*
+ * Redux related stuff
+ */
 
-// Use default board if no board is selecteds
-if(getBoardFromHash() === '') {
-  redirectToDefaultBoard();
-}
+const reducers = combineReducers({
+  thoughts: thoughtsReducer,
+  editor: editorReducer
+});
 
-render(<App board={getBoardFromHash()} />, $root);
+const store = createStore(
+  reducers,
+  // By default actions just return an object like { type: X, payload Y}
+  // so we cant do anything asynchronous.
+  // This middleware allows us to also return functions (see thoughts/actions.js)
+  applyMiddleware(thunk)
+);
 
-// Render every time the hash of the users url changes
+// Dispatch current board to store
+store.dispatch(setBoard(getBoardFromHash()));
+
+// Dispatch current board to store every time the hash changes
 window.addEventListener('hashchange', () =>
-  render(<App board={getBoardFromHash()} />, $root)
+  store.dispatch(setBoard(getBoardFromHash()))
 , false);
+
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  $root
+);

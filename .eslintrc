@@ -1,27 +1,46 @@
 {
+  "extends": "airbnb",
   "ecmaFeatures": {
-    "jsx": true,
     "modules": true
   },
   "env": {
     "browser": true,
-    "node": true
-  },
-  "parser": "babel-eslint",
-  "rules": {
-    "quotes": [2, "single"],
-    "strict": [2, "never"],
-    "babel/generator-star-spacing": 1,
-    "babel/new-cap": 1,
-    "babel/object-shorthand": 1,
-    "babel/arrow-parens": 1,
-    "babel/no-await-in-loop": 1,
-    "react/jsx-uses-react": 2,
-    "react/jsx-uses-vars": 2,
-    "react/react-in-jsx-scope": 2
+    "node": true,
+    "mocha": true
   },
   "plugins": [
-    "babel",
-    "react"
-  ]
+    "mocha"
+  ],
+  "parser": "babel-eslint",
+  "rules": {
+    "mocha/no-exclusive-tests": 2,
+    "indent": [2, 2, {"SwitchCase": 1}],
+    "quotes": [2, "single"],
+    "comma-dangle": [2, "never"],
+    "keyword-spacing": [2, {
+      "before": true,
+      "after": true
+    }],
+    "no-underscore-dangle": 0,
+    "react/prefer-es6-class": 0,
+    "react/prop-types": 0,
+    "react/no-multi-comp": 0,
+    "react/prefer-stateless-function": 0,
+    "space-before-function-paren": [2, "never"],
+    "no-use-before-define": 0,
+    "no-console": 0,
+    "react/sort-comp": 0,
+    "import/no-unresolved": 0,
+    "no-else-return": 0,
+    "prefer-const": 0,
+    "react/jsx-closing-bracket-location": 0,
+    "new-cap": 0,
+    "padded-blocks": 0,
+    "id-length": [2, {
+      "min": 3,
+      "max": 30,
+      "properties": "never",
+      "exceptions": ["id", "i", "e", "fn", "_", "db", "or", "a", "b", "j", "k", "el"]
+    }]
+  }
 }

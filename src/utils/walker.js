@@ -7,7 +7,7 @@ import { Node } from 'commonmark';
 
 import { HASHTAG_REGEXP } from 'utils/thought';
 
-const LINK_REGEXP = /(?:\w+:)?\/\/(?:[^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*/g;
+const LINK_REGEXP = /(?:\w+:)?\/\/(?:[^\s\.]+\.\S{2}|localhost[:?\d]*)\S*/g;
 
 function endsWithSpace(str) {
   return Boolean(str.match(/\s$/));
@@ -21,27 +21,27 @@ function endsWithSpace(str) {
  */
 
 function combineFollowingTexts(node, walker) {
-  if(!node.literal.match(HASHTAG_REGEXP) &&
+  if (!node.literal.match(HASHTAG_REGEXP) &&
      !node.literal.match(LINK_REGEXP)) {
     return;
   }
 
   let nextNode = node.next;
-  let resumeAt = node.next
+  let resumeAt = node.next;
 
-  if(endsWithSpace(node.literal)) {
+  if (endsWithSpace(node.literal)) {
     return;
   }
 
-  while(nextNode && nextNode.type === 'Text') {
-
+  while (nextNode && nextNode.type === 'Text') {
+    // eslint-disable-next-line no-param-reassign
     node.literal += nextNode.literal;
 
     node.next.unlink();
 
     resumeAt = node.next;
 
-    if(endsWithSpace(nextNode.literal)) {
+    if (endsWithSpace(nextNode.literal)) {
       break;
     }
 
@@ -59,8 +59,9 @@ function searchFromAst(node, fn) {
 
   let event;
 
+  // eslint-disable-next-line no-cond-assign
   while ((event = walker.next())) {
-    if(fn(event.node)) {
+    if (fn(event.node)) {
       result.push(event.node);
     }
   }
@@ -71,7 +72,7 @@ function replaceInsideTextNode(node, replacerFn) {
 
   const literal = node.literal.trim();
 
-  literal.split(' ').forEach((str, i) => {
+  literal.split(' ').forEach((str) => {
     const newNode = replacerFn(str);
     node.parent.appendChild(newNode);
     node.insertBefore(newNode);
@@ -111,7 +112,7 @@ function createHashtagNode(hashtag) {
 
   const textNode = new Node('Text');
   textNode.literal = hashtag;
-  hashtagNode.appendChild(textNode)
+  hashtagNode.appendChild(textNode);
 
   return hashtagNode;
 }
@@ -141,8 +142,8 @@ function createCheckboxes(node, walker) {
   // Calculate the index of this checkbox inside of one thought
   // it's used for selecting right todo to mark as done / undone on click
 
-  const allCheckboxNodes = searchFromAst(walker.root, (node) =>
-    node.type === 'Checkbox'
+  const allCheckboxNodes = searchFromAst(walker.root, (currentNode) =>
+    currentNode.type === 'Checkbox'
   );
 
   const hashtagIndex = allCheckboxNodes.length;
@@ -156,7 +157,7 @@ function createCheckboxes(node, walker) {
   node.parent.appendChild(checkboxNode);
   node.insertBefore(checkboxNode);
 
-  if(node.next.next && node.next.next.literal === ']') {
+  if (node.next.next && node.next.next.literal === ']') {
     resumeAt = node.next.next.next;
     node.next.next.unlink();
   }
@@ -172,24 +173,24 @@ function createCheckboxes(node, walker) {
 
 function transformText(node) {
   replaceInsideTextNode(node, (str) => {
-    if(str.match(HASHTAG_REGEXP)) {
+    if (str.match(HASHTAG_REGEXP)) {
       return createHashtagNode(str);
     }
-    if(str.match(LINK_REGEXP)) {
+    if (str.match(LINK_REGEXP)) {
       return createLinkNode(str);
     }
     return createTextNode(str);
   });
 }
 
-export default function walker({node}, walker) {
-  if(isCheckboxNode(node)) {
-    createCheckboxes(node, walker)
+export default function doWalk({ node }, walker) {
+  if (isCheckboxNode(node)) {
+    createCheckboxes(node, walker);
     return;
   }
 
-  if(isTextNode(node)) {
-    combineFollowingTexts(node, walker)
+  if (isTextNode(node)) {
+    combineFollowingTexts(node, walker);
     transformText(node);
   }
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import { flatten, uniq } from 'lodash';
 import Hashtag from 'components/hashtag';
 
 import { getAssociatedHashtags } from 'utils/thought';
@@ -42,22 +41,20 @@ export default function FilterBar(props) {
             </div>
             <div>
               {
-                associatedHashtags.map((hashtag, i) => {
-                  return (
-                    <span key={i}>
-                      <Hashtag
-                        className="filter-bar__associated-hashtags__hashtag"
-                        onClick={() => props.onAddTag(hashtag)}>
-                        {hashtag}
-                      </Hashtag>&nbsp;
-                    </span>
-                  )
-                })
+                associatedHashtags.map((hashtag, i) => (
+                  <span key={i}>
+                    <Hashtag
+                      className="filter-bar__associated-hashtags__hashtag"
+                      onClick={() => props.onAddTag(hashtag)}>
+                      {hashtag}
+                    </Hashtag>&nbsp;
+                  </span>
+                ))
               }
             </div>
           </div>
         )
       }
     </div>
-  )
+  );
 }
