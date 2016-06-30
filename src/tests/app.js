@@ -57,15 +57,15 @@ describe('<App />', () => {
 
     expect(app.find('.thought')).to.have.length(1);
   });
-  // it('filters thoughts with hashtag with dashes', () => {
-  //   const app = createApp({
-  //     thoughts: [
-  //       createThought('foo #bara-barer'),
-  //       createThought('hello')
-  //     ],
-  //     hashtagFilters: ['#bara-barer']
-  //   });
-  //
-  //   expect(app.find('.thought')).to.have.length(1);
-  // });
+  it('filters thoughts with hashtag with dashes', () => {
+    const app = createApp({
+      thoughts: [
+        createThought('foo #bara-barer'),
+        createThought('hello')
+      ],
+      hashtagFilters: ['#bara-barer']
+    });
+
+    expect(app.find('.thought')).to.have.length(1);
+  });
 });
