@@ -14,6 +14,7 @@ import { setBoard } from 'thoughts/actions';
 
 import 'style.css';
 import 'utils/error-tracking';
+import 'utils/analytics';
 
 import App from 'app';
 const $root = document.getElementById('root');
