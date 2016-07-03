@@ -3,7 +3,8 @@ import { createThought as createThoughtObject } from 'utils/thought';
 import {
   updateThought,
   saveThought,
-  getThoughts
+  getThoughts,
+  deleteThought
 } from 'utils/storage';
 
 // Thought created automatically (in intro for example)
@@ -36,12 +37,23 @@ export function submitThought(text, type) {
   };
 }
 
-export function deleteThought(thought) {
-  return {
-    type: DELETE_THOUGHT,
-    payload: thought
+function deleteThoughtAction(thought) {
+  return (dispatch, getState) => {
+    const currentState = getState();
+    const { board } = currentState.editor;
+
+    dispatch({
+      type: DELETE_THOUGHT,
+      payload: thought
+    });
+
+    if (board && thought._id) {
+      deleteThought(board, thought);
+    }
   };
 }
+
+export { deleteThoughtAction as deleteThought };
 
 export function modifyThought(thought) {
   return {
@@ -133,7 +145,7 @@ export function resetFilters() {
 
 export function stopEditing(thought) {
   if (thought.text.trim() === '') {
-    return deleteThought(thought);
+    return deleteThoughtAction(thought);
   }
 
   return (dispatch, getState) => {
