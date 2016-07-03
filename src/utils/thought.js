@@ -7,7 +7,7 @@ export const UNFINISHED_TODO_TAG = '#unfinished-todo';
 export function createThought(text) {
   return {
     text,
-    id: Date.now() + Math.round(Math.random() * 10000),
+    id: (Date.now() + Math.round(Math.random() * 10000)).toString(),
     todos: parseTodos(text),
     hashtags: parseHashtags(text),
     createdAt: new Date()
