@@ -19,6 +19,7 @@ export const LOAD_THOUGHTS = 'LOAD_THOUGHTS';
 export const THOUGHTS_LOADED = 'THOUGHTS_LOADED';
 
 export const SET_SEARCH_TERM = 'SET_SEARCH_TERM';
+export const SEARCH_RESULTS_SUCCESS = 'SEARCH_RESULTS_SUCCESS';
 
 export function createThought(text) {
   const newThought = createThoughtObject(text);
@@ -58,6 +59,23 @@ export function setSearchTerm(text) {
     payload: text
   };
 }
+
+export function submitSearch() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const board = state.editor.board;
+    const searchTerm = state.editor.searchTerm;
+    return fetch(`https://evening-oasis-93330.herokuapp.com/${board}/thoughts?search=${searchTerm}`)
+    .then((res) => res.json())
+    .then((searchResults) => {
+      dispatch({
+        type: SEARCH_RESULTS_SUCCESS,
+        payload: searchResults
+      });
+    });
+  };
+}
+
 
 export function loadThoughts() {
   return (dispatch, getState) => {

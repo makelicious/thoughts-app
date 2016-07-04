@@ -62,13 +62,14 @@ const App = React.createClass({
   },
   resetEditable() {
     const id = this.props.editableThoughtId;
+    console.log(id);
     if (id) {
       const thought = find(this.props.thoughts, { id });
       this.props.dispatch(stopEditing(thought));
     }
   },
   checkForSpecialKey(event) {
-    console.log(event.target);
+    console.log(event.target.tagName);
     const thoughts = this.props.thoughts;
 
     // Edit the most recent thought
@@ -84,7 +85,9 @@ const App = React.createClass({
     }
 
     // Create thought
-    if (!this.props.editableThoughtId && isThoughtCreatingKeypress(event)) {
+    if (!this.props.editableThoughtId &&
+        isThoughtCreatingKeypress(event) &&
+        event.target.tagName !== 'INPUT') {
       const initialText = `${this.props.hashtagFilters.join(' ')} `;
       this.props.dispatch(createThought(initialText));
     }

@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { setSearchTerm } from 'thoughts/actions';
+import { setSearchTerm, submitSearch } from 'thoughts/actions';
 
 
 export const Search = React.createClass({
+  submitSearch() {
+    this.props.dispatch(submitSearch());
+  },
   render() {
     const updateSearchTerm = (event) => {
       event.stopPropagation();
@@ -12,7 +15,8 @@ export const Search = React.createClass({
     };
     return (
       <div className="search">
-        <span className="search__button">{'\uD83D\uDD0D'}</span>
+        <span className="search__button"
+          onClick={this.submitSearch}>{'\uD83D\uDD0D'}</span>
         <input
           value={this.props.searchTerm}
           className="search__input"

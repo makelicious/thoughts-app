@@ -14,15 +14,24 @@ import {
   ADD_FILTER,
   REMOVE_FILTER,
   RESET_FILTERS,
-  THOUGHTS_LOADED
+  THOUGHTS_LOADED,
+  SEARCH_RESULTS_SUCCESS
 } from 'thoughts/actions';
 
+
 export function thoughtsReducer(state = [], action) {
+  console.log(action.type);
   if (action.type === SET_BOARD) {
     return [];
   }
 
   if (action.type === THOUGHTS_LOADED) {
+    return action.payload.sort(sortByCreatedAt);
+  }
+
+  if (action.type === SEARCH_RESULTS_SUCCESS) {
+    console.log(action.type);
+    console.log(action.payload);
     return action.payload.sort(sortByCreatedAt);
   }
 
@@ -32,10 +41,6 @@ export function thoughtsReducer(state = [], action) {
 
   if (action.type === DELETE_THOUGHT) {
     return without(state, action.payload);
-  }
-
-  if (action.type === SET_SEARCH_TERM) {
-    return action.payload.sort(sortByCreatedAt);
   }
 
   if (action.type === MODIFY_THOUGHT) {
@@ -56,7 +61,8 @@ const INITIAL_STATE = {
   hashtagFilters: [],
   // Thoughts created or modified while filter view
   // It would probably be weird if they would just disappeared when you delete a tag
-  editedWhileFilterOn: []
+  editedWhileFilterOn: [],
+  searchTerm: ''
 };
 
 export function editorReducer(state = INITIAL_STATE, action) {
@@ -66,6 +72,14 @@ export function editorReducer(state = INITIAL_STATE, action) {
       board: action.payload
     };
   }
+
+  if (action.type === SET_SEARCH_TERM) {
+    return {
+      ...state,
+      searchTerm: action.payload
+    };
+  }
+
   if (action.type === MODIFY_THOUGHT) {
     if (state.editedWhileFilterOn.indexOf(action.payload.id) > -1 ||
       state.hashtagFilters.length === 0) {
