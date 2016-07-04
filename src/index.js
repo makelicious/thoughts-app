@@ -16,7 +16,8 @@ import 'style.css';
 import 'utils/error-tracking';
 import 'utils/analytics';
 
-import App from 'app';
+import LandingPage from 'containers/landing-page';
+
 const $root = document.getElementById('root');
 
 function getBoardFromHash() {
@@ -56,7 +57,7 @@ window.addEventListener('hashchange', () =>
 
 render(
   <Provider store={store}>
-    <App />
+    <LandingPage />
   </Provider>,
   $root
 );

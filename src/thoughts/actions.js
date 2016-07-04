@@ -28,8 +28,8 @@ export function createThought(text) {
   };
 }
 
-export function submitThought(text, type) {
-  const newThought = createThoughtObject(text, type);
+export function submitThought(text) {
+  const newThought = createThoughtObject(text);
 
   return {
     type: SUBMIT_THOUGHT,

@@ -38,6 +38,76 @@ body {
   bottom: 0;
 }
 
+/*
+ * Landing page
+ */
+
+.landing-page {
+  height: 100%;
+  display: flex;
+}
+.landing-page__column {
+  height: 100%;
+}
+.landing-page__column:first-child {
+  position: relative;
+  flex-grow: 1;
+}
+.landing-page__column:first-child:after {
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 20%,rgba(255,255,255,0.5) 100%);
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+
+.landing-page__column:first-child .thoughts {
+  overflow: hidden;
+}
+.landing-page__column:last-child {
+  width: 600px;
+  padding: 3em 0;
+  background: linear-gradient(135deg, #d2708e 14%, #f5e8a7 100%);
+  box-shadow: -10px 0 100px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  justify-content: center;
+  overflow: auto;
+}
+.landing-page__logo {
+  width: 200px;
+  display: block;
+  margin: 0 auto;
+}
+.landing-page__button {
+  border: 0;
+  padding: 1.25em 5em;
+  background-image: url('./containers/landing-page/assets/space-bg.png');
+  background-size: cover;
+  color: #fff;
+  display: block;
+  margin: 0 auto;
+  font-size: 1.25em;
+  font-weight: bold;
+  font-family: "jaf-bernino-sans",sans-serif;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.landing-page__description {
+  font-family: "jaf-bernino-sans",sans-serif;
+  padding: 1em 3em;
+  font-weight: 300;
+  line-height: 1.5em;
+  font-size: 16px;
+  color: #693343;
+  margin: 2em 0;
+  margin-bottom: 4em;
+}
 
 /*
  * Thought
