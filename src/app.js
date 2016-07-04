@@ -19,6 +19,7 @@ import Notification from 'components/notification';
 import FilterBar from 'components/filter-bar';
 import Scaler from 'components/scaler';
 import Background from 'components/background';
+import Search from 'components/search';
 
 import {
   createThought,
@@ -67,6 +68,7 @@ const App = React.createClass({
     }
   },
   checkForSpecialKey(event) {
+    console.log(event.target);
     const thoughts = this.props.thoughts;
 
     // Edit the most recent thought
@@ -115,6 +117,7 @@ const App = React.createClass({
     return (
       <Background className="app" onClick={this.resetEditable}>
         <div className="overlays">
+          <Search />
           <FilterBar
             hashtags={hashtagFilters}
             thoughts={thoughts}
