@@ -15,6 +15,7 @@ import {
   REMOVE_FILTER,
   RESET_FILTERS,
   RESET_THOUGHTS,
+  THOUGHTS_LOADING,
   THOUGHTS_LOADED
 } from 'thoughts/actions';
 

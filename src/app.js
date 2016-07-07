@@ -19,6 +19,7 @@ import Notification from 'components/notification';
 import FilterBar from 'components/filter-bar';
 import Scaler from 'components/scaler';
 import Background from 'components/background';
+import LoadingOverlay from 'components/loading-overlay';
 
 import {
   createThought,
@@ -147,6 +148,7 @@ const App = React.createClass({
             ))
           }
         </ThoughtsWrapper>
+        <LoadingOverlay visible={this.props.thoughtsLoading} />
       </Background>
     );
   }
@@ -155,6 +157,7 @@ const App = React.createClass({
 function storeToProps(store) {
   return {
     thoughts: store.thoughts,
+    thoughtsLoading: store.editor.thoughtsLoading,
     editableThoughtId: store.editor.editableThoughtId,
     editedWhileFilterOn: store.editor.editedWhileFilterOn,
     hashtagFilters: store.editor.hashtagFilters

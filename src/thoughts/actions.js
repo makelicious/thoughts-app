@@ -18,6 +18,8 @@ export const MODIFY_THOUGHT = 'MODIFY_THOUGHT';
 
 export const RESET_THOUGHTS = 'RESET_THOUGHTS';
 export const LOAD_THOUGHTS = 'LOAD_THOUGHTS';
+
+export const THOUGHTS_LOADING = 'THOUGHTS_LOADING';
 export const THOUGHTS_LOADED = 'THOUGHTS_LOADED';
 
 export function createThought(text) {
@@ -77,6 +79,10 @@ export function loadThoughts() {
     if (!board) {
       return;
     }
+
+    dispatch({
+      type: THOUGHTS_LOADING
+    })
 
     getThoughts(board).then((thoughts) =>
       dispatch({
