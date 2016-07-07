@@ -34,8 +34,9 @@ export function getThoughts() {
 export function deleteThought(board, thought) {
   const data = getData();
 
-  data.thoughts = without(data.thoughts, { id: thought.id });
+  data.thoughts = data.thoughts.filter(({ id }) => id !== thought.id);
   saveData(data);
+
   return Promise.resolve();
 }
 

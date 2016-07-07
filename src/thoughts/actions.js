@@ -50,7 +50,7 @@ function deleteThoughtAction(thought) {
       payload: thought
     });
 
-    if (board && thought._id) {
+    if (board && thought._id !== undefined) {
       deleteThought(board, thought);
     }
   };
@@ -176,7 +176,7 @@ export function stopEditing(thought) {
       return;
     }
 
-    if (thought._id) {
+    if (thought._id !== undefined) {
       updateThought(currentState.editor.board, thought).then((updatedThought) =>
         dispatch(modifyThought(updatedThought))
       );
