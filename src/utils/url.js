@@ -1,6 +1,6 @@
 export function getBoardFromHash() {
   const board = location.hash.replace(/#\//, '');
-  if (board === '' || board === 'me') {
+  if (board === '') {
     return null;
   }
 
