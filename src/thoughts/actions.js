@@ -141,6 +141,12 @@ export function setEditable(thought) {
 
 export function setBoard(board) {
   return (dispatch) => {
+
+    if (board !== null) {
+      document.title = board;
+    }
+
+
     dispatch({
       type: SET_BOARD,
       payload: board
