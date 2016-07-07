@@ -436,7 +436,7 @@ body {
   left: 0;
   position: fixed;
   z-index: 2;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.85);
   transition: opacity 1s;
   display: flex;
   justify-content: center;
@@ -464,14 +464,19 @@ body {
   }
 }
 
-.loading-overlay__brains img {
+.loading-overlay__brain {
   width: 100px;
+  height: 120px;
   animation: floating-brain 3s infinite;
   margin: auto;
   display: block;
 }
-
+.loading-overlay__brain path {
+  fill: #5a2445;
+  stroke: #5a2445;
+}
 .loading-overlay__text {
+  color: #5a2445;
   text-align: center;
   /*font-family: "jaf-bernino-sans",sans-serif;*/
   font-family: "freight-text-pro", Georgia;

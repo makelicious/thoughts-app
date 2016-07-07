@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import brain from './assets/brain.png';
+import Brain from './assets/brain.svg';
 
 export default function LoadingOverlay(props) {
 
@@ -14,7 +14,7 @@ export default function LoadingOverlay(props) {
         props.visible && (
           <div className="loading-overlay">
             <div className="loading-overlay__brains">
-              <img src={brain} alt="loading" />
+              <Brain className="loading-overlay__brain" />
               <div className="loading-overlay__text">
                 Gathering thoughts...
               </div>
