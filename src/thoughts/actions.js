@@ -82,7 +82,7 @@ export function loadThoughts() {
 
     dispatch({
       type: THOUGHTS_LOADING
-    })
+    });
 
     getThoughts(board).then((thoughts) =>
       dispatch({
