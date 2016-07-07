@@ -1,4 +1,3 @@
-import { without } from 'lodash';
 const STORAGE_KEY = 'ideahigh_storage';
 const INITIAL_DATA = {
   thoughts: []
