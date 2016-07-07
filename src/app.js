@@ -112,7 +112,7 @@ const App = React.createClass({
     const ThoughtsWrapper = hashtagFilters.length === 0 ?
       Scaler :
       'div';
-
+    console.log(this.props.board);
     return (
       <Background className="app" onClick={this.resetEditable}>
         <div className="overlays">
@@ -148,7 +148,7 @@ const App = React.createClass({
             ))
           }
         </ThoughtsWrapper>
-        <LoadingOverlay visible={this.props.thoughtsLoading} />
+        <LoadingOverlay visible={this.props.board !== 'me' && this.props.thoughtsLoading} />
       </Background>
     );
   }
@@ -157,6 +157,7 @@ const App = React.createClass({
 function storeToProps(store) {
   return {
     thoughts: store.thoughts,
+    board: store.editor.board,
     thoughtsLoading: store.editor.thoughtsLoading,
     editableThoughtId: store.editor.editableThoughtId,
     editedWhileFilterOn: store.editor.editedWhileFilterOn,
