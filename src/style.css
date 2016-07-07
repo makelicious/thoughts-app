@@ -297,6 +297,12 @@ body {
   left: 0;
 }
 
+.thought hr {
+  border: 0;
+  border-bottom: 1px solid #e8e7e7;
+}
+
+
 .thought img {
   max-width: 100%;
 }
