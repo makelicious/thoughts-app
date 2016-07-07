@@ -112,7 +112,7 @@ const App = React.createClass({
     const ThoughtsWrapper = hashtagFilters.length === 0 ?
       Scaler :
       'div';
-    console.log(this.props.board);
+
     return (
       <Background className="app" onClick={this.resetEditable}>
         <div className="overlays">
