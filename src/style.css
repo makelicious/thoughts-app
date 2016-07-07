@@ -122,6 +122,7 @@ body {
 .landing-page__button {
   border: 0;
   padding: 1.25em 5em;
+  background-color: #1b0a19;
   background-image: url('./containers/landing-page/assets/space-bg.png');
   background-size: cover;
   color: #fff;
