@@ -1,4 +1,9 @@
-import { submitThought } from 'thoughts/actions';
+import {
+  resetThoughts,
+  submitThought
+} from 'thoughts/actions';
+
+export const MOVE_TO_BOARD = 'MOVE_TO_BOARD';
 
 const demoThoughts = [
   [2500, 'Do laundry []'],
@@ -13,11 +18,31 @@ const demoThoughts = [
 ];
 
 export function initDemo() {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     demoThoughts.forEach(([timeout, text]) => {
       setTimeout(() => {
-        dispatch(submitThought(text));
+        const { intro } = getState();
+
+        if (!intro.movedToBoard) {
+          dispatch(submitThought(text));
+        }
+
       }, timeout);
     });
+  };
+}
+
+
+function moveToBoard() {
+  return {
+    type: MOVE_TO_BOARD
+  };
+}
+
+export function goToBoard() {
+  return (dispatch) => {
+    location.hash = '/me';
+    dispatch(resetThoughts());
+    dispatch(moveToBoard());
   };
 }

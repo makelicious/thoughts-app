@@ -1,5 +1,6 @@
 import { without } from 'lodash';
 
+import { getBoardFromHash } from 'utils/url';
 import { sortByCreatedAt } from 'utils/thought';
 
 import {
@@ -13,11 +14,12 @@ import {
   ADD_FILTER,
   REMOVE_FILTER,
   RESET_FILTERS,
+  RESET_THOUGHTS,
   THOUGHTS_LOADED
 } from 'thoughts/actions';
 
 export function thoughtsReducer(state = [], action) {
-  if (action.type === SET_BOARD) {
+  if (action.type === SET_BOARD || action.type === RESET_THOUGHTS) {
     return [];
   }
 
@@ -46,21 +48,38 @@ export function thoughtsReducer(state = [], action) {
 }
 
 const INITIAL_STATE = {
-  board: null,
+  board: getBoardFromHash(),
   editableThoughtId: null,
   hashtagFilters: [],
+  thoughtsLoading: false,
   // Thoughts created or modified while filter view
   // It would probably be weird if they would just disappeared when you delete a tag
   editedWhileFilterOn: []
 };
 
 export function editorReducer(state = INITIAL_STATE, action) {
+
+  if (action.type === THOUGHTS_LOADING) {
+    return {
+      ...state,
+      thoughtsLoading: true
+    };
+  }
+
+  if (action.type === THOUGHTS_LOADED) {
+    return {
+      ...state,
+      thoughtsLoading: false
+    };
+  }
+
   if (action.type === SET_BOARD) {
     return {
       ...state,
       board: action.payload
     };
   }
+
   if (action.type === MODIFY_THOUGHT) {
     if (state.editedWhileFilterOn.indexOf(action.payload.id) > -1 ||
       state.hashtagFilters.length === 0) {

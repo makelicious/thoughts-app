@@ -46,13 +46,23 @@ body {
   height: 100%;
   display: flex;
 }
+
 .landing-page__column {
   height: 100%;
 }
+
+/* Thoughts display */
 .landing-page__column:first-child {
   position: relative;
   flex-grow: 1;
 }
+
+.landing-page__column:not(:last-child) .thoughts {
+  overflow: hidden;
+}
+
+/* Gradient overlay over thoughts */
+
 .landing-page__column:first-child:after {
   background: linear-gradient(to bottom, rgba(255,255,255,0) 20%,rgba(255,255,255,0.5) 100%);
   position: absolute;
@@ -61,12 +71,18 @@ body {
   height: 100%;
   left: 0;
   top: 0;
+  opacity: 1;
+  transition: opacity 0.5s, width 0s 0.5s, height 0s 0.5s;
 }
 
-.landing-page__column:first-child .thoughts {
-  overflow: hidden;
+.landing-page__column:last-child:after {
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
-.landing-page__column:last-child {
+
+/* IDEAHIGH description column */
+.landing-page__column:nth-child(2) {
   width: 600px;
   padding: 3em 0;
   background: linear-gradient(135deg, #d2708e 14%, #f5e8a7 100%);
@@ -77,12 +93,33 @@ body {
   box-sizing: border-box;
   justify-content: center;
   overflow: auto;
+  overflow-x: hidden;
 }
+
+.landing-page__description__container {
+  width: 600px;
+}
+
+@keyframes hide-column {
+  0% {
+    width: 600px;
+  }
+  100% {
+    width: 0;
+  }
+}
+
+.landing-page__column:nth-child(2).landing-page-leave-active {
+  width: 0;
+  transition: width 600ms cubic-bezier(.87,-.41,.19,1.44);
+}
+
 .landing-page__logo {
   width: 200px;
   display: block;
   margin: 0 auto;
 }
+
 .landing-page__button {
   border: 0;
   padding: 1.25em 5em;
@@ -197,10 +234,11 @@ body {
   background: #fff;
   padding: 1em;
   max-width: 300px;
+  min-width: 150px;
   border-radius: 3px;
   transition: all 0.6s;
   box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.1);
-  animation: appear 0.3s;
+  animation: appear 0.4s;
 
   word-break: break-word;
   font-family: "freight-text-pro", Georgia;

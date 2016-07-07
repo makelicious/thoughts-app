@@ -16,6 +16,7 @@ export const CREATE_THOUGHT = 'CREATE_THOUGHT';
 export const DELETE_THOUGHT = 'DELETE_THOUGHT';
 export const MODIFY_THOUGHT = 'MODIFY_THOUGHT';
 
+export const RESET_THOUGHTS = 'RESET_THOUGHTS';
 export const LOAD_THOUGHTS = 'LOAD_THOUGHTS';
 export const THOUGHTS_LOADED = 'THOUGHTS_LOADED';
 
@@ -59,6 +60,12 @@ export function modifyThought(thought) {
   return {
     type: MODIFY_THOUGHT,
     payload: thought
+  };
+}
+
+export function resetThoughts() {
+  return {
+    type: RESET_THOUGHTS
   };
 }
 

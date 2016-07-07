@@ -1,16 +1,13 @@
 import React from 'react';
 import { render } from 'react-dom';
-
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 
-import {
-  thoughtsReducer,
-  editorReducer
-} from 'thoughts/reducer';
-
+import { thoughtsReducer, editorReducer } from 'thoughts/reducer';
+import introReducer from 'intro/reducer';
 import { setBoard } from 'thoughts/actions';
+import { getBoardFromHash } from 'utils/url';
 
 import 'style.css';
 import 'utils/error-tracking';
@@ -20,23 +17,14 @@ import LandingPage from 'containers/landing-page';
 
 const $root = document.getElementById('root');
 
-function getBoardFromHash() {
-  const board = location.hash.replace(/#\//, '');
-
-  if (board === '') {
-    return null;
-  }
-
-  return board;
-}
-
 /*
  * Redux related stuff
  */
 
 const reducers = combineReducers({
   thoughts: thoughtsReducer,
-  editor: editorReducer
+  editor: editorReducer,
+  intro: introReducer
 });
 
 const store = createStore(
