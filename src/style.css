@@ -273,6 +273,10 @@ body {
   margin: 0;
 }
 
+.thought p + p {
+  margin-top: 1em;
+}
+
 .thought a {
   color: #3491D1;
 }
