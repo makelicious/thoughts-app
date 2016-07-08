@@ -2,8 +2,8 @@
   "name": "thoughts-app",
   "version": "1.0.0",
   "scripts": {
-    "build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js && cp index.html dist/$TARGET/ && cp favicon.png dist/$TARGET/",
-    "build": "npm run build:webpack",
+    "build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js && cp chrome-app/* dist/$TARGET/",
+    "build": "TARGET=${TARGET:=master} npm run build:webpack",
     "start": "node devServer.js",
     "test": "NODE_ENV=test NODE_PATH=src mocha --require babel-core/register --require test/init src/tests/*.js src/**/tests/*.js src/**/**/tests/*.js",
     "lint": "eslint src"
