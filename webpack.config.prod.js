@@ -1,5 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -25,6 +27,13 @@ module.exports = {
       compressor: {
         warnings: false
       }
+    }),
+    new FaviconsWebpackPlugin({
+      logo: './assets/favicon.png',
+      prefix: 'icons-[hash]/'
+    }),
+    new HtmlWebpackPlugin({
+      template: 'index.html'
     })
   ],
   resolve: {
