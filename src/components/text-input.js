@@ -23,13 +23,17 @@ export default React.createClass({
     $el.setSelectionRange(length, length);
   },
   checkSpecialKeys(event) {
+    const currentSelectionPosition = findDOMNode(this.refs.editor).selectionStart;
+
     if (isEnter(event.keyCode) && !event.shiftKey) {
       event.preventDefault();
       this.props.onSubmit();
       return;
     }
 
-    if (isBackspace(event.keyCode) && this.props.value === '') {
+    if (isBackspace(event.keyCode) &&
+        this.props.value.trim() === ''
+        && currentSelectionPosition === 0) {
       event.preventDefault();
       this.props.onDelete();
       return;
