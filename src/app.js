@@ -10,7 +10,8 @@ import {
 import {
   isUp,
   isEsc,
-  isThoughtCreatingKeypress
+  isThoughtCreatingKeypress,
+  isBackspace
 } from 'utils/keys';
 
 import Thought from 'components/thought';
@@ -69,21 +70,26 @@ const App = React.createClass({
   },
   checkForSpecialKey(event) {
     const thoughts = this.props.thoughts;
+    const editing = this.props.editableThoughtId !== null;
 
     // Edit the most recent thought
-    if (!this.props.editableThoughtId && isUp(event.keyCode) && thoughts.length > 0) {
+    if (!editing && isUp(event.keyCode) && thoughts.length > 0) {
       this.setEditable(thoughts[0]);
       return;
     }
 
     // Reset filters with ESC
-    if (!this.props.editableThoughtId && isEsc(event.keyCode)) {
+    if (!editing && isEsc(event.keyCode)) {
       this.resetFilters();
       return;
     }
 
+    if (!editing && isBackspace(event.keyCode)) {
+      event.preventDefault();
+    }
+
     // Create thought
-    if (!this.props.editableThoughtId && isThoughtCreatingKeypress(event)) {
+    if (!editing && isThoughtCreatingKeypress(event)) {
       const initialText = this.props.hashtagFilters.length === 0 ? '' :
         `${this.props.hashtagFilters.join(' ')} `;
 
