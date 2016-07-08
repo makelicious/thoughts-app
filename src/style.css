@@ -1,5 +1,3 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:600,400,300);
-
 html, body, #root, .app {
   width: 100%;
   height: 100%;
@@ -7,7 +5,7 @@ html, body, #root, .app {
 }
 
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "jaf-bernino-sans",sans-serif;
   font-size: 16px;
 }
 
@@ -130,13 +128,11 @@ body {
   margin: 0 auto;
   font-size: 1.25em;
   font-weight: bold;
-  font-family: "jaf-bernino-sans",sans-serif;
   letter-spacing: 1px;
   cursor: pointer;
 }
 
 .landing-page__description {
-  font-family: "jaf-bernino-sans",sans-serif;
   padding: 1em 3em;
   font-weight: 300;
   line-height: 1.5em;
@@ -484,7 +480,6 @@ body {
 .loading-overlay__text {
   color: #5a2445;
   text-align: center;
-  /*font-family: "jaf-bernino-sans",sans-serif;*/
   font-family: "freight-text-pro", Georgia;
   font-size: 23px;
   margin-top: 0.5em;
