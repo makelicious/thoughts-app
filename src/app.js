@@ -10,6 +10,7 @@ import {
 import {
   isUp,
   isEsc,
+  isEnter,
   isThoughtCreatingKeypress,
   isBackspace
 } from 'utils/keys';
@@ -92,6 +93,11 @@ const App = React.createClass({
     if (!editing && isThoughtCreatingKeypress(event)) {
       const initialText = this.props.hashtagFilters.length === 0 ? '' :
         `${this.props.hashtagFilters.join(' ')} `;
+
+      // Prevents event so that thought isnt created with one empty line
+      if (isEnter(event.keyCode)) {
+        event.preventDefault();
+      }
 
       this.props.dispatch(createThought(initialText));
     }
