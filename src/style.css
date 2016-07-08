@@ -234,7 +234,7 @@ body {
   max-width: 300px;
   min-width: 150px;
   border-radius: 3px;
-  transition: all 0.6s;
+  transition: transform 0.6s;
   box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.1);
   animation: appear 0.4s;
 
