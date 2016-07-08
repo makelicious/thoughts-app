@@ -14,7 +14,7 @@ const demoThoughts = [
     [] pineapple
   `],
   [11000, '#movies Mulholland Drive'],
-  [14000, '#work remember to compliment Mark']
+  [14000, '#work remember to complement Jonathan']
 ];
 
 export function initDemo() {
