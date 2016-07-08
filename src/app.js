@@ -84,7 +84,9 @@ const App = React.createClass({
 
     // Create thought
     if (!this.props.editableThoughtId && isThoughtCreatingKeypress(event)) {
-      const initialText = `${this.props.hashtagFilters.join(' ')} `;
+      const initialText = this.props.hashtagFilters.length === 0 ? '' :
+        `${this.props.hashtagFilters.join(' ')} `;
+
       this.props.dispatch(createThought(initialText));
     }
   },
