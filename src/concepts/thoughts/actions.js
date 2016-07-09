@@ -91,7 +91,7 @@ export function clearSearch() {
       type: SET_SEARCH_TERM,
       payload: ''
     });
-    dispatch(submitSearch());
+    dispatch(submitSearch(''));
   };
 }
 
