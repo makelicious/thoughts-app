@@ -77,6 +77,10 @@ export function setSearchTerm(text) {
     if (text.length > 2) {
       dispatch(submitSearch(text));
     }
+
+    if (text.length === 0) {
+      dispatch(submitSearch(''));
+    }
   };
 }
 
