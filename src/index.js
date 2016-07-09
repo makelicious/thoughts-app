@@ -14,7 +14,6 @@ import { getBoardFromHash } from 'utils/url';
 import initAnalytics from 'utils/analytics';
 
 import 'style.css';
-import 'utils/font-loader';
 import 'utils/error-tracking';
 
 import LandingPage from 'containers/landing-page';
