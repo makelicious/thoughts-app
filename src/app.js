@@ -65,14 +65,12 @@ const App = React.createClass({
   },
   resetEditable() {
     const id = this.props.editableThoughtId;
-    console.log(id);
     if (id) {
       const thought = find(this.props.thoughts, { id });
       this.props.dispatch(stopEditing(thought));
     }
   },
   checkForSpecialKey(event) {
-    console.log(event.target.tagName);
     const thoughts = this.props.thoughts;
     const editing = this.props.editableThoughtId !== null;
 
