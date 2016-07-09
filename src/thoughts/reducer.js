@@ -24,8 +24,6 @@ import {
 
 
 export function thoughtsReducer(state = [], action) {
-  console.log(action.type);
-
   if (action.type === SET_BOARD || action.type === RESET_THOUGHTS) {
     return [];
   }
@@ -35,8 +33,6 @@ export function thoughtsReducer(state = [], action) {
   }
 
   if (action.type === SEARCH_RESULTS_SUCCESS) {
-    console.log(action.type);
-    console.log(action.payload);
     return action.payload.sort(sortByCreatedAt);
   }
 
