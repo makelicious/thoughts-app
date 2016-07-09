@@ -12,7 +12,7 @@ module.exports = {
   ],
   output: {
     path: path.join(__dirname, 'dist/' + process.env.TARGET),
-    filename: 'bundle.js',
+    filename: 'bundle-[hash].js',
     publicPath: '/'
   },
   plugins: [
@@ -22,7 +22,7 @@ module.exports = {
         'NODE_ENV': JSON.stringify('production')
       }
     }),
-    new ExtractTextPlugin('style.css'),
+    new ExtractTextPlugin('style-[hash].css'),
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
         warnings: false
@@ -60,8 +60,11 @@ module.exports = {
       loader: 'url?limit=100000'
     },
     {
-      test: /\.svg$/,
-      loader: 'babel!svg-react'
+      test: /\.svg(\?.*)?$/,
+      loader: 'babel!svg-react' +
+        // removes xmlns tag from svg (see https://github.com/jhamlet/svg-react-loader/issues/25)
+        '!string-replace?search=%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22&replace=' +
+        '!string-replace?search=%20data-name%3D%22%5B%5Cw%5Cs_-%5D*%22&replace=&flags=ig'
     }]
   }
 };

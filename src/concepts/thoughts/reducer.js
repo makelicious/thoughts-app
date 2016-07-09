@@ -10,7 +10,6 @@ import {
   MODIFY_THOUGHT,
   SET_SEARCH_TERM,
   SET_EDITABLE,
-  SET_BOARD,
   STOP_EDITING,
   ADD_FILTER,
   REMOVE_FILTER,
@@ -19,9 +18,9 @@ import {
   RESET_THOUGHTS,
   THOUGHTS_LOADING,
   THOUGHTS_LOADED
+} from 'concepts/thoughts/actions';
 
-} from 'thoughts/actions';
-
+import { SET_BOARD } from 'concepts/location/actions';
 
 export function thoughtsReducer(state = [], action) {
   if (action.type === SET_BOARD || action.type === RESET_THOUGHTS) {

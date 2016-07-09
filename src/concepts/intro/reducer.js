@@ -1,5 +1,5 @@
 import { MOVE_TO_BOARD } from './actions';
-import { SET_BOARD } from 'thoughts/actions';
+import { SET_BOARD } from 'concepts/location/actions';
 
 const INITIAL_STATE = {
   movedToBoard: false

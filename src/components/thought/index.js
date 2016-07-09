@@ -8,8 +8,8 @@ import walker from 'utils/walker';
 import TextInput from 'components/text-input';
 import Checkbox from './components/checkbox';
 
-import Pen from './assets/pen.svg';
-import Trash from './assets/trash.svg';
+import Pen from './assets/pen.svg?name=Pen';
+import Trash from './assets/trash.svg?name=Trash';
 
 import {
   CHECKBOX_REGEXP,

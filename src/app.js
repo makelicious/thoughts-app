@@ -33,7 +33,7 @@ import {
   resetFilters,
   removeFilter,
   addFilter
-} from 'thoughts/actions';
+} from 'concepts/thoughts/actions';
 
 const App = React.createClass({
   componentDidMount() {
@@ -178,7 +178,7 @@ const App = React.createClass({
 function storeToProps(store) {
   return {
     thoughts: store.thoughts,
-    board: store.editor.board,
+    board: store.location.board,
     thoughtsLoading: store.editor.thoughtsLoading,
     editableThoughtId: store.editor.editableThoughtId,
     editedWhileFilterOn: store.editor.editedWhileFilterOn,

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import App from 'app';
 import logo from './assets/logo.png';
-import { initDemo, goToBoard } from 'intro/actions';
+import { initDemo, goToBoard } from 'concepts/intro/actions';
 
 function DescriptionColumn(props) {
   return (

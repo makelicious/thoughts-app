@@ -6,3 +6,7 @@ export function getBoardFromHash() {
 
   return board;
 }
+
+export function isChromeApp() {
+  return Boolean(window.chrome && window.chrome.storage);
+}

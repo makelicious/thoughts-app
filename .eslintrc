@@ -11,6 +11,9 @@
   "plugins": [
     "mocha"
   ],
+  "globals": {
+    "chrome": true
+  },
   "parser": "babel-eslint",
   "rules": {
     "mocha/no-exclusive-tests": 2,
