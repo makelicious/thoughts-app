@@ -96,11 +96,8 @@ const App = React.createClass({
     if (!this.props.editableThoughtId &&
         isThoughtCreatingKeypress(event) &&
         event.target.tagName !== 'INPUT') {
-      const initialText = `${this.props.hashtagFilters.join(' ')} `;
-
-    if (!editing && isThoughtCreatingKeypress(event)) {
       const initialText = this.props.hashtagFilters.length === 0 ? '' :
-        `${this.props.hashtagFilters.join(' ')} `;
+          `${this.props.hashtagFilters.join(' ')} `;
 
       // Prevents event so that thought isnt created with one empty line
       if (isEnter(event.keyCode)) {

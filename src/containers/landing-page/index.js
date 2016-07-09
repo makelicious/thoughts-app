@@ -14,13 +14,13 @@ function DescriptionColumn(props) {
         <img src={logo} className="landing-page__logo" alt="ideahigh" />
         <p className="landing-page__description">
           Do you often feel distracted?<br />
-          Sometimes it's because of the sheer workload you have to manage at school or work.
+          Sometimes its because of the sheer workload you have to manage at school or work.
           Forgetting important meetings or deadlines is stressful.
           <br /><br />
           Ideahigh provides you a way to create and organize your thoughts in a brand new manner.
         </p>
         <button onClick={props.onProceed} className="landing-page__button">
-          LET'S GO
+          LETS GO
         </button>
 
       </div>
