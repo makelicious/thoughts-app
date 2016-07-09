@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Bell from './bell.svg';
+import Bell from './bell.svg?name=Bell';
 
 export default function Notification(props) {
   return (
