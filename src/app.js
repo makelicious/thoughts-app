@@ -88,7 +88,9 @@ const App = React.createClass({
       return;
     }
 
-    if (!editing && isBackspace(event.keyCode)) {
+    if (!editing &&
+       isBackspace(event.keyCode) &&
+       event.target.tagName !== 'INPUT') {
       event.preventDefault();
     }
 
