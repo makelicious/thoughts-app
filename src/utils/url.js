@@ -8,5 +8,5 @@ export function getBoardFromHash() {
 }
 
 export function isChromeApp() {
-  return Boolean(window.chrome.storage);
+  return Boolean(window.chrome && window.chrome.storage);
 }
