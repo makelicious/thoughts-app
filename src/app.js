@@ -46,12 +46,12 @@ const App = React.createClass({
     document.removeEventListener('keydown', this.checkForSpecialKey, true);
     window.removeEventListener('scroll', this.requestMoreThoughts, true);
   },
-  getScrollPercentage() {
+  distanceFromBottom() {
     const scrollArea = findDOMNode(this.refs.thoughts);
-    return scrollArea.scrollTop / (scrollArea.scrollHeight - scrollArea.clientHeight);
+    return scrollArea.scrollHeight - scrollArea.clientHeight - scrollArea.scrollTop;
   },
   requestMoreThoughts() {
-    if (this.getScrollPercentage() > 0.9) {
+    if (this.distanceFromBottom() < 400) {
       this.props.dispatch(requestMoreThoughts());
     }
   },
