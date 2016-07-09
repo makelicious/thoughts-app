@@ -454,25 +454,25 @@ a {
   */
 
 .search {
-    position: fixed;
-    top: 0;
-    right: 1em;
-    padding: 0.5em;
+  position: fixed;
+  top: 0;
+  right: 1em;
+  padding: 0.5em;
 }
 
 .search__button {
-    float: right;
-    background-color: rgba(255, 255, 255, 0.8);
-    padding-right: 0.5em;
+  float: right;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding-right: 0.5em;
 }
 
 .search__input {
-    border: 0;
-    float: right;
-    height: 1.85em;
-    outline-width: 1px;
-    outline-color: rgba(255, 255, 255, 0.8);
-
+  border: 0;
+  float: right;
+  height: 1.85em;
+  outline-width: 1px;
+  outline-color: rgba(255, 255, 255, 0.8);
+}
 /*
  * Loading overlay
  */
