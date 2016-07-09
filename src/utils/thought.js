@@ -2,6 +2,8 @@ import { uniq } from 'lodash';
 
 export const HASHTAG_REGEXP = /#[\w-_]+/g;
 export const CHECKBOX_REGEXP = /\[[x\s]?\](?=\s|$)/ig;
+export const LINK_REGEXP = /(?:\w+:)?\/\/(?:[^\s\.]+\.\S{2}|localhost[:?\d]*)\S*/g;
+
 export const UNFINISHED_TODO_TAG = '#unfinished-todo';
 
 export function createThought(text) {
@@ -28,6 +30,13 @@ export function parseTodos(text) {
   return matches.map((match) => ({
     finished: match.indexOf('x') > -1
   }));
+}
+
+export function parseImages(text) {
+  const urls = text.match(LINK_REGEXP) || [];
+  return urls.filter((url) =>
+    url.endsWith('.jpg') ||
+    url.endsWith('.png'));
 }
 
 export function parseHashtags(text) {

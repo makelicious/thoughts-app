@@ -14,10 +14,30 @@ import Trash from './assets/trash.svg';
 import {
   CHECKBOX_REGEXP,
   parseHashtags,
-  parseTodos
+  parseTodos,
+  parseImages
 } from 'utils/thought';
 
 import { replaceNth, breakText } from 'utils/text';
+
+const ALLOWED_MARKDOWN_TYPES = [
+  'Text',
+  'Paragraph',
+  'Heading',
+  'Softbreak',
+  'Hardbreak',
+  'Link',
+  'Emph',
+  'Code',
+  'CodeBlock',
+  'BlockQuote',
+
+  'Item',
+  'Strong',
+  'ThematicBreak',
+  'Checkbox',
+  'Hashtag'
+];
 
 export const ThoughtContent = React.createClass({
   shouldComponentUpdate(newProps) {
@@ -59,13 +79,33 @@ export const ThoughtContent = React.createClass({
         );
       }
     };
+    const images = parseImages(this.props.thought.text);
+
+    const visibleContent = this.props.expanded ?
+      this.props.thought.text :
+      breakText(this.props.thought.text);
+
     return (
-      <ReactMarkdown
-        softBreak="br"
-        source={this.props.expanded ? this.props.thought.text : breakText(this.props.thought.text)}
-        allowedTypes={ReactMarkdown.types.concat(['Checkbox', 'Hashtag'])}
-        renderers={customRenderers}
-        walker={walker} />
+      <div>
+        <ReactMarkdown
+          softBreak="br"
+          source={visibleContent}
+          allowedTypes={ALLOWED_MARKDOWN_TYPES}
+          renderers={customRenderers}
+          walker={walker} />
+        <div className="thought__attachments">
+          {
+            images.map((image, i) => (
+              <a
+                key={i}
+                className="thought__image"
+                target="_blank"
+                href={image}
+                style={{ backgroundImage: `url(${image})` }} />
+            ))
+          }
+        </div>
+      </div>
     );
   }
 });

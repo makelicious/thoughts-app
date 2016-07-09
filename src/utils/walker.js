@@ -5,9 +5,7 @@
 
 import { Node } from 'commonmark';
 
-import { HASHTAG_REGEXP } from 'utils/thought';
-
-const LINK_REGEXP = /(?:\w+:)?\/\/(?:[^\s\.]+\.\S{2}|localhost[:?\d]*)\S*/g;
+import { HASHTAG_REGEXP, LINK_REGEXP } from 'utils/thought';
 
 function endsWithSpace(str) {
   return Boolean(str.match(/\s$/));
