@@ -68,12 +68,15 @@ const App = React.createClass({
     this.props.dispatch(stopEditing(thought));
   },
   addFilter(hashtag) {
+    this.refs.thoughts.scrollToTop();
     this.props.dispatch(addFilter(hashtag));
   },
   removeFromFilter(hashtag) {
+    this.refs.thoughts.scrollToTop();
     this.props.dispatch(removeFilter(hashtag));
   },
   resetFilters() {
+    this.refs.thoughts.scrollToTop();
     this.props.dispatch(resetFilters());
   },
   resetEditable() {

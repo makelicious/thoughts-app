@@ -28,6 +28,9 @@ export default React.createClass({
       this.calculateScales();
     }
   },
+  scrollToTop() {
+    findDOMNode(this.refs['scroll-area']).scrollTop = 0;
+  },
   getScrollPercentage() {
     const scrollArea = findDOMNode(this.refs['scroll-area']);
     return scrollArea.scrollTop / (scrollArea.scrollHeight - scrollArea.clientHeight);
