@@ -31,7 +31,7 @@ const ALLOWED_MARKDOWN_TYPES = [
   'Code',
   'CodeBlock',
   'BlockQuote',
-
+  'List',
   'Item',
   'Strong',
   'ThematicBreak',
