@@ -78,7 +78,7 @@ export function setSearchTerm(text) {
 export function submitSearch() {
   return (dispatch, getState) => {
     const state = getState();
-    const board = state.editor.board;
+    const board = state.location.board;
     const searchTerm = state.editor.searchTerm;
     return fetch(`https://evening-oasis-93330.herokuapp.com/${board}/thoughts?search=${searchTerm}`)
     .then((res) => res.json())
@@ -127,7 +127,6 @@ export function loadThoughts() {
 
 export const STOP_EDITING = 'STOP_EDITING';
 export const SET_EDITABLE = 'SET_EDITABLE';
-export const SET_BOARD = 'SET_BOARD';
 export const ADD_FILTER = 'ADD_FILTER';
 export const REMOVE_FILTER = 'REMOVE_FILTER';
 export const RESET_FILTERS = 'RESET_FILTERS';
@@ -166,23 +165,6 @@ export function setEditable(thought) {
   };
 }
 
-export function setBoard(board) {
-  return (dispatch) => {
-
-    if (board !== null) {
-      document.title = board;
-    }
-
-
-    dispatch({
-      type: SET_BOARD,
-      payload: board
-    });
-
-    dispatch(loadThoughts(board));
-  };
-}
-
 export function resetFilters() {
   return {
     type: RESET_FILTERS
@@ -199,16 +181,16 @@ export function stopEditing(thought) {
 
     dispatch({ type: STOP_EDITING });
 
-    if (!currentState.editor.board) {
+    if (!currentState.location.board) {
       return;
     }
 
     if (thought._id !== undefined) {
-      updateThought(currentState.editor.board, thought).then((updatedThought) =>
+      updateThought(currentState.location.board, thought).then((updatedThought) =>
         dispatch(modifyThought(updatedThought))
       );
     } else {
-      saveThought(currentState.editor.board, thought).then((updatedThought) =>
+      saveThought(currentState.location.board, thought).then((updatedThought) =>
         dispatch(modifyThought(updatedThought))
       );
     }

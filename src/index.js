@@ -6,9 +6,10 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 
-import { thoughtsReducer, editorReducer } from 'thoughts/reducer';
-import introReducer from 'intro/reducer';
-import { setBoard } from 'thoughts/actions';
+import { thoughtsReducer, editorReducer } from 'concepts/thoughts/reducer';
+import introReducer from 'concepts/intro/reducer';
+import locationReducer from 'concepts/location/reducer';
+import { setBoard } from 'concepts/location/actions';
 import { getBoardFromHash } from 'utils/url';
 
 import initAnalytics from 'utils/analytics';
@@ -31,7 +32,8 @@ function isChromeApp() {
 const reducers = combineReducers({
   thoughts: thoughtsReducer,
   editor: editorReducer,
-  intro: introReducer
+  intro: introReducer,
+  location: locationReducer
 });
 
 const store = createStore(
@@ -54,7 +56,7 @@ function initApp() {
 
 if (isChromeApp()) {
   chrome.storage.sync.get({
-    board: 'me' // default value
+    board: null
   }, (items) => {
     store.dispatch(setBoard(items.board));
     initApp();

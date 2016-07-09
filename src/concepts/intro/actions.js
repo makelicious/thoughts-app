@@ -1,7 +1,7 @@
 import {
   resetThoughts,
   submitThought
-} from 'thoughts/actions';
+} from 'concepts/thoughts/actions';
 
 export const MOVE_TO_BOARD = 'MOVE_TO_BOARD';
 

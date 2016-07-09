@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { setSearchTerm, submitSearch } from 'thoughts/actions';
+import { setSearchTerm, submitSearch } from 'concepts/thoughts/actions';
 
 
 export const Search = React.createClass({
