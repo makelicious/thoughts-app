@@ -471,18 +471,34 @@ a {
   padding: 0.5em;
 }
 
-.search__button {
-  float: right;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding-right: 0.5em;
-}
-
 .search__input {
   border: 0;
-  float: right;
   height: 1.85em;
   outline-width: 1px;
   outline-color: rgba(255, 255, 255, 0.8);
+}
+
+.search__empty {
+  width: 1em;
+  height: 1em;
+  background: rgba(255, 255, 255, 0.8);
+  display: inline-block;
+  border-radius: 0.5em;
+  vertical-align: middle;
+  margin-right: 0.5em;
+  position: relative;
+  cursor: pointer;
+  border: 0;
+
+}
+.search__empty::after {
+  content: '✖';
+  position: absolute;
+  top: 50%;
+  margin-top: -8px;
+  font-size: 12px;
+  width: 100%;
+  text-align: center;
 }
 
 /*

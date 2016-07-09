@@ -69,17 +69,32 @@ export function modifyThought(thought) {
 }
 
 export function setSearchTerm(text) {
-  return {
-    type: SET_SEARCH_TERM,
-    payload: text
+  return (dispatch) => {
+    dispatch({
+      type: SET_SEARCH_TERM,
+      payload: text
+    });
+    if (text.length > 2) {
+      dispatch(submitSearch(text));
+    }
   };
 }
 
-export function submitSearch() {
+export function clearSearch() {
+  return (dispatch) => {
+    dispatch({
+      type: SET_SEARCH_TERM,
+      payload: ''
+    });
+    dispatch(submitSearch());
+  };
+}
+
+function submitSearch(searchTerm) {
   return (dispatch, getState) => {
     const state = getState();
     const board = state.editor.board;
-    const searchTerm = state.editor.searchTerm;
+
     return fetch(`https://evening-oasis-93330.herokuapp.com/${board}/thoughts?search=${searchTerm}`)
     .then((res) => res.json())
     .then((searchResults) => {
