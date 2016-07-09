@@ -5,7 +5,7 @@ import { isChromeApp } from 'utils/url';
 
 function setBrowserState(board) {
   if (isChromeApp()) {
-    chrome.storage.sync.set({ board });
+    window.chrome.storage.sync.set({ board });
   } else {
     const nextHash = `/${board}`;
 

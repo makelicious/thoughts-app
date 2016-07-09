@@ -9,7 +9,7 @@ function saveData(data) {
   // eslint-disable-next-line no-unused-vars
   return new Promise((resolve, reject) => {
     if (isChromeApp()) {
-      chrome.storage.local.set({ [STORAGE_KEY]: JSON.stringify(data) }, () => resolve());
+      window.chrome.storage.local.set({ [STORAGE_KEY]: JSON.stringify(data) }, () => resolve());
       return;
     }
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -21,7 +21,7 @@ function getData() {
   // eslint-disable-next-line no-unused-vars
   return new Promise((resolve, reject) => {
     if (isChromeApp()) {
-      chrome.storage.local.get({ [STORAGE_KEY]: null }, (data) =>
+      window.chrome.storage.local.get({ [STORAGE_KEY]: null }, (data) =>
         resolve(JSON.parse(data[STORAGE_KEY]) || INITIAL_DATA)
       );
       return;

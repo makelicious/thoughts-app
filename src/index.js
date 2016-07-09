@@ -49,7 +49,7 @@ function initApp() {
 }
 
 if (isChromeApp()) {
-  chrome.storage.sync.get({
+  window.chrome.storage.sync.get({
     board: null
   }, (items) => {
     store.dispatch(setBoard(items.board));
