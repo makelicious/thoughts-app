@@ -21,7 +21,7 @@ import LandingPage from 'containers/landing-page';
 const $root = document.getElementById('root');
 
 function isChromeApp() {
-  return Boolean(window.chrome.storage);
+  return Boolean(window.chrome && window.chrome.storage);
 }
 
 /*
