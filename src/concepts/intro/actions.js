@@ -3,6 +3,8 @@ import {
   submitThought
 } from 'concepts/thoughts/actions';
 
+import { setBoard } from 'concepts/location/actions';
+
 export const MOVE_TO_BOARD = 'MOVE_TO_BOARD';
 
 const demoThoughts = [
@@ -41,7 +43,7 @@ function moveToBoard() {
 
 export function goToBoard() {
   return (dispatch) => {
-    location.hash = '/me';
+    dispatch(setBoard('me'));
     dispatch(resetThoughts());
     dispatch(moveToBoard());
   };

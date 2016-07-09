@@ -1,55 +1,76 @@
+import { isChromeApp } from 'utils/url';
+
 const STORAGE_KEY = 'ideahigh_storage';
 const INITIAL_DATA = {
   thoughts: []
 };
 
 function saveData(data) {
-  return window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  // eslint-disable-next-line no-unused-vars
+  return new Promise((resolve, reject) => {
+    if (isChromeApp()) {
+      chrome.storage.local.set({ [STORAGE_KEY]: JSON.stringify(data) }, () => resolve());
+      return;
+    }
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    resolve();
+  });
 }
 
 function getData() {
-  return JSON.parse(window.localStorage.getItem(STORAGE_KEY)) || INITIAL_DATA;
+  // eslint-disable-next-line no-unused-vars
+  return new Promise((resolve, reject) => {
+    if (isChromeApp()) {
+      chrome.storage.local.get({ [STORAGE_KEY]: null }, (data) =>
+        resolve(JSON.parse(data[STORAGE_KEY]) || INITIAL_DATA)
+      );
+      return;
+    }
+    resolve(JSON.parse(window.localStorage.getItem(STORAGE_KEY)) || INITIAL_DATA);
+  });
 }
 
 export function saveThought(board, thought) {
-  const data = getData();
+  return getData().then((data) => {
+    const thoughtWithId = {
+      ...thought,
+      _id: data.thoughts.length
+    };
 
-  const thoughtWithId = {
-    ...thought,
-    _id: data.thoughts.length
-  };
+    data.thoughts.push(thoughtWithId);
 
-  data.thoughts.push(thoughtWithId);
-
-  saveData(data);
-
-  return Promise.resolve(thoughtWithId);
+    return saveData(data).then(() => thoughtWithId);
+  });
 }
 
 export function getThoughts() {
-  return Promise.resolve(getData().thoughts);
+  return getData().then(({ thoughts }) => thoughts);
 }
 
 export function deleteThought(board, thought) {
-  const data = getData();
-
-  data.thoughts = data.thoughts.filter(({ id }) => id !== thought.id);
-  saveData(data);
-
-  return Promise.resolve();
+  return getData().then((data) => {
+    const updatedData = {
+      ...data,
+      thoughts: data.thoughts.filter(({ id }) =>
+        id !== thought.id
+      )
+    };
+    return saveData(updatedData);
+  });
 }
 
 export function updateThought(board, thought) {
-  const data = getData();
+  return getData().then((data) => {
+    const updatedData = {
+      ...data,
+      thoughts: data.thoughts.map((thou) => {
+        if (thought.id === thou.id) {
+          return thought;
+        }
+        return thou;
+      })
+    };
 
-  data.thoughts = data.thoughts.map((thou) => {
-    if (thought.id === thou.id) {
-      return thought;
-    }
-    return thou;
+    return saveData(updatedData);
   });
-
-  saveData(data);
-
-  return Promise.resolve(thought);
 }

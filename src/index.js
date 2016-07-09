@@ -1,5 +1,3 @@
-/* global chrome */
-
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -10,7 +8,7 @@ import { thoughtsReducer, editorReducer } from 'concepts/thoughts/reducer';
 import introReducer from 'concepts/intro/reducer';
 import locationReducer from 'concepts/location/reducer';
 import { setBoard } from 'concepts/location/actions';
-import { getBoardFromHash } from 'utils/url';
+import { getBoardFromHash, isChromeApp } from 'utils/url';
 
 import initAnalytics from 'utils/analytics';
 
@@ -21,9 +19,6 @@ import LandingPage from 'containers/landing-page';
 
 const $root = document.getElementById('root');
 
-function isChromeApp() {
-  return Boolean(chrome.storage);
-}
 
 /*
  * Redux related stuff
