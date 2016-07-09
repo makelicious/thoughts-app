@@ -1,13 +1,13 @@
 import { uniq } from 'lodash';
 
-export const HASHTAG_REGEXP = /#\w+/g;
+export const HASHTAG_REGEXP = /#[\w-_]+/g;
 export const CHECKBOX_REGEXP = /\[[x\s]?\](?=\s|$)/ig;
 export const UNFINISHED_TODO_TAG = '#unfinished-todo';
 
 export function createThought(text) {
   return {
     text,
-    id: Date.now(),
+    id: (Date.now() + Math.round(Math.random() * 10000)).toString(),
     todos: parseTodos(text),
     hashtags: parseHashtags(text),
     createdAt: new Date()

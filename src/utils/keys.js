@@ -9,7 +9,7 @@ const CMD = 91;
 const V = 86;
 
 export function isThoughtCreatingKeypress(event) {
-  const disallowedKeys = [ENTER, BACKSPACE, ESC];
+  const disallowedKeys = [BACKSPACE, ESC];
   const isPaste = (event.control || event.metaKey) && (event.keyCode === 86);
 
   return isPaste ||

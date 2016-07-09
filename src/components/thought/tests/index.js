@@ -1,8 +1,12 @@
 import React from 'react';
 import { expect } from 'chai';
 import { render } from 'enzyme';
+import proxyquire from 'proxyquire';
 
-import Thought from '../';
+const Thought = proxyquire('../', {
+  './assets/pen.svg': () => <div />,
+  './assets/trash.svg': () => <div />
+}).default;
 
 function createThought(text) {
   return {
@@ -37,6 +41,7 @@ describe('<Thought />', () => {
       expect(checkboxesForText('[] []')).to.have.length(2);
       expect(checkboxesForText('#ruok []')).to.have.length(1);
       expect(checkboxesForText('#ruok_bar_baz []')).to.have.length(1);
+      expect(checkboxesForText('#ruok-bar-baz []')).to.have.length(1);
       expect(checkboxesForText('[] #ruok_bar_baz [] [] [x]')).to.have.length(4);
     });
 

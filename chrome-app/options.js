@@ -7,7 +7,7 @@ document.getElementById('board').addEventListener('keyup', function(event) {
 });
 
 chrome.storage.sync.get({
-  board: 'hello'
+  board: 'me'
 }, function(items) {
   document.getElementById('board').value = items.board;
 });

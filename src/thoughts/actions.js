@@ -3,7 +3,8 @@ import { createThought as createThoughtObject } from 'utils/thought';
 import {
   updateThought,
   saveThought,
-  getThoughts
+  getThoughts,
+  deleteThought
 } from 'utils/storage';
 
 // Thought created automatically (in intro for example)
@@ -15,7 +16,10 @@ export const CREATE_THOUGHT = 'CREATE_THOUGHT';
 export const DELETE_THOUGHT = 'DELETE_THOUGHT';
 export const MODIFY_THOUGHT = 'MODIFY_THOUGHT';
 
+export const RESET_THOUGHTS = 'RESET_THOUGHTS';
 export const LOAD_THOUGHTS = 'LOAD_THOUGHTS';
+
+export const THOUGHTS_LOADING = 'THOUGHTS_LOADING';
 export const THOUGHTS_LOADED = 'THOUGHTS_LOADED';
 
 export const SET_SEARCH_TERM = 'SET_SEARCH_TERM';
@@ -30,8 +34,8 @@ export function createThought(text) {
   };
 }
 
-export function submitThought(text, type) {
-  const newThought = createThoughtObject(text, type);
+export function submitThought(text) {
+  const newThought = createThoughtObject(text);
 
   return {
     type: SUBMIT_THOUGHT,
@@ -39,12 +43,23 @@ export function submitThought(text, type) {
   };
 }
 
-export function deleteThought(thought) {
-  return {
-    type: DELETE_THOUGHT,
-    payload: thought
+function deleteThoughtAction(thought) {
+  return (dispatch, getState) => {
+    const currentState = getState();
+    const { board } = currentState.editor;
+
+    dispatch({
+      type: DELETE_THOUGHT,
+      payload: thought
+    });
+
+    if (board && thought._id !== undefined) {
+      deleteThought(board, thought);
+    }
   };
 }
+
+export { deleteThoughtAction as deleteThought };
 
 export function modifyThought(thought) {
   return {
@@ -77,6 +92,12 @@ export function submitSearch() {
 }
 
 
+export function resetThoughts() {
+  return {
+    type: RESET_THOUGHTS
+  };
+}
+
 export function loadThoughts() {
   return (dispatch, getState) => {
     const currentState = getState();
@@ -85,6 +106,10 @@ export function loadThoughts() {
     if (!board) {
       return;
     }
+
+    dispatch({
+      type: THOUGHTS_LOADING
+    });
 
     getThoughts(board).then((thoughts) =>
       dispatch({
@@ -143,6 +168,12 @@ export function setEditable(thought) {
 
 export function setBoard(board) {
   return (dispatch) => {
+
+    if (board !== null) {
+      document.title = board;
+    }
+
+
     dispatch({
       type: SET_BOARD,
       payload: board
@@ -160,7 +191,7 @@ export function resetFilters() {
 
 export function stopEditing(thought) {
   if (thought.text.trim() === '') {
-    return deleteThought(thought);
+    return deleteThoughtAction(thought);
   }
 
   return (dispatch, getState) => {
@@ -172,7 +203,7 @@ export function stopEditing(thought) {
       return;
     }
 
-    if (thought._id) {
+    if (thought._id !== undefined) {
       updateThought(currentState.editor.board, thought).then((updatedThought) =>
         dispatch(modifyThought(updatedThought))
       );

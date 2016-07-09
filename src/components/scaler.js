@@ -16,9 +16,15 @@ export default React.createClass({
   componentDidMount() {
     this.debouncedScale = debounce(this.calculateScales, 10, { maxWait: 50 });
     window.addEventListener('scroll', this.debouncedScale, true);
+    this.debouncedScale();
   },
   componentWillUnmount() {
     window.removeEventListener('scroll', this.debouncedScale, true);
+  },
+  componentDidUpdate(prevProps) {
+    if (prevProps.children.length !== this.props.children.length) {
+      this.calculateScales();
+    }
   },
   calculateScales() {
     const target = this.calculateTargetPosition();

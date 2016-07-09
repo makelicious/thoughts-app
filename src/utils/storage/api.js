@@ -26,7 +26,7 @@ export function deleteThought(board, thought) {
 }
 
 export function updateThought(board, thought) {
-  return fetch(`https://evening-oasis-93330.herokuapp.com/${board}/thoughts/${thought.id}`, {
+  return fetch(`${DOMAIN}/${board}/thoughts/${thought.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'

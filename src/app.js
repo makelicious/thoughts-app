@@ -10,7 +10,9 @@ import {
 import {
   isUp,
   isEsc,
-  isThoughtCreatingKeypress
+  isEnter,
+  isThoughtCreatingKeypress,
+  isBackspace
 } from 'utils/keys';
 
 import Thought from 'components/thought';
@@ -20,6 +22,7 @@ import FilterBar from 'components/filter-bar';
 import Scaler from 'components/scaler';
 import Background from 'components/background';
 import Search from 'components/search';
+import LoadingOverlay from 'components/loading-overlay';
 
 import {
   createThought,
@@ -71,17 +74,22 @@ const App = React.createClass({
   checkForSpecialKey(event) {
     console.log(event.target.tagName);
     const thoughts = this.props.thoughts;
+    const editing = this.props.editableThoughtId !== null;
 
     // Edit the most recent thought
-    if (!this.props.editableThoughtId && isUp(event.keyCode) && thoughts.length > 0) {
+    if (!editing && isUp(event.keyCode) && thoughts.length > 0) {
       this.setEditable(thoughts[0]);
       return;
     }
 
     // Reset filters with ESC
-    if (!this.props.editableThoughtId && isEsc(event.keyCode)) {
+    if (!editing && isEsc(event.keyCode)) {
       this.resetFilters();
       return;
+    }
+
+    if (!editing && isBackspace(event.keyCode)) {
+      event.preventDefault();
     }
 
     // Create thought
@@ -89,6 +97,17 @@ const App = React.createClass({
         isThoughtCreatingKeypress(event) &&
         event.target.tagName !== 'INPUT') {
       const initialText = `${this.props.hashtagFilters.join(' ')} `;
+
+    if (!editing && isThoughtCreatingKeypress(event)) {
+      const initialText = this.props.hashtagFilters.length === 0 ? '' :
+        `${this.props.hashtagFilters.join(' ')} `;
+
+      // Prevents event so that thought isnt created with one empty line
+      if (isEnter(event.keyCode)) {
+        event.preventDefault();
+      }
+
+
       this.props.dispatch(createThought(initialText));
     }
   },
@@ -153,6 +172,7 @@ const App = React.createClass({
             ))
           }
         </ThoughtsWrapper>
+        <LoadingOverlay visible={this.props.board !== 'me' && this.props.thoughtsLoading} />
       </Background>
     );
   }
@@ -161,6 +181,8 @@ const App = React.createClass({
 function storeToProps(store) {
   return {
     thoughts: store.thoughts,
+    board: store.editor.board,
+    thoughtsLoading: store.editor.thoughtsLoading,
     editableThoughtId: store.editor.editableThoughtId,
     editedWhileFilterOn: store.editor.editedWhileFilterOn,
     hashtagFilters: store.editor.hashtagFilters
