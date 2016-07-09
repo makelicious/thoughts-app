@@ -9,6 +9,7 @@ body,
 
 body {
   font-family: Avenir, "Avenir Next", "Open Sans", sans-serif;
+  color: #6b6b6b;
   line-height: 1.58;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -241,7 +242,6 @@ a {
   animation: appear 0.4s;
 
   overflow-wrap: break-word;
-  color: rgba(0, 0, 0, 0.8);
   font-weight: 300;
   position: relative;
 }
