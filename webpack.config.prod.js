@@ -12,7 +12,7 @@ module.exports = {
   ],
   output: {
     path: path.join(__dirname, 'dist/' + process.env.TARGET),
-    filename: 'bundle.js',
+    filename: 'bundle-[hash].js',
     publicPath: '/'
   },
   plugins: [
@@ -22,7 +22,7 @@ module.exports = {
         'NODE_ENV': JSON.stringify('production')
       }
     }),
-    new ExtractTextPlugin('style.css'),
+    new ExtractTextPlugin('style-[hash].css'),
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
         warnings: false
