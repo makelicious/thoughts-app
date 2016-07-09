@@ -467,15 +467,28 @@ a {
 .search {
   position: fixed;
   top: 0;
-  right: 1em;
-  padding: 0.5em;
+  right: 0;
+  padding: 1em;
 }
 
 .search__input {
   border: 0;
-  height: 1.85em;
-  outline-width: 1px;
-  outline-color: rgba(255, 255, 255, 0.8);
+  padding: 0.5em;
+  background: rgba(255, 255, 255, 0.6);
+  color: #6b6b6b;
+  border-radius: 3px;
+  font: inherit;
+  font-size: 16px;
+  width: 3em;
+  transition: width 300ms;
+}
+
+.search__input:focus {
+  width: 10em;
+}
+
+.search__input::-webkit-input-placeholder {
+  color: #787878;
 }
 
 .search__empty {
