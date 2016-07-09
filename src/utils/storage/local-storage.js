@@ -47,6 +47,16 @@ export function getThoughts() {
   return getData().then(({ thoughts }) => thoughts);
 }
 
+export function searchThoughts(board, searchTerm) {
+  return getData().then(({ thoughts }) =>
+    thoughts.filter((thought) => {
+      const text = thought.text.toLowerCase();
+      const searchText = searchTerm.toLowerCase();
+      return text.includes(searchText);
+    })
+  );
+}
+
 export function deleteThought(board, thought) {
   return getData().then((data) => {
     const updatedData = {

@@ -4,7 +4,8 @@ import {
   updateThought,
   saveThought,
   getThoughts,
-  deleteThought
+  deleteThought,
+  searchThoughts
 } from 'utils/storage';
 
 // Thought created automatically (in intro for example)
@@ -98,8 +99,7 @@ function submitSearch(searchTerm) {
   return (dispatch, getState) => {
     const state = getState();
     const board = state.location.board;
-    return fetch(`https://evening-oasis-93330.herokuapp.com/${board}/thoughts?search=${searchTerm}`)
-    .then((res) => res.json())
+    searchThoughts(board, searchTerm)
     .then((searchResults) => {
       dispatch({
         type: SEARCH_RESULTS_SUCCESS,

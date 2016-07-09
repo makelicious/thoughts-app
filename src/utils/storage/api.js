@@ -35,3 +35,8 @@ export function updateThought(board, thought) {
   })
   .then((res) => res.json());
 }
+
+export function searchThoughts(board, searchTerm) {
+  return fetch(`${DOMAIN}/${board}/thoughts?search=${searchTerm}`)
+  .then((res) => res.json())
+}

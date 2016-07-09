@@ -16,3 +16,4 @@ export const saveThought = callMethod.bind(null, 'saveThought');
 export const getThoughts = callMethod.bind(null, 'getThoughts');
 export const deleteThought = callMethod.bind(null, 'deleteThought');
 export const updateThought = callMethod.bind(null, 'updateThought');
+export const searchThoughts = callMethod.bind(null, 'searchThoughts');
