@@ -143,11 +143,6 @@ const App = React.createClass({
         return edited || hasMatchingTag;
       });
 
-    // Use thought scaler only when filters are not used
-    const ThoughtsWrapper = hashtagFilters.length === 0 ?
-      Scaler :
-      'div';
-
     return (
       <Background className="app" onClick={this.resetEditable}>
         <div className="overlays">
@@ -165,7 +160,10 @@ const App = React.createClass({
             )
           }
         </div>
-        <ThoughtsWrapper ref="thoughts" className="thoughts">
+        <Scaler
+          ref="thoughts"
+          className="thoughts"
+          allVisible={currentlyVisibleThoughts >= this.props.thoughts.length}>
           {
             filteredThoughts.slice(0, currentlyVisibleThoughts).map((thought) => (
               <Thought
@@ -183,7 +181,7 @@ const App = React.createClass({
                 thought={thought} />
             ))
           }
-        </ThoughtsWrapper>
+        </Scaler>
         <LoadingOverlay visible={this.props.board !== 'me' && this.props.thoughtsLoading} />
       </Background>
     );
