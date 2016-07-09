@@ -19,7 +19,6 @@ import LandingPage from 'containers/landing-page';
 
 const $root = document.getElementById('root');
 
-
 /*
  * Redux related stuff
  */
