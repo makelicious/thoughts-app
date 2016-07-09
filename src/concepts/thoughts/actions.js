@@ -148,6 +148,7 @@ export const SET_EDITABLE = 'SET_EDITABLE';
 export const ADD_FILTER = 'ADD_FILTER';
 export const REMOVE_FILTER = 'REMOVE_FILTER';
 export const RESET_FILTERS = 'RESET_FILTERS';
+export const REQUEST_MORE_THOUGHTS = 'REQUEST_MORE_THOUGHTS';
 
 export function addFilter(filter) {
   return {
@@ -212,5 +213,11 @@ export function stopEditing(thought) {
         dispatch(modifyThought(updatedThought))
       );
     }
+  };
+}
+
+export function requestMoreThoughts() {
+  return {
+    type: REQUEST_MORE_THOUGHTS
   };
 }

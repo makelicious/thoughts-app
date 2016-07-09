@@ -17,7 +17,8 @@ import {
   SEARCH_RESULTS_SUCCESS,
   RESET_THOUGHTS,
   THOUGHTS_LOADING,
-  THOUGHTS_LOADED
+  THOUGHTS_LOADED,
+  REQUEST_MORE_THOUGHTS
 } from 'concepts/thoughts/actions';
 
 import { SET_BOARD } from 'concepts/location/actions';
@@ -60,6 +61,7 @@ const INITIAL_STATE = {
   editableThoughtId: null,
   hashtagFilters: [],
   thoughtsLoading: false,
+  currentlyVisibleThoughts: 20,
   // Thoughts created or modified while filter view
   // It would probably be weird if they would just disappeared when you delete a tag
   editedWhileFilterOn: [],
@@ -78,7 +80,8 @@ export function editorReducer(state = INITIAL_STATE, action) {
   if (action.type === THOUGHTS_LOADED) {
     return {
       ...state,
-      thoughtsLoading: false
+      thoughtsLoading: false,
+      currentlyVisibleThoughts: INITIAL_STATE.currentlyVisibleThoughts
     };
   }
 
@@ -92,7 +95,8 @@ export function editorReducer(state = INITIAL_STATE, action) {
   if (action.type === SET_SEARCH_TERM) {
     return {
       ...state,
-      searchTerm: action.payload
+      searchTerm: action.payload,
+      currentlyVisibleThoughts: INITIAL_STATE.currentlyVisibleThoughts
     };
   }
 
@@ -112,7 +116,15 @@ export function editorReducer(state = INITIAL_STATE, action) {
     return {
       ...state,
       hashtagFilters: [],
-      editedWhileFilterOn: []
+      editedWhileFilterOn: [],
+      currentlyVisibleThoughts: INITIAL_STATE.currentlyVisibleThoughts
+    };
+  }
+
+  if (action.type === REQUEST_MORE_THOUGHTS) {
+    return {
+      ...state,
+      currentlyVisibleThoughts: state.currentlyVisibleThoughts + 10
     };
   }
 
@@ -122,7 +134,8 @@ export function editorReducer(state = INITIAL_STATE, action) {
     return {
       ...state,
       hashtagFilters,
-      editedWhileFilterOn: hashtagFilters.length === 0 ? [] : state.editedWhileFilterOn
+      editedWhileFilterOn: hashtagFilters.length === 0 ? [] : state.editedWhileFilterOn,
+      currentlyVisibleThoughts: INITIAL_STATE.currentlyVisibleThoughts
     };
   }
 
