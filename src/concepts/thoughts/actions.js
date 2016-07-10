@@ -1,4 +1,6 @@
 import { find } from 'lodash';
+import INITIAL_THOUGHTS from 'data/initial-thoughts';
+
 import { createThought as createThoughtObject } from 'utils/thought';
 import {
   updateThought,
@@ -129,12 +131,17 @@ export function loadThoughts() {
       type: THOUGHTS_LOADING
     });
 
-    getThoughts(board).then((thoughts) =>
+    getThoughts(board).then((loadedThoughts) => {
+
+      const thoughts = loadedThoughts.length === 0 ?
+        INITIAL_THOUGHTS.map(createThoughtObject) :
+        loadedThoughts;
+
       dispatch({
         type: THOUGHTS_LOADED,
         payload: thoughts
-      })
-    );
+      });
+    });
   };
 }
 
