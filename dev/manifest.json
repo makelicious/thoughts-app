@@ -2,7 +2,7 @@
   "name": "Ideahigh",
   "manifest_version": 2,
   "description": "Ideahigh provides you a way to create and organize your thoughts in a brand new manner.",
-  "version": "0.0.0.1",
+  "version": "0.0.1.0",
   "permissions": [
     "*://use.typekit.net/*",
     "webRequest",
