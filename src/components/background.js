@@ -12,11 +12,33 @@ const backgrounds = [
 
 const randomBackground = sample(backgrounds);
 
-export default function Background(props) {
+export default React.createClass({
+  getInitialState() {
+    return {
+      background: null
+    };
+  },
+  componentDidMount() {
+    this.loadBackground(randomBackground);
+  },
+  loadBackground(url) {
+    const image = new Image();
+    image.src = url;
+    image.onload = () => this.setState({
+      background: url
+    });
+  },
+  render() {
+    const style = this.state.background ? {
+      backgroundImage: `url(${randomBackground})`,
+      opacity: 1
+    } : null;
 
-  return (
-    <div {...props} style={{ backgroundImage: `url(${randomBackground})` }}>
-      {props.children}
-    </div>
-  );
-}
+    return (
+      <div {...this.props}>
+        <div className="background" style={style} />
+        {this.props.children}
+      </div>
+    );
+  }
+});
