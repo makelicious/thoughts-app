@@ -9,11 +9,12 @@ body,
 
 body {
   font-family: Avenir, "Avenir Next", "Open Sans", sans-serif;
-  color: #6b6b6b;
+  color: #5d5d5d;
   line-height: 1.58;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   font-size: 18px;
+  font-weight: 300;
 }
 
 a {
