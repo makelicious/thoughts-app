@@ -8,20 +8,29 @@ import { setBoard } from 'concepts/location/actions';
 export const MOVE_TO_BOARD = 'MOVE_TO_BOARD';
 
 const demoThoughts = [
-  [2500, 'Do laundry []'],
-  [5500, '#app-ideas football for hamster'],
-  [8000, `#buy
+  ['#life-goals remember to exercise'],
+  ['Do laundry []'],
+  ['#app-ideas football for hamster'],
+  [`#buy
     [] tomato sauce
     [] mozzarella
     [] pineapple
   `],
-  [11000, '#movies Mulholland Drive'],
-  [14000, '#work remember to complement Jonathan']
+  ['#movies Mulholland Drive'],
+  ['#life-goals Less thinking, more doing'],
+  ['#uni #cs01 assignment due on monday'],
+  ['#work remember to complement Jonathan'],
+  ['#life-goals read more books'],
+  [`#movies #ratings
+## The Shawshank Redemption
+One of my all time favorites
+  `],
+  ['#work remember to mark billable hours']
 ];
 
 export function initDemo() {
   return (dispatch, getState) => {
-    demoThoughts.forEach(([timeout, text]) => {
+    demoThoughts.forEach(([text], i) => {
       setTimeout(() => {
         const { intro } = getState();
 
@@ -29,7 +38,7 @@ export function initDemo() {
           dispatch(submitThought(text));
         }
 
-      }, timeout);
+      }, (1 + i) * 3500);
     });
   };
 }

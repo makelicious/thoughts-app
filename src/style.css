@@ -321,6 +321,14 @@ a {
   border-bottom: 1px solid #e8e7e7;
 }
 
+.thought h1,
+.thought h2,
+.thought h3,
+.thought h4,
+.thought h5 {
+  margin: 0;
+}
+
 /* Thought attachments */
 
 .thought__attachments {
