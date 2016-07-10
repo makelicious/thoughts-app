@@ -139,8 +139,13 @@ a {
   margin: 0 auto;
 }
 
-.landing-page__button {
+.button {
   border: 0;
+  font: inherit;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+}
+
+.landing-page__button {
   padding: 1em 4em;
   background-color: #1b0a19;
   background-image: url('./containers/landing-page/assets/space-bg.png');
@@ -152,6 +157,26 @@ a {
   font-weight: bold;
   letter-spacing: 3px;
   cursor: pointer;
+}
+
+.landing-page__chrome-button {
+  padding: 1em;
+  background-color: #fff;
+  background-size: cover;
+
+  display: block;
+  margin: 0 auto;
+  margin-top: 2em;
+  font-size: 18px;
+  font-weight: bold;
+  font-weight: 300;
+  cursor: pointer;
+}
+
+.landing-page__chrome-button__icon {
+  width: 30px;
+  margin-right: 1em;
+  vertical-align: bottom;
 }
 
 .landing-page__description {

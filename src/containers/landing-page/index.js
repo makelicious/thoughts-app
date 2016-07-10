@@ -4,7 +4,13 @@ import { connect } from 'react-redux';
 
 import App from 'app';
 import logo from './assets/logo.png';
-import { initDemo, goToBoard } from 'concepts/intro/actions';
+import ChromeLogo from './assets/chrome.svg?name=ChromeLogo';
+
+import {
+  initDemo,
+  goToBoard,
+  addToChrome
+} from 'concepts/intro/actions';
 
 function DescriptionColumn(props) {
   return (
@@ -19,10 +25,17 @@ function DescriptionColumn(props) {
           <br /><br />
           Ideahigh provides you a way to create and organize your thoughts in a brand new manner.
         </p>
-        <button onClick={props.onProceed} className="landing-page__button">
+        <button onClick={props.onProceed} className="button landing-page__button">
           {'LET\'S GO'}
         </button>
-
+        {
+          props.showChromeButton && (
+            <button onClick={props.onAddToChrome} className="button landing-page__chrome-button">
+              <ChromeLogo className="landing-page__chrome-button__icon" />
+              Add Ideahigh to Chrome
+            </button>
+          )
+        }
       </div>
     </div>
   );
@@ -34,6 +47,9 @@ const LandingPage = React.createClass({
   },
   goToBoard() {
     this.props.dispatch(goToBoard());
+  },
+  addToChrome() {
+    this.props.dispatch(addToChrome());
   },
   render() {
 
@@ -49,7 +65,10 @@ const LandingPage = React.createClass({
         </div>
         {
           !this.props.movedToBoard &&
-            <DescriptionColumn onProceed={this.goToBoard} />
+            <DescriptionColumn
+              showChromeButton={this.props.showChromeButton}
+              onAddToChrome={this.addToChrome}
+              onProceed={this.goToBoard} />
         }
       </ReactCSSTransitionGroup>
 
@@ -59,7 +78,8 @@ const LandingPage = React.createClass({
 
 function stateToProps(state) {
   return {
-    movedToBoard: state.intro.movedToBoard
+    movedToBoard: state.intro.movedToBoard,
+    showChromeButton: state.intro.canBeInstalledToCurrentBrowser
   };
 }
 

@@ -6,6 +6,9 @@ import {
 import { setBoard } from 'concepts/location/actions';
 import DEMO_THOUGHTS from 'data/demo-thoughts';
 
+const CHROME_STORE_URL =
+  'https://chrome.google.com/webstore/detail/apcaihkabpnflnpfjnhiekaapeicpion';
+
 export const MOVE_TO_BOARD = 'MOVE_TO_BOARD';
 
 export function initDemo() {
@@ -35,5 +38,13 @@ export function goToBoard() {
     dispatch(setBoard('me'));
     dispatch(resetThoughts());
     dispatch(moveToBoard());
+  };
+}
+
+export function addToChrome() {
+  return () => {
+    chrome.webstore.install(CHROME_STORE_URL, () => {}, (err) => {
+      console.error(err);
+    });
   };
 }
