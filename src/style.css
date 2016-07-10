@@ -491,6 +491,7 @@ a {
   border: 0;
 
 }
+
 .search__empty::after {
   content: '✖';
   position: absolute;
