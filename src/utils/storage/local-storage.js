@@ -65,7 +65,7 @@ export function deleteThought(board, thought) {
         id !== thought.id
       )
     };
-    return saveData(updatedData);
+    return saveData(updatedData).then(() => thought);
   });
 }
 
@@ -81,6 +81,6 @@ export function updateThought(board, thought) {
       })
     };
 
-    return saveData(updatedData);
+    return saveData(updatedData).then(() => updatedData);
   });
 }

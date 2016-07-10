@@ -1,6 +1,7 @@
 import React from 'react';
 import { find } from 'lodash';
 import { connect } from 'react-redux';
+import { findDOMNode } from 'react-dom';
 
 import {
   getUnfinishedTodos,
@@ -32,15 +33,27 @@ import {
   setEditable,
   resetFilters,
   removeFilter,
-  addFilter
+  addFilter,
+  requestMoreThoughts
 } from 'concepts/thoughts/actions';
 
 const App = React.createClass({
   componentDidMount() {
     document.addEventListener('keydown', this.checkForSpecialKey, true);
+    window.addEventListener('scroll', this.requestMoreThoughts, true);
   },
   componentWillUnmount() {
     document.removeEventListener('keydown', this.checkForSpecialKey, true);
+    window.removeEventListener('scroll', this.requestMoreThoughts, true);
+  },
+  distanceFromBottom() {
+    const scrollArea = findDOMNode(this.refs.thoughts);
+    return scrollArea.scrollHeight - scrollArea.clientHeight - scrollArea.scrollTop;
+  },
+  requestMoreThoughts() {
+    if (this.distanceFromBottom() < 400) {
+      this.props.dispatch(requestMoreThoughts());
+    }
   },
   updateThought(thought) {
     this.props.dispatch(modifyThought(thought));
@@ -55,12 +68,15 @@ const App = React.createClass({
     this.props.dispatch(stopEditing(thought));
   },
   addFilter(hashtag) {
+    this.refs.thoughts.scrollToTop();
     this.props.dispatch(addFilter(hashtag));
   },
   removeFromFilter(hashtag) {
+    this.refs.thoughts.scrollToTop();
     this.props.dispatch(removeFilter(hashtag));
   },
   resetFilters() {
+    this.refs.thoughts.scrollToTop();
     this.props.dispatch(resetFilters());
   },
   resetEditable() {
@@ -111,6 +127,8 @@ const App = React.createClass({
   render() {
     const thoughts = this.props.thoughts;
     const hashtagFilters = this.props.hashtagFilters;
+    const currentlyVisibleThoughts = this.props.currentlyVisibleThoughts;
+
     const unfinishedTodos = getUnfinishedTodos(thoughts);
 
     const filteredThoughts = hashtagFilters.length === 0 ?
@@ -127,11 +145,6 @@ const App = React.createClass({
 
         return edited || hasMatchingTag;
       });
-
-    // Use thought scaler only when filters are not used
-    const ThoughtsWrapper = hashtagFilters.length === 0 ?
-      Scaler :
-      'div';
 
     return (
       <Background className="app" onClick={this.resetEditable}>
@@ -150,9 +163,12 @@ const App = React.createClass({
             )
           }
         </div>
-        <ThoughtsWrapper ref="thoughts" className="thoughts">
+        <Scaler
+          ref="thoughts"
+          className="thoughts"
+          allVisible={currentlyVisibleThoughts >= this.props.thoughts.length}>
           {
-            filteredThoughts.map((thought) => (
+            filteredThoughts.slice(0, currentlyVisibleThoughts).map((thought) => (
               <Thought
                 key={thought.id}
                 onDoubleClick={(event) => {
@@ -168,7 +184,7 @@ const App = React.createClass({
                 thought={thought} />
             ))
           }
-        </ThoughtsWrapper>
+        </Scaler>
         <LoadingOverlay visible={this.props.board !== 'me' && this.props.thoughtsLoading} />
       </Background>
     );
@@ -182,6 +198,7 @@ function storeToProps(store) {
     thoughtsLoading: store.editor.thoughtsLoading,
     editableThoughtId: store.editor.editableThoughtId,
     editedWhileFilterOn: store.editor.editedWhileFilterOn,
+    currentlyVisibleThoughts: store.editor.currentlyVisibleThoughts,
     hashtagFilters: store.editor.hashtagFilters
   };
 }
