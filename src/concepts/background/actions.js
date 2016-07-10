@@ -1,7 +1,8 @@
-import React from 'react';
+export const BACKGROUND_LOADED = 'BACKGROUND_LOADED';
+
 import { sample } from 'lodash';
 
-const backgrounds = [
+const BACKGROUNDS = [
   'https://images.unsplash.com/photo-1463595373836-6e0b0a8ee322?format=auto&auto=compress&dpr=1&crop=entropy&fit=crop&w=1920&h=1280&q=80',
   'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?format=auto&auto=compress&dpr=1&crop=entropy&fit=crop&w=1920&h=1823&q=80',
   'https://images.unsplash.com/photo-1452473767141-7c6086eacf42?format=auto&auto=compress&dpr=1&crop=entropy&fit=crop&w=1920&h=1280&q=80',
@@ -10,35 +11,16 @@ const backgrounds = [
   'https://images.unsplash.com/photo-1443890484047-5eaa67d1d630?format=auto&auto=compress&dpr=1&crop=entropy&fit=crop&w=1920&h=1280&q=80'
 ];
 
-const randomBackground = sample(backgrounds);
+export function loadBackground() {
+  return (dispatch) => {
+    const randomBackground = sample(BACKGROUNDS);
 
-export default React.createClass({
-  getInitialState() {
-    return {
-      background: null
-    };
-  },
-  componentDidMount() {
-    this.loadBackground(randomBackground);
-  },
-  loadBackground(url) {
+    // Preload image
     const image = new Image();
-    image.src = url;
-    image.onload = () => this.setState({
-      background: url
+    image.src = randomBackground;
+    image.onload = () => dispatch({
+      type: BACKGROUND_LOADED,
+      payload: randomBackground
     });
-  },
-  render() {
-    const style = this.state.background ? {
-      backgroundImage: `url(${randomBackground})`,
-      opacity: 1
-    } : null;
-
-    return (
-      <div {...this.props}>
-        <div className="background" style={style} />
-        {this.props.children}
-      </div>
-    );
-  }
-});
+  };
+}

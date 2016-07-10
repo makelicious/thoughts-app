@@ -7,6 +7,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { thoughtsReducer, editorReducer } from 'concepts/thoughts/reducer';
 import introReducer from 'concepts/intro/reducer';
 import locationReducer from 'concepts/location/reducer';
+import backgroundReducer from 'concepts/background/reducer';
 import { setBoard } from 'concepts/location/actions';
 import { getBoardFromHash, isChromeApp } from 'utils/url';
 
@@ -27,6 +28,7 @@ const reducers = combineReducers({
   thoughts: thoughtsReducer,
   editor: editorReducer,
   intro: introReducer,
+  background: backgroundReducer,
   location: locationReducer
 });
 

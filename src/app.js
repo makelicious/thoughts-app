@@ -16,12 +16,13 @@ import {
   isBackspace
 } from 'utils/keys';
 
+import Background from 'containers/background';
+
 import Thought from 'components/thought';
 
 import Notification from 'components/notification';
 import FilterBar from 'components/filter-bar';
 import Scaler from 'components/scaler';
-import Background from 'components/background';
 import Search from 'components/search';
 import LoadingOverlay from 'components/loading-overlay';
 
