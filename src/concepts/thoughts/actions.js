@@ -133,9 +133,17 @@ export function loadThoughts() {
 
     getThoughts(board).then((loadedThoughts) => {
 
-      const thoughts = loadedThoughts.length === 0 ?
-        INITIAL_THOUGHTS.map(createThoughtObject) :
-        loadedThoughts;
+      let thoughts = loadedThoughts;
+
+      if (loadedThoughts.length === 0) {
+        thoughts = INITIAL_THOUGHTS.map(createThoughtObject);
+
+        thoughts.forEach((thought) =>
+          saveThought(board, thought).then((updatedThought) =>
+            dispatch(modifyThought(updatedThought))
+          )
+        );
+      }
 
       dispatch({
         type: THOUGHTS_LOADED,
