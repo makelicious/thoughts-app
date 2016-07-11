@@ -71,11 +71,13 @@ export default React.createClass({
 
     const distanceFromTop = this.getContainerDistanceFromTop();
 
+    // Scroll bar not visible
     if (scrollArea.scrollHeight === scrollArea.clientHeight) {
-      return window.innerHeight / 2;
+      return distanceFromTop;
     }
 
     const scrollPercentage = this.getScrollPercentage();
+
     const curvedPercentage = bezier(points, scrollPercentage);
 
     const position = Math.min(
