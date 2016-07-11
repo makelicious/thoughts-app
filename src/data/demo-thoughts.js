@@ -1,20 +1,10 @@
 export default [
-  ['#life-goals remember to exercise'],
-  ['Do laundry []'],
-  ['#app-ideas football for hamster'],
-  [`#buy
-    [] tomato sauce
-    [] mozzarella
-    [] pineapple
-  `],
-  ['#movies Mulholland Drive'],
-  ['#life-goals Less thinking, more doing'],
-  ['#uni #cs01 assignment due on monday'],
-  ['#work remember to complement Jonathan'],
-  ['#life-goals read more books'],
-  [`#movies #ratings
-## The Shawshank Redemption
-One of my all time favorites
-  `],
-  ['#work remember to mark billable hours']
+['Econ 101 exam 05/07 2:00pm @class room A901 #school #economics'],
+['http://i.imgur.com/fZmKzJM.png cat facts #infographics #cats'],
+['water the plants []'],
+['#coding #links how to convert images into base-64 strings http://stackoverflow.com/questions/6150289/how-to-convert-image-into-base64-string-using-javascript'],
+['#shopping-list \n eggs [x] \n potatoes [x] \n' +
+'more potatoes [x] \n toothbrush [x] \n tiger blood []'],
+['#work compliment Mary Jane\'s new haircut'],
+['launch ideahigh [x]']
 ];

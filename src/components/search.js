@@ -22,9 +22,9 @@ export const Search = React.createClass({
         {
           this.props.searchTerm.length > 0 ? (
             <div
-             className="search__empty"
-             onClick={this.emptySearch}>
-             </div>
+              className="search__empty"
+              onClick={this.emptySearch}>
+            </div>
           ) : null
         }
         <input

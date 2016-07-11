@@ -1,6 +1,6 @@
 export default [
   '#welcome\n' +
-  '**Just start writing everything that comes into your mind.**\n' +
-  'Ideahigh will help you think and remember important things,\n' +
-  'both in your daily life and in the bigger picture.'
+  '**Write down all the things you wish to remember**\n' +
+  'Ideahigh helps you to recall ideas and handle your flow of thought\n' +
+  'both in your day-to-day tasks and life in general'
 ];
