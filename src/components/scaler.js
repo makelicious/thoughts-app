@@ -42,6 +42,11 @@ export default React.createClass({
   getScrollPercentage() {
     const doc = document.documentElement;
     const scrollFromTop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+
+    if (scrollFromTop === 0) {
+      return 0;
+    }
+
     return (scrollFromTop) / (document.body.scrollHeight - window.innerHeight);
   },
   calculateScales() {
