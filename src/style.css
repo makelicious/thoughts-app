@@ -202,12 +202,11 @@ a {
 .thought {
   text-align: center;
   margin: 1em 0;
-  max-height: initial;
-  animation: thought-appear 0.4s;
 }
 
 .thought:first-child {
   margin-top: 0;
+  animation: thought-appear 0.4s;
 }
 
 .thought__wrapper {

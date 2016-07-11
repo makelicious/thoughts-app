@@ -35,9 +35,11 @@ function moveToBoard() {
 
 export function goToBoard() {
   return (dispatch) => {
-    dispatch(setBoard('me'));
     dispatch(resetThoughts());
     dispatch(moveToBoard());
+    setTimeout(() => {
+      dispatch(setBoard('me'));
+    }, 1000);
   };
 }
 
