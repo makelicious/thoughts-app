@@ -76,7 +76,7 @@ a {
   flex-grow: 1;
 }
 
-.landing-page__column:not(:last-child) .thoughts {
+.landing-page__column:not(:last-child) {
   overflow: hidden;
 }
 
