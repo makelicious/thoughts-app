@@ -196,6 +196,10 @@ a {
   margin: 1em 0;
 }
 
+.thought:first-child {
+  margin-top: 0;
+}
+
 .thought__wrapper {
   display: inline-block;
   text-align: left;
