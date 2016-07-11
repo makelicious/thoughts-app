@@ -21,7 +21,7 @@ function DescriptionColumn(props) {
 
         </p>
         <button onClick={props.onProceed} className="button landing-page__button">
-          LET'S GO
+          {'LET\'S GO'}
         </button>
 
       </div>
