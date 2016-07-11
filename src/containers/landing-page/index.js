@@ -14,7 +14,7 @@ function DescriptionColumn(props) {
         <img src={logo} className="landing-page__logo" alt="ideahigh" />
         <p className="landing-page__description">
           Do you ever feel distracted?<br />
-          Sometimes its because of the sheer workload you have to manage at school or work.
+          Sometimes {'it\'s'} because of the sheer workload you have to manage at school or work.
           Forgetting awesome ideas or missing deadlines is stressful. <br /> <br />
 
           Ideahigh provides you a way to create and organize your thoughts in a brand new manner.
