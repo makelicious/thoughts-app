@@ -25,7 +25,7 @@ export default React.createClass({
     window.removeEventListener('scroll', this.debouncedScale, true);
   },
   componentDidUpdate(prevProps) {
-    if (prevProps.children.length !== this.props.children.length) {
+    if (prevProps.children !== this.props.children) {
       this.calculateScales();
     }
   },
