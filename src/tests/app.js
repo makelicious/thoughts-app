@@ -18,10 +18,16 @@ function createApp(props) {
     thoughts: []
   };
 
+  const dummy = {
+    default: (properties) => <div>{properties.children}</div>
+  };
+
   const App = proxyquire('app', {
     'react-redux': {
       connect: () => (comp) => comp
-    }
+    },
+    'containers/background': dummy,
+    'components/search': dummy
   }).default;
 
   return render(<App {...defaultProps} {...props} />);

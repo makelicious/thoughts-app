@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import Brain from './assets/brain.svg?name=Brain';
+import Brain from './assets/brain.svg';
 
 export default function LoadingOverlay(props) {
 
