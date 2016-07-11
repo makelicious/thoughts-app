@@ -11,6 +11,20 @@ function endsWithSpace(str) {
   return Boolean(str.match(/\s$/));
 }
 
+function getNextFromParent(node) {
+  let parent = node.parent;
+
+  while (parent) {
+    if (parent.next) {
+      return parent.next;
+    }
+    parent = parent.parent;
+  }
+
+  return parent;
+}
+
+
 /*
  * Markdown handles _ as a start of italic text i.e. _some italic_
  * but we want to disable this behaviour inside hashtags
@@ -47,7 +61,7 @@ function combineFollowingTexts(node, walker) {
   }
 
   // Skip walking on the unlinked nodes
-  walker.resumeAt(resumeAt || node.parent.next, true);
+  walker.resumeAt(resumeAt || getNextFromParent(node), true);
 }
 
 function searchFromAst(node, fn) {
@@ -160,7 +174,7 @@ function createCheckboxes(node, walker) {
     node.next.next.unlink();
   }
 
-  resumeAt = resumeAt || node.next.next || node.parent.next;
+  resumeAt = resumeAt || node.next.next || getNextFromParent(node);
 
   node.next.unlink();
   node.unlink();

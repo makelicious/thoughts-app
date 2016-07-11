@@ -43,6 +43,12 @@ describe('<Thought />', () => {
       expect(checkboxesForText('#ruok_bar_baz []')).to.have.length(1);
       expect(checkboxesForText('#ruok-bar-baz []')).to.have.length(1);
       expect(checkboxesForText('[] #ruok_bar_baz [] [] [x]')).to.have.length(4);
+      expect(checkboxesForText(`#shopping-list
+- eggs [x]
+- potatoes []
+- more potatoes [x]
+- toothbrush [x]
+- tiger blood []`)).to.have.length(5);
     });
 
     it('renders checked checkboxes from markdown', () => {
