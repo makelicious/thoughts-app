@@ -4,13 +4,7 @@ import { connect } from 'react-redux';
 
 import App from 'app';
 import logo from './assets/logo.png';
-import ChromeLogo from './assets/chrome.svg?name=ChromeLogo';
-
-import {
-  initDemo,
-  goToBoard,
-  addToChrome
-} from 'concepts/intro/actions';
+import { initDemo, goToBoard } from 'concepts/intro/actions';
 
 function DescriptionColumn(props) {
   return (
@@ -19,23 +13,17 @@ function DescriptionColumn(props) {
 
         <img src={logo} className="landing-page__logo" alt="ideahigh" />
         <p className="landing-page__description">
-          Do you often feel distracted?<br />
+          Do you ever feel distracted?<br />
           Sometimes its because of the sheer workload you have to manage at school or work.
-          Forgetting important meetings or deadlines is stressful.
-          <br /><br />
+          Forgetting awesome ideas or missing deadlines is stressful. <br /> <br />
+
           Ideahigh provides you a way to create and organize your thoughts in a brand new manner.
+
         </p>
-        <button onClick={props.onProceed} className="button landing-page__button">
-          {'LET\'S GO'}
+        <button onClick={props.onProceed} className="landing-page__button">
+          LET'S GO
         </button>
-        {
-          props.showChromeButton && (
-            <button onClick={props.onAddToChrome} className="button landing-page__chrome-button">
-              <ChromeLogo className="landing-page__chrome-button__icon" />
-              Add Ideahigh to Chrome
-            </button>
-          )
-        }
+
       </div>
     </div>
   );
@@ -47,9 +35,6 @@ const LandingPage = React.createClass({
   },
   goToBoard() {
     this.props.dispatch(goToBoard());
-  },
-  addToChrome() {
-    this.props.dispatch(addToChrome());
   },
   render() {
 
@@ -65,10 +50,7 @@ const LandingPage = React.createClass({
         </div>
         {
           !this.props.movedToBoard &&
-            <DescriptionColumn
-              showChromeButton={this.props.showChromeButton}
-              onAddToChrome={this.addToChrome}
-              onProceed={this.goToBoard} />
+            <DescriptionColumn onProceed={this.goToBoard} />
         }
       </ReactCSSTransitionGroup>
 
@@ -78,8 +60,7 @@ const LandingPage = React.createClass({
 
 function stateToProps(state) {
   return {
-    movedToBoard: state.intro.movedToBoard,
-    showChromeButton: state.intro.canBeInstalledToCurrentBrowser
+    movedToBoard: state.intro.movedToBoard
   };
 }
 
