@@ -19,8 +19,6 @@ export default React.createClass({
     this.debouncedScale = debounce(this.calculateScales, 5, { maxWait: 10 });
     window.addEventListener('scroll', this.debouncedScale, true);
 
-    this.containerDistanceFromTop = this.getContainerDistanceFromTop();
-
     this.debouncedScale();
   },
   componentWillUnmount() {
@@ -66,6 +64,8 @@ export default React.createClass({
 
     const points = [0, 0.495, 0.50, 0.505, 1];
 
+    const distanceFromTop = this.getContainerDistanceFromTop();
+
     if (scrollArea.scrollHeight === scrollArea.clientHeight) {
       return window.innerHeight / 2;
     }
@@ -75,7 +75,7 @@ export default React.createClass({
 
     const position = Math.min(
       window.innerHeight,
-      Math.max(this.containerDistanceFromTop, curvedPercentage * window.innerHeight)
+      Math.max(distanceFromTop, curvedPercentage * window.innerHeight)
     );
 
     return this.props.allVisible ?
