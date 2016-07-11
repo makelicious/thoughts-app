@@ -190,10 +190,20 @@ a {
 /*
  * Thought
  */
+@keyframes thought-appear {
+  0% {
+    max-height: 0;
+  }
+  100% {
+    max-height: 300px;
+  }
+}
 
 .thought {
   text-align: center;
   margin: 1em 0;
+  max-height: initial;
+  animation: thought-appear 0.4s;
 }
 
 .thought:first-child {
@@ -260,7 +270,7 @@ a {
   fill: #b9b9b9;
 }
 
-@keyframes appear {
+@keyframes bubble-appear {
   0% {
     opacity: 0;
     transform: translate3d(0, -10vh, 0) scale(0.8, 0.8);
@@ -280,7 +290,7 @@ a {
   border-radius: 3px;
   transition: transform 0.3s, opacity 0.6s;
   box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.1);
-  animation: appear 0.4s;
+  animation: bubble-appear 0.4s;
 
   overflow-wrap: break-word;
   font-weight: 300;
