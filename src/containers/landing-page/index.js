@@ -20,7 +20,7 @@ function DescriptionColumn(props) {
           Ideahigh provides you a way to create and organize your thoughts in a brand new manner.
 
         </p>
-        <button onClick={props.onProceed} className="landing-page__button">
+        <button onClick={props.onProceed} className="button landing-page__button">
           LET'S GO
         </button>
 
