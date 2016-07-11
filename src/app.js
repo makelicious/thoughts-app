@@ -1,7 +1,6 @@
 import React from 'react';
 import { find } from 'lodash';
 import { connect } from 'react-redux';
-import { findDOMNode } from 'react-dom';
 
 import {
   getUnfinishedTodos,
@@ -48,8 +47,9 @@ const App = React.createClass({
     window.removeEventListener('scroll', this.requestMoreThoughts, true);
   },
   distanceFromBottom() {
-    const scrollArea = findDOMNode(this.refs.thoughts);
-    return scrollArea.scrollHeight - scrollArea.clientHeight - scrollArea.scrollTop;
+    const doc = document.documentElement;
+    const scrollFromTop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+    return document.body.scrollHeight - scrollFromTop - window.innerHeight;
   },
   requestMoreThoughts() {
     if (this.distanceFromBottom() < 400) {

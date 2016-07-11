@@ -18,6 +18,9 @@ export default React.createClass({
   componentDidMount() {
     this.debouncedScale = debounce(this.calculateScales, 5, { maxWait: 10 });
     window.addEventListener('scroll', this.debouncedScale, true);
+
+    this.containerDistanceFromTop = this.getContainerDistanceFromTop();
+
     this.debouncedScale();
   },
   componentWillUnmount() {
@@ -31,12 +34,21 @@ export default React.createClass({
   scrollToTop() {
     findDOMNode(this.refs['scroll-area']).scrollTop = 0;
   },
+  getContainerDistanceFromTop() {
+    const bodyBounds = document.body.getBoundingClientRect();
+    const container = findDOMNode(this.refs['scroll-area']);
+    const containerBounds = container.getBoundingClientRect();
+
+    return containerBounds.top - bodyBounds.top;
+  },
   getScrollPercentage() {
-    const scrollArea = findDOMNode(this.refs['scroll-area']);
-    return scrollArea.scrollTop / (scrollArea.scrollHeight - scrollArea.clientHeight);
+    const doc = document.documentElement;
+    const scrollFromTop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+    return (scrollFromTop) / (document.body.scrollHeight - window.innerHeight);
   },
   calculateScales() {
     const target = this.calculateTargetPosition();
+
     const childrenToScale = this.props.children.slice(0, MAX_THOUGHTS_SCALED);
 
     const scales = childrenToScale.reduce((currentScales, child) => {
@@ -52,10 +64,6 @@ export default React.createClass({
   calculateTargetPosition() {
     const scrollArea = findDOMNode(this.refs['scroll-area']);
 
-    const style = window.getComputedStyle(scrollArea);
-    const topPadding = parseInt(style.getPropertyValue('padding-top'), 10);
-    const bottomPadding = parseInt(style.getPropertyValue('padding-bottom'), 10);
-
     const points = [0, 0.495, 0.50, 0.505, 1];
 
     if (scrollArea.scrollHeight === scrollArea.clientHeight) {
@@ -63,12 +71,11 @@ export default React.createClass({
     }
 
     const scrollPercentage = this.getScrollPercentage();
-
     const curvedPercentage = bezier(points, scrollPercentage);
 
     const position = Math.min(
-      window.innerHeight - bottomPadding,
-      Math.max(topPadding, curvedPercentage * window.innerHeight)
+      window.innerHeight,
+      Math.max(this.containerDistanceFromTop, curvedPercentage * window.innerHeight)
     );
 
     return this.props.allVisible ?
