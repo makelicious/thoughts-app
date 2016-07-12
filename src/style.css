@@ -1,3 +1,4 @@
+
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
 
 html,
@@ -37,7 +38,7 @@ a {
   flex-direction: column;
   justify-content: center;
   box-sizing: border-box;
-  background: linear-gradient(135deg, #d2708e 14%, #f5e8a7 100%);
+  background: linear-gradient(65deg, #f5e8a7 14%, #d2708e 100%);
 }
 
 .background {
