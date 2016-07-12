@@ -8,8 +8,7 @@ const Background = React.createClass({
   },
   render() {
     const style = this.props.background ? {
-      backgroundImage: `url(${this.props.background})`,
-      opacity: 1
+      backgroundImage: `url(${this.props.background})`
     } : null;
 
     return (

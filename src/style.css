@@ -46,10 +46,8 @@ a {
   position: fixed;
   width: 100%;
   height: 100%;
-  opacity: 0;
   top: 0;
   left: 0;
-  transition: opacity 0.4s 0.2s ease-in-out;
 }
 
 .thoughts {
