@@ -81,6 +81,9 @@ export function editorReducer(state = INITIAL_STATE, action) {
     return {
       ...state,
       thoughtsLoading: false,
+      editableThoughtId: INITIAL_STATE.editableThoughtId,
+      hashtagFilters: INITIAL_STATE.hashtagFilters,
+      editedWhileFilterOn: INITIAL_STATE.editedWhileFilterOn,
       currentlyVisibleThoughts: INITIAL_STATE.currentlyVisibleThoughts
     };
   }
