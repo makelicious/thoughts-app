@@ -2,6 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -34,7 +35,11 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: 'index.html'
-    })
+    }),
+    new CopyWebpackPlugin([{
+      from: './assets/backgrounds/',
+      to: './assets/backgrounds/'
+    }])
   ],
   resolve: {
     modulesDirectories: ['./src', './node_modules']
