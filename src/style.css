@@ -185,6 +185,14 @@ a {
   margin-bottom: 4em;
 }
 
+.landing-page__footer {
+  padding: 1em 0 0 2em;
+}
+
+.landing-page__footer__link {
+  color: #fff;
+}
+
 /*
  * Thought
  */
@@ -629,4 +637,20 @@ a {
   font-size: 23px;
   font-weight: 600;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+}
+.landing-page__wrapper {
+  height: 100%;
+}
+
+
+.modal {
+  left: 50%;
+  top: 50%;
+  margin-left: -300px;
+  margin-top: -300px;
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  background: #fff;
+  z-index: 4;
 }

@@ -34,6 +34,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'index.html'
     }),
+    new HtmlWebpackPlugin({
+      filename: 'privacy.html'
+    }),
     new CopyWebpackPlugin([{
       from: './assets/backgrounds/',
       to: './assets/backgrounds/'
