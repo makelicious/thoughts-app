@@ -23,13 +23,7 @@ function DescriptionColumn(props) {
         <button onClick={props.onProceed} className="button landing-page__button">
           {'LET\'S GO'}
         </button>
-        <div className="landing-page__footer">
-          <a
-            onClick={props.onPrivacyPolicy}
-            className="landing-page__footer__link"
-            href="#">Privacy policy
-          </a>
-        </div>
+
       </div>
     </div>
   );
@@ -42,49 +36,23 @@ const LandingPage = React.createClass({
   goToBoard() {
     this.props.dispatch(goToBoard());
   },
-  showPrivacyPolicy() {
-    this.setState({ privacyPolicyVisible: true });
-  },
-  hidePrivacyPolicy() {
-    this.setState({ privacyPolicyVisible: false });
-  },
-  getInitialState() {
-    return {
-      privacyPolicyVisible: false
-    };
-  },
   render() {
 
     return (
-      <div className="landing-page__wrapper">
-      {
-        this.state.privacyPolicyVisible ? (
-          <div className="modal">
-            <span
-              className="ebinraksi"
-              onClick={this.hidePrivacyPolicy}
-            >X</span>
-            spurdoSpärde
-          </div>
-        ) : null
-      }
-        <ReactCSSTransitionGroup
-          component="div"
-          className="landing-page"
-          transitionName="landing-page"
-          transitionEnterTimeout={700}
-          transitionLeaveTimeout={700}>
-          <div className="landing-page__column">
-            <App />
-          </div>
-          {
-            !this.props.movedToBoard &&
-              <DescriptionColumn
-                onProceed={this.goToBoard}
-                onPrivacyPolicy={this.showPrivacyPolicy} />
-          }
-        </ReactCSSTransitionGroup>
-      </div>
+      <ReactCSSTransitionGroup
+        component="div"
+        className="landing-page"
+        transitionName="landing-page"
+        transitionEnterTimeout={700}
+        transitionLeaveTimeout={700}>
+        <div className="landing-page__column">
+          <App />
+        </div>
+        {
+          !this.props.movedToBoard &&
+            <DescriptionColumn onProceed={this.goToBoard} />
+        }
+      </ReactCSSTransitionGroup>
 
     );
   }
