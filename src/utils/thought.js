@@ -1,10 +1,19 @@
-import { uniq } from 'lodash';
+import { uniq, flatten, pick } from 'lodash';
 
 export const HASHTAG_REGEXP = /#[\w-_]+/g;
+
 export const CHECKBOX_REGEXP = /\[[x\s]?\](?=\s|$)/ig;
 export const LINK_REGEXP = /(?:\w+:)?\/\/(?:[^\s\.]+\.\S{2}|localhost[:?\d]*)\S*/g;
 
 export const UNFINISHED_TODO_TAG = '#unfinished-todo';
+
+export function getHashtags(thoughts) {
+  const tags = thoughts.map(thought => thought.hashtags);
+  const flattenedTags = _.flatten(tags);
+  const uniqueTags = _.uniq(flattenedTags);
+
+  return uniqueTags.sort();
+}
 
 export function createThought(text) {
   return {

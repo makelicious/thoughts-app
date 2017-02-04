@@ -24,6 +24,7 @@ import FilterBar from 'components/filter-bar';
 import Scaler from 'components/scaler';
 import Search from 'components/search';
 import LoadingOverlay from 'components/loading-overlay';
+import HashtagList from 'components/hashtag-list';
 
 import {
   createThought,
@@ -146,7 +147,6 @@ const App = React.createClass({
 
         return edited || hasMatchingTag;
       });
-
     return (
       <Background className="app" onClick={this.resetEditable}>
         <div className="overlays">
@@ -157,7 +157,9 @@ const App = React.createClass({
             onAddTag={this.addFilter}
             onRemoveTag={this.removeFromFilter}
             onReset={this.resetFilters} />
-
+          <HashtagList
+            onAddTag={this.addFilter}
+            hashtags={this.props.hashtags} />
           {
             unfinishedTodos.length > 0 && (
               <Notification onClick={() => this.addFilter(UNFINISHED_TODO_TAG)} />
@@ -193,6 +195,8 @@ const App = React.createClass({
 });
 
 function storeToProps(store) {
+  console.log(store);
+  console.log('CHECK EM');
   return {
     thoughts: store.thoughts,
     board: store.location.board,
@@ -200,8 +204,11 @@ function storeToProps(store) {
     editableThoughtId: store.editor.editableThoughtId,
     editedWhileFilterOn: store.editor.editedWhileFilterOn,
     currentlyVisibleThoughts: store.editor.currentlyVisibleThoughts,
-    hashtagFilters: store.editor.hashtagFilters
+    hashtagFilters: store.editor.hashtagFilters,
+    hashtags: store.hashtags
   };
 }
+
+
 
 export default connect(storeToProps)(App);

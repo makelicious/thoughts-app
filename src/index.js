@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 
-import { thoughtsReducer, editorReducer } from 'concepts/thoughts/reducer';
+import { thoughtsReducer, editorReducer, tagReducer } from 'concepts/thoughts/reducer';
 import introReducer from 'concepts/intro/reducer';
 import locationReducer from 'concepts/location/reducer';
 import backgroundReducer from 'concepts/background/reducer';
@@ -29,7 +29,8 @@ const reducers = combineReducers({
   editor: editorReducer,
   intro: introReducer,
   background: backgroundReducer,
-  location: locationReducer
+  location: locationReducer,
+  hashtags: tagReducer
 });
 
 const store = createStore(

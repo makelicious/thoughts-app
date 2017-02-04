@@ -28,6 +28,29 @@ export const THOUGHTS_LOADED = 'THOUGHTS_LOADED';
 export const SET_SEARCH_TERM = 'SET_SEARCH_TERM';
 export const SEARCH_RESULTS_SUCCESS = 'SEARCH_RESULTS_SUCCESS';
 
+// export const BROWSE_HASHTAGS = 'BROWSE_HASHTAGS';
+//
+// function getHashtags(thoughts) {
+//   const tags = thoughts.map(thought => {
+//     return thought.hashtags;
+//   });
+//   const merged = [].concat.apply([], tags);
+//   const tagsWithoutDuplicates = _.uniq(merged);
+//
+//   return tagsWithoutDuplicates;
+// }
+//
+// export function browseHashtags() {
+//   return (dispatch, getState) => {
+//     const { thoughts } = getState();
+//     const hashtags = getHashtags(thoughts);
+//     dispatch({
+//       type: BROWSE_HASHTAGS,
+//       payload: hashtags
+//     });
+//   };
+// }
+
 export function createThought(text) {
   const newThought = createThoughtObject(text);
 
@@ -188,6 +211,7 @@ export function setEditable(thought) {
       const editableThought = find(currentState.thoughts, {
         id: currentState.editor.editableThoughtId
       });
+      console.log(editableThought);
 
       dispatch(stopEditing(editableThought));
     }
@@ -212,8 +236,12 @@ export function stopEditing(thought) {
 
   return (dispatch, getState) => {
     const currentState = getState();
+    console.log(currentState);
 
-    dispatch({ type: STOP_EDITING });
+    dispatch({
+      type: STOP_EDITING,
+      payload: currentState.thoughts
+    });
 
     if (!currentState.location.board) {
       return;

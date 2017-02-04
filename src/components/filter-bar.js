@@ -5,7 +5,7 @@ import Hashtag from 'components/hashtag';
 import { getAssociatedHashtags } from 'utils/thought';
 
 export default function FilterBar(props) {
-
+  
   const thoughts = props.thoughts;
 
   const associatedHashtags = props.hashtags.length === 0 ? [] :

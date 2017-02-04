@@ -18,10 +18,19 @@ import {
   RESET_THOUGHTS,
   THOUGHTS_LOADING,
   THOUGHTS_LOADED,
-  REQUEST_MORE_THOUGHTS
+  REQUEST_MORE_THOUGHTS,
+  BROWSE_HASHTAGS
 } from 'concepts/thoughts/actions';
 
 import { SET_BOARD } from 'concepts/location/actions';
+import { getHashtags } from 'utils/thought';
+
+export function tagReducer(state = [], action) {
+  if(action.type === THOUGHTS_LOADED || action.type === STOP_EDITING) {
+    return getHashtags(action.payload);
+  }
+  return state;
+}
 
 export function thoughtsReducer(state = [], action) {
   if (action.type === SET_BOARD || action.type === RESET_THOUGHTS) {
