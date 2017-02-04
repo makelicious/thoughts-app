@@ -195,8 +195,6 @@ const App = React.createClass({
 });
 
 function storeToProps(store) {
-  console.log(store);
-  console.log('CHECK EM');
   return {
     thoughts: store.thoughts,
     board: store.location.board,

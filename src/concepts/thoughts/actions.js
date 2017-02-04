@@ -211,7 +211,6 @@ export function setEditable(thought) {
       const editableThought = find(currentState.thoughts, {
         id: currentState.editor.editableThoughtId
       });
-      console.log(editableThought);
 
       dispatch(stopEditing(editableThought));
     }
@@ -236,7 +235,6 @@ export function stopEditing(thought) {
 
   return (dispatch, getState) => {
     const currentState = getState();
-    console.log(currentState);
 
     dispatch({
       type: STOP_EDITING,

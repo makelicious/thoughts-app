@@ -2,8 +2,6 @@ import React from 'react';
 import Hashtag from 'components/hashtag';
 
 export default function HashtagList(props) {
-  console.log(props);
-  console.log(props.hashtags);
   return (
     <div className="hashtags">
       <ul
