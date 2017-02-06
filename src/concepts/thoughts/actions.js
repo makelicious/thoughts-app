@@ -28,28 +28,7 @@ export const THOUGHTS_LOADED = 'THOUGHTS_LOADED';
 export const SET_SEARCH_TERM = 'SET_SEARCH_TERM';
 export const SEARCH_RESULTS_SUCCESS = 'SEARCH_RESULTS_SUCCESS';
 
-// export const BROWSE_HASHTAGS = 'BROWSE_HASHTAGS';
-//
-// function getHashtags(thoughts) {
-//   const tags = thoughts.map(thought => {
-//     return thought.hashtags;
-//   });
-//   const merged = [].concat.apply([], tags);
-//   const tagsWithoutDuplicates = _.uniq(merged);
-//
-//   return tagsWithoutDuplicates;
-// }
-//
-// export function browseHashtags() {
-//   return (dispatch, getState) => {
-//     const { thoughts } = getState();
-//     const hashtags = getHashtags(thoughts);
-//     dispatch({
-//       type: BROWSE_HASHTAGS,
-//       payload: hashtags
-//     });
-//   };
-// }
+export const DELETE_HASHTAG = 'DELETE_HASHTAG';
 
 export function createThought(text) {
   const newThought = createThoughtObject(text);
@@ -76,7 +55,10 @@ function deleteThoughtAction(thought) {
 
     dispatch({
       type: DELETE_THOUGHT,
-      payload: thought
+      payload: {
+        thought,
+        thoughts: currentState.thoughts
+      }
     });
 
     if (board && thought._id !== undefined) {

@@ -1,7 +1,7 @@
 import { without } from 'lodash';
 
 import { getBoardFromHash } from 'utils/url';
-import { sortByCreatedAt } from 'utils/thought';
+import { sortByCreatedAt, getHashtags } from 'utils/thought';
 
 import {
   CREATE_THOUGHT,
@@ -18,16 +18,20 @@ import {
   RESET_THOUGHTS,
   THOUGHTS_LOADING,
   THOUGHTS_LOADED,
-  REQUEST_MORE_THOUGHTS,
-  BROWSE_HASHTAGS
+  REQUEST_MORE_THOUGHTS
 } from 'concepts/thoughts/actions';
 
 import { SET_BOARD } from 'concepts/location/actions';
-import { getHashtags } from 'utils/thought';
 
 export function tagReducer(state = [], action) {
-  if(action.type === THOUGHTS_LOADED || action.type === STOP_EDITING) {
+  if (action.type === THOUGHTS_LOADED || action.type === STOP_EDITING) {
     return getHashtags(action.payload);
+  }
+  if (action.type === DELETE_THOUGHT) {
+    console.log(action.payload.thoughts);
+    const thoughts = without(action.payload.thoughts, action.payload.thought);
+    console.log(getHashtags(thoughts));
+    return getHashtags(thoughts);
   }
   return state;
 }
@@ -50,7 +54,8 @@ export function thoughtsReducer(state = [], action) {
   }
 
   if (action.type === DELETE_THOUGHT) {
-    return without(state, action.payload);
+    console.log(action.payload);
+    return without(state, action.payload.thought);
   }
 
   if (action.type === MODIFY_THOUGHT) {

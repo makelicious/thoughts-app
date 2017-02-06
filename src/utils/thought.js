@@ -1,4 +1,4 @@
-import { uniq, flatten, pick } from 'lodash';
+import { uniq, flatten } from 'lodash';
 
 export const HASHTAG_REGEXP = /#[\w-_]+/g;
 

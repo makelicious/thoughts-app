@@ -499,6 +499,7 @@ a {
    overflow-y: scroll;
    height: 22em;
    padding: 0.5em;
+   border-radius: 3px;
  }
 
  .hashtags__list {
@@ -681,8 +682,10 @@ a {
     display: flex;
     align-items: center;
     flex-direction: column;
+  }
+  
+  .thought__bubble {
     margin-bottom: 1em;
-
   }
 }
 
