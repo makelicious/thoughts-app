@@ -130,7 +130,6 @@ const App = React.createClass({
     const thoughts = this.props.thoughts;
     const hashtagFilters = this.props.hashtagFilters;
     const currentlyVisibleThoughts = this.props.currentlyVisibleThoughts;
-
     const unfinishedTodos = getUnfinishedTodos(thoughts);
 
     const filteredThoughts = hashtagFilters.length === 0 ?
@@ -146,7 +145,18 @@ const App = React.createClass({
         );
 
         return edited || hasMatchingTag;
+
       });
+
+    const hashtagList = hashtagFilters.length === 0 ?
+      <HashtagList
+        onAddTag={this.addFilter}
+        hashtags={this.props.hashtags} />
+        :
+      null;
+
+
+
     return (
       <Background className="app" onClick={this.resetEditable}>
         <div className="overlays">
@@ -157,9 +167,7 @@ const App = React.createClass({
             onAddTag={this.addFilter}
             onRemoveTag={this.removeFromFilter}
             onReset={this.resetFilters} />
-          <HashtagList
-            onAddTag={this.addFilter}
-            hashtags={this.props.hashtags} />
+            {hashtagList}
           {
             unfinishedTodos.length > 0 && (
               <Notification onClick={() => this.addFilter(UNFINISHED_TODO_TAG)} />
@@ -206,7 +214,6 @@ function storeToProps(store) {
     hashtags: store.hashtags
   };
 }
-
 
 
 export default connect(storeToProps)(App);
