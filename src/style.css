@@ -496,10 +496,14 @@ a {
  .hashtags {
    display: flex;
    position: fixed;
-   overflow-y: scroll;
+   overflow-y: hidden;
    height: 22em;
    padding: 0.5em;
    border-radius: 3px;
+ }
+
+ .hashtags:hover {
+  overflow-y: scroll;
  }
 
  .hashtags__list {
