@@ -1,5 +1,4 @@
 import React from 'react';
-import Hashtag from 'components/hashtag';
 
 export default function HashtagList(props) {
   return (
@@ -16,5 +15,5 @@ export default function HashtagList(props) {
       )}
       </ul>
     </div>
-  )
+  );
 }

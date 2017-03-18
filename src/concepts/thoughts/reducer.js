@@ -28,9 +28,7 @@ export function tagReducer(state = [], action) {
     return getHashtags(action.payload);
   }
   if (action.type === DELETE_THOUGHT) {
-    console.log(action.payload.thoughts);
     const thoughts = without(action.payload.thoughts, action.payload.thought);
-    console.log(getHashtags(thoughts));
     return getHashtags(thoughts);
   }
   return state;
@@ -54,7 +52,6 @@ export function thoughtsReducer(state = [], action) {
   }
 
   if (action.type === DELETE_THOUGHT) {
-    console.log(action.payload);
     return without(state, action.payload.thought);
   }
 
