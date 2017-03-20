@@ -147,8 +147,9 @@ const App = React.createClass({
         return edited || hasMatchingTag;
 
       });
-
-    const hashtagList = hashtagFilters.length === 0 ?
+    
+    //list is hidden when filters is on, or landing page is showing
+    const hashtagList = (hashtagFilters.length === 0 || this.props.board === null) ?
       <HashtagList
         onAddTag={this.addFilter}
         hashtags={this.props.hashtags} />
