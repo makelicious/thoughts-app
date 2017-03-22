@@ -80,6 +80,7 @@ const INITIAL_STATE = {
 };
 
 export function editorReducer(state = INITIAL_STATE, action) {
+  console.log(state);
 
   if (action.type === THOUGHTS_LOADING) {
     return {
