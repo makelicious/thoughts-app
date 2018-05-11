@@ -10,7 +10,7 @@ import { truncate } from 'lodash';
 export function replaceNth(text, index, pattern, replacer) {
   let i = 0;
 
-  return text.replace(pattern, (match) => {
+  return text.replace(pattern, match => {
     if (i === index) {
       i++;
       return replacer;
@@ -23,9 +23,8 @@ export function replaceNth(text, index, pattern, replacer) {
 
 export function breakText(text) {
   return truncate(text, {
-    length: 200,
+    length: 400,
     omission: '...',
     separator: ' '
-
   });
 }
