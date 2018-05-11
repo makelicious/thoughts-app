@@ -2,14 +2,9 @@ import React from 'react';
 import Textarea from 'react-textarea-autosize';
 import { findDOMNode } from 'react-dom';
 
-import {
-  isEnter,
-  isBackspace,
-  isEsc
-} from 'utils/keys';
+import { isEnter, isBackspace, isEsc } from 'utils/keys';
 
-const stopPropagation = (event) =>
-  event.stopPropagation();
+const stopPropagation = event => event.stopPropagation();
 
 export default React.createClass({
   focus() {
@@ -23,7 +18,8 @@ export default React.createClass({
     $el.setSelectionRange(length, length);
   },
   checkSpecialKeys(event) {
-    const currentSelectionPosition = findDOMNode(this.refs.editor).selectionStart;
+    const currentSelectionPosition = findDOMNode(this.refs.editor)
+      .selectionStart;
 
     if (isEnter(event.keyCode) && !event.shiftKey) {
       event.preventDefault();
@@ -31,9 +27,11 @@ export default React.createClass({
       return;
     }
 
-    if (isBackspace(event.keyCode) &&
-        this.props.value.trim() === ''
-        && currentSelectionPosition === 0) {
+    if (
+      isBackspace(event.keyCode) &&
+      this.props.value.trim() === '' &&
+      currentSelectionPosition === 0
+    ) {
       event.preventDefault();
       this.props.onDelete();
       return;
@@ -49,11 +47,12 @@ export default React.createClass({
       <Textarea
         className="text-input"
         ref="editor"
-        onChange={(event) => this.props.onChange(event.target.value)}
+        onChange={event => this.props.onChange(event.target.value)}
         value={this.props.value}
         onClick={stopPropagation}
         placeholder="What are you thinking?"
-        onKeyDown={this.checkSpecialKeys} />
+        onKeyDown={this.checkSpecialKeys}
+      />
     );
-  }
+  },
 });

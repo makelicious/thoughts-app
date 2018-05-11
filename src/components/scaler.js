@@ -12,7 +12,7 @@ export default React.createClass({
   getInitialState() {
     return {
       scales: {},
-      target: window.innerHeight / 2
+      target: window.innerHeight / 2,
     };
   },
   componentDidMount() {
@@ -41,13 +41,14 @@ export default React.createClass({
   },
   getScrollPercentage() {
     const doc = document.documentElement;
-    const scrollFromTop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+    const scrollFromTop =
+      (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
 
     if (scrollFromTop === 0) {
       return 0;
     }
 
-    return (scrollFromTop) / (document.body.scrollHeight - window.innerHeight);
+    return scrollFromTop / (document.body.scrollHeight - window.innerHeight);
   },
   calculateScales() {
     const target = this.calculateTargetPosition();
@@ -67,7 +68,7 @@ export default React.createClass({
   calculateTargetPosition() {
     const scrollArea = findDOMNode(this.refs['scroll-area']);
 
-    const points = [0, 0.495, 0.50, 0.505, 1];
+    const points = [0, 0.495, 0.5, 0.505, 1];
 
     const distanceFromTop = this.getContainerDistanceFromTop();
 
@@ -82,19 +83,19 @@ export default React.createClass({
 
     const position = Math.min(
       window.innerHeight,
-      Math.max(distanceFromTop, curvedPercentage * window.innerHeight)
+      Math.max(distanceFromTop, curvedPercentage * window.innerHeight),
     );
 
-    return this.props.allVisible ?
-      position :
-      Math.min(window.innerHeight / 2, position);
+    return this.props.allVisible
+      ? position
+      : Math.min(window.innerHeight / 2, position);
   },
   getScale(node, target) {
     const bounds = node.getBoundingClientRect();
 
     let shortestDistance = Math.min(
       Math.abs(bounds.bottom - target),
-      Math.abs(bounds.top - target)
+      Math.abs(bounds.top - target),
     );
 
     // Target is inside the element
@@ -110,26 +111,27 @@ export default React.createClass({
     return Math.max(0, 1 - shortestDistance / window.innerHeight);
   },
   render() {
-
     const children = this.props.children.map((child, i) => {
-
       if (i > MAX_THOUGHTS_SCALED) {
         return child;
       }
 
       const scale = this.state.scales[child.key];
 
-      const style = scale === undefined ? undefined : {
-        transform: `scale(${(0.3 + 0.7 * scale)}, ${(0.3 + 0.7 * scale)})`,
-        opacity: (0.1 + 0.9 * scale)
-      };
+      const style =
+        scale === undefined
+          ? undefined
+          : {
+            transform: `scale(${0.3 + 0.7 * scale}, ${0.3 + 0.7 * scale})`,
+              opacity: 0.1 + 0.9 * scale,
+          };
 
       return React.cloneElement(child, {
         ...child.props,
         style,
-        ref: (el) => {
+        ref: el => {
           this[`elements-${child.key}`] = el;
-        }
+        },
       });
     });
 
@@ -138,5 +140,5 @@ export default React.createClass({
         {children}
       </div>
     );
-  }
+  },
 });

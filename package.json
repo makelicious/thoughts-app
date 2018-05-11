@@ -2,11 +2,14 @@
   "name": "thoughts-app",
   "version": "1.0.0",
   "scripts": {
-    "build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js && cp chrome-app/* dist/$TARGET/",
+    "build:webpack":
+      "cross-env NODE_ENV=production webpack --config webpack.config.prod.js && cp chrome-app/* dist/$TARGET/",
     "build": "TARGET=${TARGET:=master} npm run build:webpack",
     "start": "node devServer.js",
-    "test": "NODE_ENV=test NODE_PATH=src mocha --require babel-core/register --require test/init src/tests/*.js src/**/tests/*.js src/**/**/tests/*.js",
-    "lint": "eslint src"
+    "test":
+      "NODE_ENV=test NODE_PATH=src mocha --require babel-core/register --require test/init src/tests/*.js src/**/tests/*.js src/**/**/tests/*.js",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix"
   },
   "devDependencies": {
     "babel-core": "^6.6.5",
@@ -23,10 +26,12 @@
     "enzyme": "^2.3.0",
     "eslint": "^2.13.1",
     "eslint-config-airbnb": "^9.0.1",
+    "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-babel": "^3.3.0",
     "eslint-plugin-import": "^1.9.2",
     "eslint-plugin-jsx-a11y": "^1.5.3",
     "eslint-plugin-mocha": "^2.0.0",
+    "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^5.2.2",
     "eventsource-polyfill": "^0.9.6",
     "express": "^4.13.3",
@@ -36,6 +41,7 @@
     "html-webpack-plugin": "^2.22.0",
     "json-loader": "^0.5.4",
     "mocha": "^2.5.3",
+    "prettier": "^1.12.1",
     "proxyquire": "^1.7.10",
     "react-addons-test-utils": "^15.1.0",
     "rimraf": "^2.4.3",

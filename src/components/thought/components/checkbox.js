@@ -1,13 +1,9 @@
 import React from 'react';
 
 export default function Checkbox(props) {
-
-  const onChange = (event) => {
+  const onChange = event => {
     event.stopPropagation();
-    props.onClick(
-      props.index,
-      props.checked
-    );
+    props.onClick(props.index, props.checked);
   };
 
   return (
@@ -16,6 +12,6 @@ export default function Checkbox(props) {
       readOnly
       type="checkbox"
       checked={props.checked}
-  />
+    />
   );
 }

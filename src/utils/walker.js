@@ -24,7 +24,6 @@ function getNextFromParent(node) {
   return parent;
 }
 
-
 /*
  * Markdown handles _ as a start of italic text i.e. _some italic_
  * but we want to disable this behaviour inside hashtags
@@ -33,8 +32,7 @@ function getNextFromParent(node) {
  */
 
 function combineFollowingTexts(node, walker) {
-  if (!node.literal.match(HASHTAG_REGEXP) &&
-     !node.literal.match(LINK_REGEXP)) {
+  if (!node.literal.match(HASHTAG_REGEXP) && !node.literal.match(LINK_REGEXP)) {
     return;
   }
 
@@ -65,7 +63,6 @@ function combineFollowingTexts(node, walker) {
 }
 
 function searchFromAst(node, fn) {
-
   const walker = node.walker();
   const result = [];
 
@@ -81,10 +78,9 @@ function searchFromAst(node, fn) {
 }
 
 function replaceInsideTextNode(node, replacerFn) {
-
   const literal = node.literal.trim();
 
-  literal.split(' ').forEach((str) => {
+  literal.split(' ').forEach(str => {
     const newNode = replacerFn(str);
     node.parent.appendChild(newNode);
     node.insertBefore(newNode);
@@ -100,15 +96,15 @@ function replaceInsideTextNode(node, replacerFn) {
 function isCheckboxNode(node) {
   // Accepts [], [ ] and [x]
 
-  return isTextNode(node) &&
+  return (
+    isTextNode(node) &&
     isTextNode(node.next) &&
-    node.literal === '[' && // Has to start with [
-    ( // Has to be followed with wither
-      // node that is ]
-      node.next.literal === ']' ||
+    node.literal === '[' && // Has to start with [ // Has to be followed with wither
+    // node that is ]
+    (node.next.literal === ']' ||
       // or a random node and a node following that with ]
-      (isTextNode(node.next.next) && node.next.next.literal === ']')
-    );
+      (isTextNode(node.next.next) && node.next.next.literal === ']'))
+  );
 }
 
 function isTextNode(node) {
@@ -119,7 +115,7 @@ function createHashtagNode(hashtag) {
   const hashtagNode = new Node('Hashtag');
 
   hashtagNode.literal = {
-    hashtag
+    hashtag,
   };
 
   const textNode = new Node('Text');
@@ -146,16 +142,15 @@ function createLinkNode(url) {
   return linkNode;
 }
 
-
 function createCheckboxes(node, walker) {
-
   let resumeAt;
 
   // Calculate the index of this checkbox inside of one thought
   // it's used for selecting right todo to mark as done / undone on click
 
-  const allCheckboxNodes = searchFromAst(walker.root, (currentNode) =>
-    currentNode.type === 'Checkbox'
+  const allCheckboxNodes = searchFromAst(
+    walker.root,
+    currentNode => currentNode.type === 'Checkbox',
   );
 
   const hashtagIndex = allCheckboxNodes.length;
@@ -163,7 +158,7 @@ function createCheckboxes(node, walker) {
   const checkboxNode = new Node('Checkbox');
   checkboxNode.literal = {
     checked: node.next.literal.trim().toLowerCase() === 'x',
-    index: hashtagIndex
+    index: hashtagIndex,
   };
 
   node.parent.appendChild(checkboxNode);
@@ -184,7 +179,7 @@ function createCheckboxes(node, walker) {
 }
 
 function transformText(node) {
-  replaceInsideTextNode(node, (str) => {
+  replaceInsideTextNode(node, str => {
     if (str.match(HASHTAG_REGEXP)) {
       return createHashtagNode(str);
     }

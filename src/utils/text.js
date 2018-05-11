@@ -25,6 +25,6 @@ export function breakText(text) {
   return truncate(text, {
     length: 400,
     omission: '...',
-    separator: ' '
+    separator: ' ',
   });
 }

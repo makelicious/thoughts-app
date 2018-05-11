@@ -16,8 +16,7 @@ function setBrowserState(board) {
 }
 
 export function setBoard(board) {
-  return (dispatch) => {
-
+  return dispatch => {
     if (board !== null) {
       document.title = board;
     }
@@ -26,7 +25,7 @@ export function setBoard(board) {
 
     dispatch({
       type: SET_BOARD,
-      payload: board
+      payload: board,
     });
 
     dispatch(loadThoughts(board));

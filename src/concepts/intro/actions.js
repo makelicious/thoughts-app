@@ -1,7 +1,4 @@
-import {
-  resetThoughts,
-  submitThought
-} from 'concepts/thoughts/actions';
+import { resetThoughts, submitThought } from 'concepts/thoughts/actions';
 
 import { setBoard } from 'concepts/location/actions';
 import DEMO_THOUGHTS from 'data/demo-thoughts';
@@ -20,21 +17,19 @@ export function initDemo() {
         if (!intro.movedToBoard) {
           dispatch(submitThought(text));
         }
-
       }, (1 + i) * 3500);
     });
   };
 }
 
-
 function moveToBoard() {
   return {
-    type: MOVE_TO_BOARD
+    type: MOVE_TO_BOARD,
   };
 }
 
 export function goToBoard() {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(resetThoughts());
     dispatch(moveToBoard());
     setTimeout(() => {
@@ -45,8 +40,12 @@ export function goToBoard() {
 
 export function addToChrome() {
   return () => {
-    chrome.webstore.install(CHROME_STORE_URL, () => {}, (err) => {
-      console.error(err);
-    });
+    chrome.webstore.install(
+      CHROME_STORE_URL,
+      () => {},
+      err => {
+        console.error(err);
+      },
+    );
   };
 }

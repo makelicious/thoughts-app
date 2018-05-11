@@ -4,7 +4,11 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 
-import { thoughtsReducer, editorReducer, tagReducer } from 'concepts/thoughts/reducer';
+import {
+  thoughtsReducer,
+  editorReducer,
+  tagReducer,
+} from 'concepts/thoughts/reducer';
 import introReducer from 'concepts/intro/reducer';
 import locationReducer from 'concepts/location/reducer';
 import backgroundReducer from 'concepts/background/reducer';
@@ -30,7 +34,7 @@ const reducers = combineReducers({
   intro: introReducer,
   background: backgroundReducer,
   location: locationReducer,
-  hashtags: tagReducer
+  hashtags: tagReducer,
 });
 
 const store = createStore(
@@ -38,26 +42,28 @@ const store = createStore(
   // By default actions just return an object like { type: X, payload Y}
   // so we cant do anything asynchronous.
   // This middleware allows us to also return functions (see thoughts/actions.js)
-  applyMiddleware(thunk)
+  applyMiddleware(thunk),
 );
-
 
 function initApp() {
   return render(
     <Provider store={store}>
       <LandingPage />
     </Provider>,
-    $root
+    $root,
   );
 }
 
 if (isChromeApp()) {
-  window.chrome.storage.sync.get({
-    board: null
-  }, (items) => {
-    store.dispatch(setBoard(items.board));
-    initApp();
-  });
+  window.chrome.storage.sync.get(
+    {
+      board: null,
+    },
+    items => {
+      store.dispatch(setBoard(items.board));
+      initApp();
+    },
+  );
 } else {
   initAnalytics();
 
@@ -65,9 +71,11 @@ if (isChromeApp()) {
   store.dispatch(setBoard(getBoardFromHash()));
 
   // Dispatch current board to store every time the hash changes
-  window.addEventListener('hashchange', () =>
-    store.dispatch(setBoard(getBoardFromHash()))
-  , false);
+  window.addEventListener(
+    'hashchange',
+    () => store.dispatch(setBoard(getBoardFromHash())),
+    false,
+  );
 
   initApp();
 }

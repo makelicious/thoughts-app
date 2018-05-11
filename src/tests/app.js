@@ -6,7 +6,7 @@ import { createThought } from 'utils/thought';
 
 global.document = {
   addEventListener: () => {},
-  removeEventListener: () => {}
+  removeEventListener: () => {},
 };
 
 global.window = {};
@@ -15,38 +15,34 @@ function createApp(props) {
   const defaultProps = {
     hashtagFilters: [],
     editedWhileFilterOn: [],
-    thoughts: []
+    thoughts: [],
   };
 
   const dummy = {
-    default: (properties) => <div>{properties.children}</div>
+    default: properties => <div>{properties.children}</div>,
   };
 
   const App = proxyquire('app', {
     'react-redux': {
-      connect: () => (comp) => comp
+      connect: () => comp => comp,
     },
     'containers/background': dummy,
-    'components/search': dummy
+    'components/search': dummy,
   }).default;
 
   return render(<App {...defaultProps} {...props} />);
 }
 
-
 describe('<App />', () => {
   it('renders thoughts', () => {
     const appWith1Thought = createApp({
-      thoughts: [createThought('foo')]
+      thoughts: [createThought('foo')],
     });
 
     expect(appWith1Thought.find('.thought')).to.have.length(1);
 
     const with2Thoughts = createApp({
-      thoughts: [
-        createThought('foo #bar'),
-        createThought('hello')
-      ]
+      thoughts: [createThought('foo #bar'), createThought('hello')],
     });
 
     expect(with2Thoughts.find('.thought')).to.have.length(2);
@@ -54,22 +50,16 @@ describe('<App />', () => {
 
   it('filters thoughts based on given filters', () => {
     const app = createApp({
-      thoughts: [
-        createThought('foo #bar'),
-        createThought('hello')
-      ],
-      hashtagFilters: ['#bar']
+      thoughts: [createThought('foo #bar'), createThought('hello')],
+      hashtagFilters: ['#bar'],
     });
 
     expect(app.find('.thought')).to.have.length(1);
   });
   it('filters thoughts with hashtag with dashes', () => {
     const app = createApp({
-      thoughts: [
-        createThought('foo #bara-barer'),
-        createThought('hello')
-      ],
-      hashtagFilters: ['#bara-barer']
+      thoughts: [createThought('foo #bara-barer'), createThought('hello')],
+      hashtagFilters: ['#bara-barer'],
     });
 
     expect(app.find('.thought')).to.have.length(1);

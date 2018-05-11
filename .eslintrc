@@ -1,5 +1,5 @@
 {
-  "extends": "airbnb",
+  "extends": ["airbnb", "prettier"],
   "ecmaFeatures": {
     "modules": true
   },
@@ -8,22 +8,24 @@
     "node": true,
     "mocha": true
   },
-  "plugins": [
-    "mocha"
-  ],
+  "plugins": ["mocha", "prettier"],
   "globals": {
     "chrome": true
   },
   "parser": "babel-eslint",
   "rules": {
+    "prettier/prettier": "error",
     "mocha/no-exclusive-tests": 2,
-    "indent": [2, 2, {"SwitchCase": 1}],
+    "indent": [2, 2, { "SwitchCase": 1 }],
     "quotes": [2, "single"],
-    "comma-dangle": [2, "never"],
-    "keyword-spacing": [2, {
-      "before": true,
-      "after": true
-    }],
+    "comma-dangle": [2, "always-multiline"],
+    "keyword-spacing": [
+      2,
+      {
+        "before": true,
+        "after": true
+      }
+    ],
     "no-underscore-dangle": 0,
     "react/prefer-es6-class": 0,
     "react/prop-types": 0,
@@ -39,11 +41,27 @@
     "react/jsx-closing-bracket-location": 0,
     "new-cap": 0,
     "padded-blocks": 0,
-    "id-length": [2, {
-      "min": 3,
-      "max": 30,
-      "properties": "never",
-      "exceptions": ["id", "i", "e", "fn", "_", "db", "or", "a", "b", "j", "k", "el"]
-    }]
+    "id-length": [
+      2,
+      {
+        "min": 3,
+        "max": 30,
+        "properties": "never",
+        "exceptions": [
+          "id",
+          "i",
+          "e",
+          "fn",
+          "_",
+          "db",
+          "or",
+          "a",
+          "b",
+          "j",
+          "k",
+          "el"
+        ]
+      }
+    ]
   }
 }

@@ -10,11 +10,14 @@ const V = 86;
 
 export function isThoughtCreatingKeypress(event) {
   const disallowedKeys = [BACKSPACE, ESC];
-  const isPaste = (event.control || event.metaKey) && (event.keyCode === 86);
+  const isPaste = (event.control || event.metaKey) && event.keyCode === 86;
 
-  return isPaste ||
-    (!event.metaKey && !event.control) &&
-    disallowedKeys.indexOf(event.keyCode) === -1;
+  return (
+    isPaste ||
+    (!event.metaKey &&
+      !event.control &&
+      disallowedKeys.indexOf(event.keyCode) === -1)
+  );
 }
 
 export function isBackspace(keyCode) {

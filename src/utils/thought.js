@@ -2,7 +2,7 @@ import { uniq, flatten } from 'lodash';
 
 export const HASHTAG_REGEXP = /#[\w-_]+/g;
 
-export const CHECKBOX_REGEXP = /\[[x\s]?\](?=\s|$)/ig;
+export const CHECKBOX_REGEXP = /\[[x\s]?\](?=\s|$)/gi;
 export const LINK_REGEXP = /(?:\w+:)?\/\/(?:[^\s\.]+\.\S{2}|localhost[:?\d]*)\S*/g;
 
 export const UNFINISHED_TODO_TAG = '#unfinished-todo';
@@ -21,7 +21,7 @@ export function createThought(text) {
     id: (Date.now() + Math.round(Math.random() * 10000)).toString(),
     todos: parseTodos(text),
     hashtags: parseHashtags(text),
-    createdAt: new Date()
+    createdAt: new Date(),
   };
 }
 
@@ -36,22 +36,20 @@ export function parseTodos(text) {
     return [];
   }
 
-  return matches.map((match) => ({
-    finished: match.indexOf('x') > -1
+  return matches.map(match => ({
+    finished: match.indexOf('x') > -1,
   }));
 }
 
 export function parseImages(text) {
   const urls = text.match(LINK_REGEXP) || [];
-  return urls.filter((url) =>
-    url.endsWith('.jpg') ||
-    url.endsWith('.png'));
+  return urls.filter(url => url.endsWith('.jpg') || url.endsWith('.png'));
 }
 
 export function parseHashtags(text) {
   const normalHashtags = text.match(HASHTAG_REGEXP) || [];
 
-  const unfinishedTodos = parseTodos(text).filter((todo) => !todo.finished);
+  const unfinishedTodos = parseTodos(text).filter(todo => !todo.finished);
 
   if (unfinishedTodos.length === 0) {
     return normalHashtags;
@@ -61,16 +59,25 @@ export function parseHashtags(text) {
 }
 
 export function getUnfinishedTodos(thoughts) {
-  return thoughts.reduce((unfinished, thought) =>
-    unfinished.concat(thought.todos.filter((todo) => !todo.finished))
-  , []);
+  return thoughts.reduce(
+    (unfinished, thought) =>
+      unfinished.concat(thought.todos.filter(todo => !todo.finished)),
+    [],
+  );
+}
+
+export function getToBeDeletedItems(thoughts) {
+  console.log(thoughts);
+  return thoughts;
 }
 
 export function getAssociatedHashtags(hashtags, thoughts) {
-  const isOtherHashtag = (hash) => hashtags.indexOf(hash) === -1;
+  const isOtherHashtag = hash => hashtags.indexOf(hash) === -1;
 
   const allAssociated = thoughts.reduce((associated, thought) => {
-    const includesHashtag = hashtags.every((hash) => thought.hashtags.indexOf(hash) > -1);
+    const includesHashtag = hashtags.every(
+      hash => thought.hashtags.indexOf(hash) > -1,
+    );
 
     if (includesHashtag) {
       const otherHashtags = thought.hashtags.filter(isOtherHashtag);

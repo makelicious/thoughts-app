@@ -11,7 +11,12 @@ import Checkbox from './components/checkbox';
 import Pen from './assets/pen.svg';
 import Trash from './assets/trash.svg';
 
-import { CHECKBOX_REGEXP, parseHashtags, parseTodos, parseImages } from 'utils/thought';
+import {
+  CHECKBOX_REGEXP,
+  parseHashtags,
+  parseTodos,
+  parseImages,
+} from 'utils/thought';
 
 import { replaceNth, breakText } from 'utils/text';
 
@@ -31,12 +36,15 @@ const ALLOWED_MARKDOWN_TYPES = [
   'Strong',
   'ThematicBreak',
   'Checkbox',
-  'Hashtag'
+  'Hashtag',
 ];
 
 export const ThoughtContent = React.createClass({
   shouldComponentUpdate(newProps) {
-    return newProps.expanded !== this.props.expanded || newProps.thought !== this.props.thought;
+    return (
+      newProps.expanded !== this.props.expanded ||
+      newProps.thought !== this.props.thought
+    );
   },
   render() {
     /*
@@ -68,11 +76,15 @@ export const ThoughtContent = React.createClass({
         };
 
         return (
-          <a onClick={event => addHashtagFilter(event, hashtag)} title={hashtag} href="#">
+          <a
+            onClick={event => addHashtagFilter(event, hashtag)}
+            title={hashtag}
+            href="#"
+          >
             {hashtag}
           </a>
         );
-      }
+      },
     };
     const images = parseImages(this.props.thought.text);
 
@@ -102,7 +114,7 @@ export const ThoughtContent = React.createClass({
         </div>
       </div>
     );
-  }
+  },
 });
 
 function updateText(thought, newText) {
@@ -110,7 +122,7 @@ function updateText(thought, newText) {
     ...thought,
     text: newText,
     hashtags: parseHashtags(newText),
-    todos: parseTodos(newText)
+    todos: parseTodos(newText),
   };
 }
 
@@ -136,7 +148,7 @@ export default React.createClass({
       this.props.thought.text,
       index,
       CHECKBOX_REGEXP,
-      currentlyChecked ? '[]' : '[x]'
+      currentlyChecked ? '[]' : '[x]',
     );
 
     const updatedThought = updateText(this.props.thought, newText);
@@ -148,26 +160,28 @@ export default React.createClass({
   expandThought(e) {
     console.log(e);
     this.setState({
-      expanded: true
+      expanded: true,
     });
   },
   minimizeThought() {
     this.setState({
-      expanded: false
+      expanded: false,
     });
   },
 
   getInitialState() {
     return {
-      expanded: false
+      expanded: false,
     };
   },
   render() {
-    const createdAt = moment(this.props.thought.createdAt).format('MMMM Do YYYY, h:mm a');
+    const createdAt = moment(this.props.thought.createdAt).format(
+      'MMMM Do YYYY, h:mm a',
+    );
 
     const className = classNames('thought__bubble', this.props.className, {
       'thought__bubble--editable': this.props.editable,
-      'thought__bubble--expanded': this.state.expanded
+      'thought__bubble--expanded': this.state.expanded,
     });
 
     return (
@@ -175,10 +189,16 @@ export default React.createClass({
         <div className="thought__wrapper">
           <div className="thought__tools">
             <div className="thought__tools__wrapper">
-              <div onClick={this.props.onDoubleClick} className="thought__tools__tool">
+              <div
+                onClick={this.props.onDoubleClick}
+                className="thought__tools__tool"
+              >
                 <Pen className="thought__tool__icon" />
               </div>
-              <div onClick={this.props.onDelete} className="thought__tools__tool">
+              <div
+                onClick={this.props.onDelete}
+                className="thought__tools__tool"
+              >
                 <Trash className="thought__tool__icon" />
               </div>
             </div>
@@ -214,5 +234,5 @@ export default React.createClass({
         </div>
       </div>
     );
-  }
+  },
 });

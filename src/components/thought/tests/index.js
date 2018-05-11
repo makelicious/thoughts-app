@@ -5,20 +5,17 @@ import proxyquire from 'proxyquire';
 
 const Thought = proxyquire('../', {
   './assets/pen.svg': () => <div />,
-  './assets/trash.svg': () => <div />
+  './assets/trash.svg': () => <div />,
 }).default;
 
 function createThought(text) {
   return {
-    text
+    text,
   };
 }
 
 function shouldGenerateLinks(text, links) {
-
-  const thought = render(
-    <Thought thought={createThought(text)} />
-  );
+  const thought = render(<Thought thought={createThought(text)} />);
   expect(thought.find('a')).to.have.length(links.length);
 
   Array.from(thought.find('a')).forEach((link, i) => {
@@ -27,43 +24,38 @@ function shouldGenerateLinks(text, links) {
 }
 
 function checkboxesForText(text) {
-  const thought = render(
-    <Thought thought={createThought(text)} />
-  );
+  const thought = render(<Thought thought={createThought(text)} />);
   return thought.find('[type="checkbox"]');
 }
 
 describe('<Thought />', () => {
-
   describe('checkbox rendering', () => {
-
     it('renders checkboxes from custom markdown', () => {
       expect(checkboxesForText('[] []')).to.have.length(2);
       expect(checkboxesForText('#ruok []')).to.have.length(1);
       expect(checkboxesForText('#ruok_bar_baz []')).to.have.length(1);
       expect(checkboxesForText('#ruok-bar-baz []')).to.have.length(1);
       expect(checkboxesForText('[] #ruok_bar_baz [] [] [x]')).to.have.length(4);
-      expect(checkboxesForText(`#shopping-list
+      expect(
+        checkboxesForText(`#shopping-list
 - eggs [x]
 - potatoes []
 - more potatoes [x]
 - toothbrush [x]
-- tiger blood []`)).to.have.length(5);
+- tiger blood []`),
+      ).to.have.length(5);
     });
 
     it('renders checked checkboxes from markdown', () => {
-      const thought = render(
-        <Thought thought={createThought('[] [x]')} />
-      );
+      const thought = render(<Thought thought={createThought('[] [x]')} />);
       expect(thought.find('[checked]')).to.have.length(1);
     });
   });
 
   describe('hashtag rendering', () => {
-
     it('renders hashtags as links', () => {
       const thought = render(
-        <Thought thought={createThought('#foobar #baz')} />
+        <Thought thought={createThought('#foobar #baz')} />,
       );
       expect(thought.find('a')).to.have.length(2);
     });
@@ -78,7 +70,6 @@ describe('<Thought />', () => {
   });
 
   describe('url rendering', () => {
-
     it('renders urls as links', () => {
       const LINK_WITH_HASH =
         'http://www.korus.fi/#!Siru-sormus/zoom/e08rh/dataItem-ijwswu97';
@@ -91,7 +82,7 @@ describe('<Thought />', () => {
         `#investing #esports nvidia osakkeet, ea? Activision
           http://google.com
           modern times group B`,
-        ['#investing', '#esports', 'http://google.com']
+        ['#investing', '#esports', 'http://google.com'],
       );
     });
   });

@@ -18,7 +18,7 @@ import {
   RESET_THOUGHTS,
   THOUGHTS_LOADING,
   THOUGHTS_LOADED,
-  REQUEST_MORE_THOUGHTS
+  REQUEST_MORE_THOUGHTS,
 } from 'concepts/thoughts/actions';
 
 import { SET_BOARD } from 'concepts/location/actions';
@@ -56,7 +56,7 @@ export function thoughtsReducer(state = [], action) {
   }
 
   if (action.type === MODIFY_THOUGHT) {
-    return state.map((thought) => {
+    return state.map(thought => {
       if (thought.id === action.payload.id) {
         return action.payload;
       }
@@ -76,7 +76,7 @@ const INITIAL_STATE = {
   // Thoughts created or modified while filter view
   // It would probably be weird if they would just disappeared when you delete a tag
   editedWhileFilterOn: [],
-  searchTerm: ''
+  searchTerm: '',
 };
 
 export function editorReducer(state = INITIAL_STATE, action) {
@@ -85,7 +85,7 @@ export function editorReducer(state = INITIAL_STATE, action) {
   if (action.type === THOUGHTS_LOADING) {
     return {
       ...state,
-      thoughtsLoading: true
+      thoughtsLoading: true,
     };
   }
 
@@ -96,14 +96,14 @@ export function editorReducer(state = INITIAL_STATE, action) {
       editableThoughtId: INITIAL_STATE.editableThoughtId,
       hashtagFilters: INITIAL_STATE.hashtagFilters,
       editedWhileFilterOn: INITIAL_STATE.editedWhileFilterOn,
-      currentlyVisibleThoughts: INITIAL_STATE.currentlyVisibleThoughts
+      currentlyVisibleThoughts: INITIAL_STATE.currentlyVisibleThoughts,
     };
   }
 
   if (action.type === SET_BOARD) {
     return {
       ...state,
-      board: action.payload
+      board: action.payload,
     };
   }
 
@@ -111,19 +111,21 @@ export function editorReducer(state = INITIAL_STATE, action) {
     return {
       ...state,
       searchTerm: action.payload,
-      currentlyVisibleThoughts: INITIAL_STATE.currentlyVisibleThoughts
+      currentlyVisibleThoughts: INITIAL_STATE.currentlyVisibleThoughts,
     };
   }
 
   if (action.type === MODIFY_THOUGHT) {
-    if (state.editedWhileFilterOn.indexOf(action.payload.id) > -1 ||
-      state.hashtagFilters.length === 0) {
+    if (
+      state.editedWhileFilterOn.indexOf(action.payload.id) > -1 ||
+      state.hashtagFilters.length === 0
+    ) {
       return state;
     }
 
     return {
       ...state,
-      editedWhileFilterOn: state.editedWhileFilterOn.concat(action.payload.id)
+      editedWhileFilterOn: state.editedWhileFilterOn.concat(action.payload.id),
     };
   }
 
@@ -132,14 +134,14 @@ export function editorReducer(state = INITIAL_STATE, action) {
       ...state,
       hashtagFilters: [],
       editedWhileFilterOn: [],
-      currentlyVisibleThoughts: INITIAL_STATE.currentlyVisibleThoughts
+      currentlyVisibleThoughts: INITIAL_STATE.currentlyVisibleThoughts,
     };
   }
 
   if (action.type === REQUEST_MORE_THOUGHTS) {
     return {
       ...state,
-      currentlyVisibleThoughts: state.currentlyVisibleThoughts + 10
+      currentlyVisibleThoughts: state.currentlyVisibleThoughts + 10,
     };
   }
 
@@ -149,8 +151,9 @@ export function editorReducer(state = INITIAL_STATE, action) {
     return {
       ...state,
       hashtagFilters,
-      editedWhileFilterOn: hashtagFilters.length === 0 ? [] : state.editedWhileFilterOn,
-      currentlyVisibleThoughts: INITIAL_STATE.currentlyVisibleThoughts
+      editedWhileFilterOn:
+        hashtagFilters.length === 0 ? [] : state.editedWhileFilterOn,
+      currentlyVisibleThoughts: INITIAL_STATE.currentlyVisibleThoughts,
     };
   }
 
@@ -162,21 +165,21 @@ export function editorReducer(state = INITIAL_STATE, action) {
     return {
       ...state,
       hashtagFilters: state.hashtagFilters.concat(action.payload),
-      editedWhileFilterOn: []
+      editedWhileFilterOn: [],
     };
   }
 
   if (action.type === DELETE_THOUGHT || action.type === STOP_EDITING) {
     return {
       ...state,
-      editableThoughtId: null
+      editableThoughtId: null,
     };
   }
 
   if (action.type === CREATE_THOUGHT || action.type === SET_EDITABLE) {
     return {
       ...state,
-      editableThoughtId: action.payload.id
+      editableThoughtId: action.payload.id,
     };
   }
 

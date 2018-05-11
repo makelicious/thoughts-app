@@ -7,9 +7,11 @@ const Background = React.createClass({
     this.props.dispatch(loadBackground());
   },
   render() {
-    const style = this.props.background ? {
-      backgroundImage: `url(${this.props.background})`
-    } : null;
+    const style = this.props.background
+      ? {
+          backgroundImage: `url(${this.props.background})`,
+      }
+      : null;
 
     return (
       <div className={this.props.className} onClick={this.props.onClick}>
@@ -17,12 +19,12 @@ const Background = React.createClass({
         {this.props.children}
       </div>
     );
-  }
+  },
 });
 
 function stateToProps(state) {
   return {
-    background: state.background.background
+    background: state.background.background,
   };
 }
 

@@ -7,7 +7,7 @@ import {
   saveThought,
   getThoughts,
   deleteThought,
-  searchThoughts
+  searchThoughts,
 } from 'utils/storage';
 
 // Thought created automatically (in intro for example)
@@ -35,7 +35,7 @@ export function createThought(text) {
 
   return {
     type: CREATE_THOUGHT,
-    payload: newThought
+    payload: newThought,
   };
 }
 
@@ -44,7 +44,7 @@ export function submitThought(text) {
 
   return {
     type: SUBMIT_THOUGHT,
-    payload: newThought
+    payload: newThought,
   };
 }
 
@@ -57,8 +57,8 @@ function deleteThoughtAction(thought) {
       type: DELETE_THOUGHT,
       payload: {
         thought,
-        thoughts: currentState.thoughts
-      }
+        thoughts: currentState.thoughts,
+      },
     });
 
     if (board && thought._id !== undefined) {
@@ -72,15 +72,15 @@ export { deleteThoughtAction as deleteThought };
 export function modifyThought(thought) {
   return {
     type: MODIFY_THOUGHT,
-    payload: thought
+    payload: thought,
   };
 }
 
 export function setSearchTerm(text) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({
       type: SET_SEARCH_TERM,
-      payload: text
+      payload: text,
     });
     if (text.length > 2) {
       dispatch(submitSearch(text));
@@ -93,10 +93,10 @@ export function setSearchTerm(text) {
 }
 
 export function clearSearch() {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({
       type: SET_SEARCH_TERM,
-      payload: ''
+      payload: '',
     });
     dispatch(submitSearch(''));
   };
@@ -106,20 +106,18 @@ function submitSearch(searchTerm) {
   return (dispatch, getState) => {
     const state = getState();
     const board = state.location.board;
-    searchThoughts(board, searchTerm)
-    .then((searchResults) => {
+    searchThoughts(board, searchTerm).then(searchResults => {
       dispatch({
         type: SEARCH_RESULTS_SUCCESS,
-        payload: searchResults
+        payload: searchResults,
       });
     });
   };
 }
 
-
 export function resetThoughts() {
   return {
-    type: RESET_THOUGHTS
+    type: RESET_THOUGHTS,
   };
 }
 
@@ -133,31 +131,29 @@ export function loadThoughts() {
     }
 
     dispatch({
-      type: THOUGHTS_LOADING
+      type: THOUGHTS_LOADING,
     });
 
-    getThoughts(board).then((loadedThoughts) => {
-
+    getThoughts(board).then(loadedThoughts => {
       let thoughts = loadedThoughts;
 
       if (loadedThoughts.length === 0) {
         thoughts = INITIAL_THOUGHTS.map(createThoughtObject);
 
-        thoughts.forEach((thought) =>
-          saveThought(board, thought).then((updatedThought) =>
-            dispatch(modifyThought(updatedThought))
-          )
+        thoughts.forEach(thought =>
+          saveThought(board, thought).then(updatedThought =>
+            dispatch(modifyThought(updatedThought)),
+          ),
         );
       }
 
       dispatch({
         type: THOUGHTS_LOADED,
-        payload: thoughts
+        payload: thoughts,
       });
     });
   };
 }
-
 
 /*
  * Editing related actions
@@ -173,14 +169,14 @@ export const REQUEST_MORE_THOUGHTS = 'REQUEST_MORE_THOUGHTS';
 export function addFilter(filter) {
   return {
     type: ADD_FILTER,
-    payload: filter
+    payload: filter,
   };
 }
 
 export function removeFilter(filter) {
   return {
     type: REMOVE_FILTER,
-    payload: filter
+    payload: filter,
   };
 }
 
@@ -191,7 +187,7 @@ export function setEditable(thought) {
     // Something is already being edited
     if (currentState.editor.editableThoughtId) {
       const editableThought = find(currentState.thoughts, {
-        id: currentState.editor.editableThoughtId
+        id: currentState.editor.editableThoughtId,
       });
 
       dispatch(stopEditing(editableThought));
@@ -199,14 +195,14 @@ export function setEditable(thought) {
 
     dispatch({
       type: SET_EDITABLE,
-      payload: thought
+      payload: thought,
     });
   };
 }
 
 export function resetFilters() {
   return {
-    type: RESET_FILTERS
+    type: RESET_FILTERS,
   };
 }
 
@@ -220,7 +216,7 @@ export function stopEditing(thought) {
 
     dispatch({
       type: STOP_EDITING,
-      payload: currentState.thoughts
+      payload: currentState.thoughts,
     });
 
     if (!currentState.location.board) {
@@ -228,12 +224,12 @@ export function stopEditing(thought) {
     }
 
     if (thought._id !== undefined) {
-      updateThought(currentState.location.board, thought).then((updatedThought) =>
-        dispatch(modifyThought(updatedThought))
+      updateThought(currentState.location.board, thought).then(updatedThought =>
+        dispatch(modifyThought(updatedThought)),
       );
     } else {
-      saveThought(currentState.location.board, thought).then((updatedThought) =>
-        dispatch(modifyThought(updatedThought))
+      saveThought(currentState.location.board, thought).then(updatedThought =>
+        dispatch(modifyThought(updatedThought)),
       );
     }
   };
@@ -241,6 +237,6 @@ export function stopEditing(thought) {
 
 export function requestMoreThoughts() {
   return {
-    type: REQUEST_MORE_THOUGHTS
+    type: REQUEST_MORE_THOUGHTS,
   };
 }
