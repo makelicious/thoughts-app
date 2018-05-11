@@ -11,12 +11,7 @@ import Checkbox from './components/checkbox';
 import Pen from './assets/pen.svg';
 import Trash from './assets/trash.svg';
 
-import {
-  CHECKBOX_REGEXP,
-  parseHashtags,
-  parseTodos,
-  parseImages
-} from 'utils/thought';
+import { CHECKBOX_REGEXP, parseHashtags, parseTodos, parseImages } from 'utils/thought';
 
 import { replaceNth, breakText } from 'utils/text';
 
@@ -41,8 +36,7 @@ const ALLOWED_MARKDOWN_TYPES = [
 
 export const ThoughtContent = React.createClass({
   shouldComponentUpdate(newProps) {
-    return newProps.expanded !== this.props.expanded ||
-      newProps.thought !== this.props.thought;
+    return newProps.expanded !== this.props.expanded || newProps.thought !== this.props.thought;
   },
   render() {
     /*
@@ -50,19 +44,20 @@ export const ThoughtContent = React.createClass({
      */
 
     const customRenderers = {
-      Link: (markdownProps) => (
+      Link: markdownProps => (
         <a href={markdownProps.href} target="_blank">
           {markdownProps.children}
         </a>
       ),
-      Checkbox: (markdownProps) => (
+      Checkbox: markdownProps => (
         <Checkbox
           onClick={this.props.onCheckboxClick}
           index={markdownProps.literal.index}
-          checked={markdownProps.literal.checked} />
+          checked={markdownProps.literal.checked}
+        />
       ),
 
-      Hashtag: (markdownProps) => {
+      Hashtag: markdownProps => {
         const hashtag = markdownProps.literal.hashtag;
 
         const addHashtagFilter = (event, hash) => {
@@ -73,7 +68,7 @@ export const ThoughtContent = React.createClass({
         };
 
         return (
-          <a onClick={(event) => addHashtagFilter(event, hashtag)} title={hashtag} href="#">
+          <a onClick={event => addHashtagFilter(event, hashtag)} title={hashtag} href="#">
             {hashtag}
           </a>
         );
@@ -81,9 +76,9 @@ export const ThoughtContent = React.createClass({
     };
     const images = parseImages(this.props.thought.text);
 
-    const visibleContent = this.props.expanded ?
-      this.props.thought.text :
-      breakText(this.props.thought.text);
+    const visibleContent = this.props.expanded
+      ? this.props.thought.text
+      : breakText(this.props.thought.text);
 
     return (
       <div>
@@ -92,24 +87,23 @@ export const ThoughtContent = React.createClass({
           source={visibleContent}
           allowedTypes={ALLOWED_MARKDOWN_TYPES}
           renderers={customRenderers}
-          walker={walker} />
+          walker={walker}
+        />
         <div className="thought__attachments">
-          {
-            images.map((image, i) => (
-              <a
-                key={i}
-                className="thought__image"
-                target="_blank"
-                href={image}
-                style={{ backgroundImage: `url(${image})` }} />
-            ))
-          }
+          {images.map((image, i) => (
+            <a
+              key={i}
+              className="thought__image"
+              target="_blank"
+              href={image}
+              style={{ backgroundImage: `url(${image})` }}
+            />
+          ))}
         </div>
       </div>
     );
   }
 });
-
 
 function updateText(thought, newText) {
   return {
@@ -151,7 +145,8 @@ export default React.createClass({
     this.props.onSubmit(updatedThought);
   },
 
-  expandThought() {
+  expandThought(e) {
+    console.log(e);
     this.setState({
       expanded: true
     });
@@ -168,8 +163,6 @@ export default React.createClass({
     };
   },
   render() {
-
-
     const createdAt = moment(this.props.thought.createdAt).format('MMMM Do YYYY, h:mm a');
 
     const className = classNames('thought__bubble', this.props.className, {
@@ -192,27 +185,28 @@ export default React.createClass({
           </div>
           <div
             style={this.props.style}
-            onDoubleClick={this.props.onDoubleClick}
+            onDoubleClick={this.minimizeThought}
             className={className}
-            onMouseEnter={this.expandThought}
-            onMouseLeave={this.minimizeThought}>
-            {
-              this.props.editable ? (
-                <TextInput
-                  ref={'input'}
-                  onChange={this.emitUpdatedText}
-                  onCancel={this.props.onCancel}
-                  onDelete={this.props.onDelete}
-                  value={this.props.thought.text}
-                  onSubmit={() => this.props.onSubmit(this.props.thought)} />
-              ) : (
-                <ThoughtContent
-                  onHashtagClick={this.props.onHashtagClick}
-                  onCheckboxClick={this.updateCheckbox}
-                  expanded={this.state.expanded}
-                  thought={this.props.thought} />
-              )
-            }
+            onCLick
+            onClick={this.expandThought}
+          >
+            {this.props.editable ? (
+              <TextInput
+                ref={'input'}
+                onChange={this.emitUpdatedText}
+                onCancel={this.props.onCancel}
+                onDelete={this.props.onDelete}
+                value={this.props.thought.text}
+                onSubmit={() => this.props.onSubmit(this.props.thought)}
+              />
+            ) : (
+              <ThoughtContent
+                onHashtagClick={this.props.onHashtagClick}
+                onCheckboxClick={this.updateCheckbox}
+                expanded={this.state.expanded}
+                thought={this.props.thought}
+              />
+            )}
             <div className="thought__info">
               <div className="thought__created-at">{createdAt}</div>
             </div>
